@@ -22,6 +22,10 @@ module.exports = {
         use: "ts-loader",
         exclude: /node_modules/,
       },
+      {
+        test: /\.ttf/,
+        type: "asset/resource",
+      },
     ],
   },
   resolve: {
