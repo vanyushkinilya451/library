@@ -1,4 +1,4 @@
-import { GlobalStyles } from "../styles/globalStyles"
+import { GlobalStyles } from "./styles/global"
 export const App = () => {
   return (
     <>

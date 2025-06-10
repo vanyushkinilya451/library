@@ -1,15 +1,37 @@
+import InterBlack from "shared/fonts/Inter/Inter_18pt-Black.ttf";
+import InterBold from "shared/fonts/Inter/Inter_18pt-Bold.ttf";
+import InterItalic from "shared/fonts/Inter/Inter_18pt-Italic.ttf";
+import InterLight from "shared/fonts/Inter/Inter_18pt-Light.ttf";
+import InterMedium from "shared/fonts/Inter/Inter_18pt-Medium.ttf";
+import InterRegular from "shared/fonts/Inter/Inter_18pt-Regular.ttf";
+import InterThin from "shared/fonts/Inter/Inter_18pt-Thin.ttf";
 import { createGlobalStyle } from "styled-components";
-import InterBlack from "./fonts/Inter/Inter_18pt-Black.ttf";
-import InterBold from "./fonts/Inter/Inter_18pt-Bold.ttf";
-import InterMedium from "./fonts/Inter/Inter_18pt-Medium.ttf";
-import InterRegular from "./fonts/Inter/Inter_18pt-Regular.ttf";
 
 export const GlobalStyles = createGlobalStyle`
 
 @font-face {
   font-family: 'Inter';
+  font-weight: 100;
+  src: url(${InterThin});
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-weight: 300;
+  src: url(${InterLight});
+}
+
+@font-face {
+  font-family: 'Inter';
   font-weight: 400;
   src: url(${InterRegular});
+}
+
+@font-face {
+  font-family: 'Inter';
+  font-weight: 100;
+  src: url(${InterItalic});
+  font-style: italic;
 }
 
 @font-face {
