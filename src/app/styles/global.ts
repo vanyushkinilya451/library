@@ -71,7 +71,6 @@ button{
   border: 1px solid black;
 }
 
-
 * {
   box-sizing: border-box;
   font-family: 'Inter';

@@ -1,9 +1,10 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const { features } = require("process");
 
 module.exports = {
   mode: "development",
-  entry: "./src/app/index.tsx",
+  entry: "./src/main.tsx",
   devServer: {
     static: {
       directory: path.join(__dirname, "dist"),
@@ -30,10 +31,18 @@ module.exports = {
   },
   resolve: {
     extensions: [".tsx", ".ts", ".js"],
+    alias: {
+      shared: path.resolve(__dirname, "src/shared"),
+      entities: path.resolve(__dirname, "src/entities"),
+      features: path.resolve(__dirname, "src/features"),
+      widgets: path.resolve(__dirname, "src/widgets"),
+      pages: path.resolve(__dirname, "src/pages"),
+      app: path.resolve(__dirname, "src/app"),
+    },
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: "./src/app/index.html",
+      template: "./index.html",
       filename: "index.html",
     }),
   ],
