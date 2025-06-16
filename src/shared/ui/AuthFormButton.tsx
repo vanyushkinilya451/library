@@ -2,8 +2,8 @@ import { ReactNode } from "react";
 import styled from "styled-components";
 
 type ButtonProps = {
-  children: ReactNode
-}
+  children: ReactNode;
+};
 
 const StyledButton = styled.button`
   display: flex;
@@ -12,9 +12,8 @@ const StyledButton = styled.button`
   border-style: none;
   border: 1px solid black;
   background-color: transparent;
-`
+`;
 
 export const AutoFormButton = ({ children }: ButtonProps) => {
-  return <StyledButton>{children}</StyledButton>
-}
-
+  return <StyledButton>{children}</StyledButton>;
+};

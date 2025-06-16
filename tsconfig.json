@@ -20,5 +20,5 @@
       "shared/*": ["shared/*"]
     }
   },
-  "exclude": ["webpack.config.js", "node_modules", "dist"]
+  "exclude": ["webpack.config.js", "node_modules", "dist", "eslint.config.mjs"]
 }
