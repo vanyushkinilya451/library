@@ -1,11 +1,13 @@
 import { Link } from "react-router-dom";
+import BookstackSvg from 'shared/assets/icons/bookstack.svg';
 import styled from "styled-components";
-import { BookSearchPanel } from '../../../widgets/BookSearchPanel/ui/BookSearchPanel';
+import { BookSearchPanel } from 'widgets/BookSearchPanel/ui/BookSearchPanel';
 
 export const HomePage = () => {
   return (
     <Nav>
       <NavLeft>
+        <BookstackSvg />
       </NavLeft>
 
       <NavCenter>
@@ -30,9 +32,8 @@ const Nav = styled.nav`
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 `
 
-
 const NavLeft = styled.div`
-  
+  margin-left: 20px;
 `
 const NavCenter = styled.div`
   display: flex;

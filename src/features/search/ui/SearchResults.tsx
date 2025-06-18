@@ -96,6 +96,7 @@ const BookTitle = styled(BookProperty)`
 `
 
 const BookAuthor = styled(BookProperty)`
+  font-weight: 700;
   font-style: italic;
 `
 
