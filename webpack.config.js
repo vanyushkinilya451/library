@@ -10,10 +10,12 @@ module.exports = {
     },
     open: true,
     watchFiles: ["src/app/**/*.html"],
+    historyApiFallback: true,
   },
   output: {
     path: path.resolve(__dirname, "dist"),
     filename: "bundle.js",
+    publicPath: "/",
   },
   module: {
     rules: [
@@ -24,6 +26,10 @@ module.exports = {
       },
       {
         test: /\.ttf/,
+        type: "asset/resource",
+      },
+      {
+        test: /\.(png|svg|jpg|jpeg|gif)$/i,
         type: "asset/resource",
       },
     ],

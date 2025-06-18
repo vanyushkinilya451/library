@@ -69,6 +69,8 @@ button{
   background-color: transparent;
   border-style: none;
   border: 1px solid black;
+  cursor: pointer;
+  padding: 0;
 }
 
 * {

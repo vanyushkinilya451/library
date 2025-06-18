@@ -1,3 +1,5 @@
 /node_modules
 /dist
-authlayout.fig
+auth.fig
+legacy
+home.fig
