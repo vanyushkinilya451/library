@@ -1,19 +1,21 @@
-import styled from "styled-components";
+import styled from "styled-components"
 
 type SearchBarProps = {
-  search: string;
-  placeholder: string;
-  handleSearchValue: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  search: string,
+  handleSearchValue: (event: React.ChangeEvent<HTMLInputElement>) => void,
+  placeholder: string,
+  openModal: () => void,
+  closeModal: () => void
 }
+export const SearchBar = ({ search, handleSearchValue, placeholder, openModal, closeModal }: SearchBarProps) => {
 
-export const SearchBar = ({ search, handleSearchValue, placeholder }: SearchBarProps) => {
-  return (
-    <StyledSearchBar
-      placeholder={placeholder}
-      onChange={handleSearchValue}
-      value={search}
-    />
-  )
+  return <StyledSearchBar
+    placeholder={placeholder}
+    value={search}
+    onChange={handleSearchValue}
+    onFocus={openModal}
+    onBlur={closeModal}
+  />
 }
 
 const StyledSearchBar = styled.input`
