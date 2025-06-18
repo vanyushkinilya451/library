@@ -18,12 +18,16 @@ export const SearchResults = ({ books }: SearchResutlsProps) => {
                   <BookItem >
                     <BookPropsList>
                       <ChooseBookButton>
-                        <BookTitle>
-                          {book.title}
-                        </BookTitle>
-                        <BookAuthor>
-                          {book.author_name}
-                        </BookAuthor>
+                        <BookDescription>
+                          <BookTitle>
+                            {book.title}
+                          </BookTitle>
+                          <BookAuthor>
+                            {book.author_name}
+                          </BookAuthor>
+                        </BookDescription>
+                        {book.cover_i ?
+                          <BookCover src={`http://covers.openlibrary.org/b/id/${book.cover_i}-L.jpg`} /> : ''}
                       </ChooseBookButton>
                     </BookPropsList>
                   </BookItem>
@@ -40,6 +44,17 @@ export const SearchResults = ({ books }: SearchResutlsProps) => {
   )
 }
 
+const BookDescription = styled.div`
+
+`
+
+const BookCover = styled.img`
+  display: block;
+  width: 50px;
+  height: 70px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+`
+
 const Underline = styled.hr`
   margin: 0;
   padding: 0;
@@ -49,7 +64,7 @@ const Underline = styled.hr`
 const NoBooksFound = styled.p`
   border-style: none;
   text-align: left;
-  font-size: 1rem;
+  
   padding: 10px 20px;
   width: 100%;
 `
@@ -86,9 +101,6 @@ const BookPropsList = styled(BookUnorderedList)`
 
 const BookProperty = styled(BookUnorderedItem)`
   user-select: none;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 `
 
 const BookTitle = styled(BookProperty)`
@@ -104,17 +116,19 @@ const ChooseBookButton = styled.button`
   width: 100%;
   border-style: none;
   text-align: left;
-  font-size: 1rem;
-  padding: 10px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 15px;
 
 
   &:hover {
-    background-color: rgba(0, 0, 0, 0.1);
+    background-color: rgba(0, 0, 0, 0.05);
   }
 `
 
 const LookMoreButton = styled(ChooseBookButton)`
   border-style: none;
   text-align: left;
-  font-size: 1rem;
+  
 `

@@ -117,7 +117,7 @@ const FormDescription = styled.h3`
   color: ${colors.secondaryText};
   margin: 0;
   font-style: italic;
-  font-size: 1rem;
+  
   font-weight: 400;
   line-height: 17px;
   text-align: center;
@@ -126,7 +126,7 @@ const FormDescription = styled.h3`
 
 const FormInput = styled.input`
   color: black;
-  font-size: 1rem;
+  
   font-weight: 400;
   padding: 17px 12px;
   border: 1px solid ${colors.border};
@@ -159,12 +159,12 @@ const FormCheckboxWrapper = styled.div`
 const FormLabel = styled.label`
   color: ${colors.secondaryText};
   user-select: none;
-  font-size: 1rem;
+  
 `;
 
 const AccentLink = styled(Link)`
   color: ${colors.accent};
-  font-size: 1rem;
+  
 `;
 
 const SubmitButton = styled.button`
@@ -173,7 +173,7 @@ const SubmitButton = styled.button`
   color: ${colors.lightText};
   width: 100%;
   padding: 10px 0;
-  font-size: 1rem;
+  
   margin-top: 22px;
 
   &:hover {
@@ -183,7 +183,7 @@ const SubmitButton = styled.button`
 
 const RegisterPrompt = styled.span`
   color: ${colors.primaryText};
-  font-size: 1rem;
+  
   margin-top: 11px;
 `;
 

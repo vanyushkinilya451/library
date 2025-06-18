@@ -7,7 +7,12 @@ export const HomePage = () => {
   return (
     <Nav>
       <NavLeft>
-        <BookstackSvg />
+        <Link to={'/'}>
+          <StyledBookstackSvg />
+        </Link>
+        <Categories>
+          Категории
+        </Categories>
       </NavLeft>
 
       <NavCenter>
@@ -22,7 +27,14 @@ export const HomePage = () => {
     </Nav>
   )
 }
+const StyledBookstackSvg = styled(BookstackSvg)`
+  width: 40px;
+`
 
+const Categories = styled.button`
+  border-style: none;
+  
+`
 const Nav = styled.nav`
   display: flex;
   height: 70px;
@@ -34,12 +46,16 @@ const Nav = styled.nav`
 
 const NavLeft = styled.div`
   margin-left: 20px;
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  
 `
 const NavCenter = styled.div`
   display: flex;
   align-items: center;
   gap: 20px;
-  width: 100%;
+  width: 400px;
 `
 
 const NavRight = styled.div`

@@ -20,10 +20,8 @@ export const SearchBar = ({ search, handleSearchValue, placeholder, openModal, c
 
 const StyledSearchBar = styled.input`
   width: 100%;
-  height: 30px;
-  border: 1px solid rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(0, 0, 0, 0.3);
   border-radius: 3px;
-  padding: 5px;
+  padding: 10px 10px 10px 35px;
   outline: none;
-  font-size: 1rem;
 `

@@ -24,6 +24,7 @@ export const useSearch = ({ limit = 10, debouncedDelay = 500 }: useSearchProps) 
         } else {
           const { docs } = await response.json();
           setBooks(docs);
+          console.log(docs);
         }
       } catch (err) {
         console.error(err);

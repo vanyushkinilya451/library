@@ -1,15 +1,6 @@
-// import InterBlack from "shared/fonts/Inter/Inter-Black.woff2";
-// import InterBold from "shared/fonts/Inter/Inter-Bold.woff2";
-// import InterItalic from "shared/fonts/Inter/Inter-Italic.woff2";
-// import InterLight from "shared/fonts/Inter/Inter-Light.woff2";
-// import InterMedium from "shared/fonts/Inter/Inter-Medium.woff2";
-// import InterRegular from "shared/fonts/Inter/Inter-Regular.woff2";
-// import InterThin from "shared/fonts/Inter/Inter-Thin.woff2";
-
 import { createGlobalStyle } from "styled-components";
 
 export const GlobalStyles = createGlobalStyle`
-  
 
   html,
   body {
@@ -34,5 +25,6 @@ export const GlobalStyles = createGlobalStyle`
     box-sizing: border-box;
     font-family: 'Inter';
     font-weight: 400;
+    font-size: 1rem;
   }
   `;
