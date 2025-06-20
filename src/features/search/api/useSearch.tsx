@@ -1,6 +1,6 @@
 import { Book } from "entities/book";
 import { useEffect, useState } from "react";
-import { useDebounce } from "shared/index";
+import { useDebounce } from "shared/lib/useDebounce";
 
 type useSearchProps = {
   limit?: number

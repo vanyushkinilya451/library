@@ -1,32 +1,31 @@
-import { SearchResults, useSearch } from "features/search";
-import { SearchBar } from "features/search/ui/SearchBar";
 import SearchSvg from "shared/assets/icons/search.svg";
-import { useModal } from "shared/index";
+import { useModal } from "shared/lib/useModal";
 import styled from "styled-components";
+import { useSearch } from "./../api/useSearch";
+import { SearchResults } from './SearchResults';
 
-
-
-export const BookSearchPanel = () => {
+export const SearchPanel = () => {
   const { handleSearchValue, search, books } = useSearch({ limit: 5, debouncedDelay: 500 });
   const { isModalOpen, openModal, closeModal } = useModal();
+
   return (
-    <SearchPanel>
+    <Container>
+      <SearchIcon />
       <SearchBar
         placeholder="Поиск книг..."
-        search={search}
-        handleSearchValue={handleSearchValue}
-        openModal={openModal}
-        closeModal={closeModal}
+        value={search}
+        onChange={handleSearchValue}
+        onFocus={openModal}
+        onBlur={closeModal}
       />
-      <StyledIcon />
       {books && isModalOpen &&
         <SearchResults books={books}
         />}
-    </SearchPanel>
-
+    </Container>
   )
 }
-const StyledIcon = styled(SearchSvg)`
+
+const SearchIcon = styled(SearchSvg)`
   position: absolute;
   height: 20px;
   left: 0;
@@ -36,9 +35,15 @@ const StyledIcon = styled(SearchSvg)`
   width: min-content;
   fill: rgba(0, 0, 0, 0.3);
 `
-const SearchPanel = styled.div`
+const Container = styled.div`
   position: relative;
   width: 100%;
   margin: 0 30px;
 `
-
+const SearchBar = styled.input`
+  width: 100%;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  border-radius: 3px;
+  padding: 10px 10px 10px 35px;
+  outline: none;
+`

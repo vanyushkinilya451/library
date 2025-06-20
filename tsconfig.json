@@ -20,5 +20,11 @@
       "shared/*": ["shared/*"]
     }
   },
-  "exclude": ["webpack.config.js", "node_modules", "dist", "eslint.config.mjs"]
+  "exclude": [
+    "webpack.config.js",
+    "node_modules",
+    "steiger.config.ts",
+    "dist",
+    "eslint.config.mjs"
+  ]
 }

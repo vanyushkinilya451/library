@@ -1,2 +1,1 @@
-export { useSearch } from "./api/useSearch";
-export { SearchResults } from "./ui/SearchResults";
+export { SearchPanel } from "./ui/SearchPanel";

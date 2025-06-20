@@ -1,1 +1,1 @@
-export { Book } from "./types";
+export { Book } from "./lib/types";

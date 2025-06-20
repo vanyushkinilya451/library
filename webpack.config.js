@@ -33,6 +33,10 @@ module.exports = {
         issuer: /\.[jt]sx?$/,
         use: ["@svgr/webpack"],
       },
+      {
+        test: /\.(sass|scss|css)$/,
+        use: ["style-loader", "css-loader", "sass-loader"],
+      },
     ],
   },
   resolve: {

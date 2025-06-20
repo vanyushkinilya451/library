@@ -9,8 +9,9 @@ type SearchResutlsProps = {
 export const SearchResults = ({ books }: SearchResutlsProps) => {
   return (
     <ResultsContainer>
-      {books.length ?
-        <>
+      {books.length
+        ?
+        <Fragment>
           <BookList>
             {books.map((book) => {
               return (
@@ -27,7 +28,9 @@ export const SearchResults = ({ books }: SearchResutlsProps) => {
                           </BookAuthor>
                         </BookDescription>
                         {book.cover_i ?
-                          <BookCover src={`http://covers.openlibrary.org/b/id/${book.cover_i}-L.jpg`} /> : ''}
+                          <BookCoverWrapper>
+                            <BookCover src={`http://covers.openlibrary.org/b/id/${book.cover_i}-M.jpg`} />
+                          </BookCoverWrapper> : ''}
                       </ChooseBookButton>
                     </BookPropsList>
                   </BookItem>
@@ -37,7 +40,9 @@ export const SearchResults = ({ books }: SearchResutlsProps) => {
             })}
           </BookList>
           <LookMoreButton>Посмотреть все результаты</LookMoreButton>
-        </> : <NoBooksFound>Ничего не найдено</NoBooksFound>
+        </Fragment>
+        :
+        <NoBooksFound>Ничего не найдено</NoBooksFound>
       }
     </ResultsContainer>
 
@@ -45,14 +50,19 @@ export const SearchResults = ({ books }: SearchResutlsProps) => {
 }
 
 const BookDescription = styled.div`
+  margin-right: 10px;
+  width: 100%;
+`
 
+const BookCoverWrapper = styled.div`
+  width: 50px;
+  height: 70px;
 `
 
 const BookCover = styled.img`
-  display: block;
-  width: 50px;
-  height: 70px;
-  border: 1px solid rgba(0, 0, 0, 0.2);
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 `
 
 const Underline = styled.hr`

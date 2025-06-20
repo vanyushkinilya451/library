@@ -1,22 +1,22 @@
+import { SearchPanel } from "features/search";
+import NavLink from "react-bootstrap/NavLink";
 import { Link } from "react-router-dom";
 import BookstackSvg from 'shared/assets/icons/bookstack.svg';
 import styled from "styled-components";
-import { BookSearchPanel } from 'widgets/BookSearchPanel/ui/BookSearchPanel';
 
 export const HomePage = () => {
   return (
     <Nav>
       <NavLeft>
-        <Link to={'/'}>
+        <NavLink as={Link} to={'/'} className="nav-link">
           <StyledBookstackSvg />
-        </Link>
-        <Categories>
-          Категории
-        </Categories>
+        </NavLink>
+        <NavLink as={Link} to={'/categories'} className="nav-link">Категории</NavLink>
+        <NavLink as={Link} to={'/favorites'} className="nav-link">Популярные</NavLink>
       </NavLeft>
 
       <NavCenter>
-        <BookSearchPanel />
+        <SearchPanel />
       </NavCenter>
 
       <NavRight>
@@ -29,12 +29,9 @@ export const HomePage = () => {
 }
 const StyledBookstackSvg = styled(BookstackSvg)`
   width: 40px;
+  height: 40px;
 `
 
-const Categories = styled.button`
-  border-style: none;
-  
-`
 const Nav = styled.nav`
   display: flex;
   height: 70px;
@@ -47,8 +44,10 @@ const Nav = styled.nav`
 const NavLeft = styled.div`
   margin-left: 20px;
   display: flex;
-  gap: 20px;
+  gap: 30px;
+  height: 100%;
   justify-content: center;
+  align-items: center;
   
 `
 const NavCenter = styled.div`
