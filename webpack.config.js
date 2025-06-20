@@ -1,5 +1,6 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const ESLintPlugin = require("eslint-webpack-plugin");
 
 module.exports = {
   mode: "development",
@@ -30,12 +31,33 @@ module.exports = {
       },
       {
         test: /\.svg$/i,
+        type: "asset",
+        resourceQuery: /url/,
+      },
+      {
+        test: /\.svg$/i,
         issuer: /\.[jt]sx?$/,
+        resourceQuery: { not: [/url/] },
         use: ["@svgr/webpack"],
       },
       {
-        test: /\.(sass|scss|css)$/,
-        use: ["style-loader", "css-loader", "sass-loader"],
+        test: /\.css$/,
+        use: ["style-loader", "css-loader"],
+      },
+      {
+        test: /\.scss$/,
+        use: [
+          "style-loader",
+          "css-loader",
+          {
+            loader: "sass-loader",
+            options: {
+              sassOptions: {
+                quietDeps: true,
+              },
+            },
+          },
+        ],
       },
     ],
   },
@@ -54,6 +76,16 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: "./index.html",
       filename: "index.html",
+    }),
+    new ESLintPlugin({
+      extensions: ["js", "jsx", "ts", "tsx"],
+      context: path.resolve(__dirname, "src"),
+      fix: true,
+      cache: true,
+      emitWarning: true,
+      emitError: true,
+      failOnError: false,
+      failOnWarning: false,
     }),
   ],
 };

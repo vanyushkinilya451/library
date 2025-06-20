@@ -62,7 +62,6 @@ const BookCoverWrapper = styled.div`
 const BookCover = styled.img`
   width: 100%;
   height: 100%;
-  object-fit: cover;
 `
 
 const Underline = styled.hr`
@@ -88,6 +87,7 @@ const ResultsContainer = styled.div`
   border: 1px solid rgba(0, 0, 0, 0.2);
   border-radius: 3px;
   width: 100%;
+  z-index: 1000;
 `
 const BookUnorderedList = styled.ul`
   list-style: none;

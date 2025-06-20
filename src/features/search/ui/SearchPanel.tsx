@@ -31,7 +31,7 @@ const SearchIcon = styled(SearchSvg)`
   left: 0;
   top: 50%;
   transform: translateY(-50%);
-  margin-left: 7px;
+  margin-left: 10px;
   width: min-content;
   fill: rgba(0, 0, 0, 0.3);
 `
@@ -44,6 +44,6 @@ const SearchBar = styled.input`
   width: 100%;
   border: 1px solid rgba(0, 0, 0, 0.3);
   border-radius: 3px;
-  padding: 10px 10px 10px 35px;
+  padding: 10px 10px 10px 40px;
   outline: none;
 `

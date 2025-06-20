@@ -1,5 +1,62 @@
-.nav-link {
-  &:hover {
-    color: red;
+// bootstrap.scss
+// @import "~bootstrap/scss/functions";
+// @import "~bootstrap/scss/variables";
+// @import "~bootstrap/scss/mixins";
+
+.mx-20 {
+  padding-left: 200px !important;
+  padding-right: 200px !important;
+}
+
+.mx-7 {
+  margin-left: 5rem !important;
+  margin-right: 5rem !important;
+}
+
+.col {
+  padding: 0;
+}
+
+.nav {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+
+  &__link {
+    color: white;
+    white-space: nowrap;
+    padding: 0 5px;
+    margin: 0 10px;
+    font-weight: bold;
+
+    &:hover {
+      color: rgb(255, 190, 115);
+    }
+
+    &.active {
+      color: rgb(255, 190, 115) !important; /* Яркий цвет для активной ссылки */
+    }
+  }
+
+  &__icon {
+    height: 40px;
+    width: 40px;
+  }
+}
+
+.book {
+  width: 230px;
+  flex: 0 0 auto;
+  margin: 0 15px;
+
+  &__container {
+    height: 100%;
+    padding: 15px 30px;
+    background-color: rgb(250, 250, 255);
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  }
+
+  &__cover {
+    width: 100%;
+    height: 230px;
   }
 }
