@@ -107,9 +107,8 @@ const FormDescription = styled.h3`
   color: ${colors.secondaryText};
   margin: 0;
   font-style: italic;
-  
+  font-size: 1rem;
   font-weight: 400;
-  line-height: 17px;
   text-align: center;
   user-select: none;
 `;

@@ -119,7 +119,7 @@ const FormDescription = styled.h3`
   font-style: italic;
   
   font-weight: 400;
-  line-height: 17px;
+  font-size: 1rem;
   text-align: center;
   user-select: none;
 `;
