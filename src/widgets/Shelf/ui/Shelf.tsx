@@ -6,19 +6,23 @@ import Row from "react-bootstrap/Row";
 import Arrow from "shared/assets/icons/arrow.svg";
 import NoImageAvailable from 'shared/assets/images/noimageavailable.png';
 import { SkeletonLoader } from "shared/ui/SkeletonLoader";
+import { BookCover } from "../api/BookCover";
+
 type ShelfProps = {
   books: Book[];
   shelfTitle: string;
-  isLoading: boolean;
+  isLoadingBooks: boolean;
+  ref: React.RefObject<HTMLElement | null>;
 }
 
-export const Shelf = ({ books, shelfTitle, isLoading }: ShelfProps) => {
+export const Shelf = ({ books, shelfTitle, isLoadingBooks, ref }: ShelfProps) => {
   const bookshelf = useRef<HTMLDivElement>(null);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isScrollEnd, setIsScrollEnd] = useState(false);
 
+  const titleCharactersLimit = 40;
+  const authorCharactersLimit = 30;
   const scrollDistance = 320;
-
   useEffect(() => {
     const handleScroll = () => {
       if (!bookshelf.current) return;
@@ -29,7 +33,9 @@ export const Shelf = ({ books, shelfTitle, isLoading }: ShelfProps) => {
     const container = bookshelf.current;
     container?.addEventListener('scroll', handleScroll)
     handleScroll();
-    return () => { removeEventListener('scroll', handleScroll) }
+    return () => {
+      container?.removeEventListener('scroll', handleScroll)
+    }
   }, [books]);
 
 
@@ -52,15 +58,15 @@ export const Shelf = ({ books, shelfTitle, isLoading }: ShelfProps) => {
   }
 
   return (
-    <article className="shelf">
+    <article ref={ref} className="shelf">
       <Row>
         <h1 className="shelf__title">{shelfTitle}</h1>
       </Row>
-      {isLoading ?
+      {isLoadingBooks ?
         <Row className="shelf__container">
-          {Array.from({ length: 10 }).map(() => {
+          {Array.from({ length: 10 }).map((_, index) => {
             return (
-              <Col className="shelf__item">
+              <Col key={`skeleton-${index}`} className="shelf__item">
                 <Card className="card">
                   <SkeletonLoader height="180px" />
                 </Card>
@@ -79,22 +85,18 @@ export const Shelf = ({ books, shelfTitle, isLoading }: ShelfProps) => {
               <Col key={book.key} className="shelf__item">
                 <Card className="card">
                   {book.cover_i || book.cover_id ?
-                    <Card.Img
-                      className="card__cover"
-                      alt="book cover"
-                      src={`http://covers.openlibrary.org/b/id/${book.cover_id ? book.cover_id : book.cover_i}-M.jpg`}
-                    /> :
+                    <BookCover className="card__cover" cover_id={book.cover_id} cover_i={book.cover_i} />
+                    :
                     <Card.Img
                       className="card__cover"
                       alt="no image"
                       src={NoImageAvailable}
                     />
                   }
-
                   <Card.Body className="card__description">
-                    <Card.Title className="card__title">{book.title.length > 40 ? book.title.slice(0, 40) + '...' : book.title}</Card.Title>
+                    <Card.Title className="card__title">{book.title.length > titleCharactersLimit ? book.title.slice(0, titleCharactersLimit) + '...' : book.title}</Card.Title>
                     {book.author_name &&
-                      <Card.Text className="card__author">{book.author_name[0].length > 30 ? book.author_name[0].slice(0, 30) + '...' : book.author_name[0]}</Card.Text>
+                      <Card.Text className="card__author">{book.author_name[0].length > authorCharactersLimit ? book.author_name[0].slice(0, authorCharactersLimit) + '...' : book.author_name[0]}</Card.Text>
                     }
                   </Card.Body>
                 </Card>
@@ -108,7 +110,7 @@ export const Shelf = ({ books, shelfTitle, isLoading }: ShelfProps) => {
           }
           {!isScrollEnd &&
             <button className="shelf__nav shelf__nav--right" onClick={handleScrollRight}>
-              <Arrow className="scroll__icon scroll__icon" />
+              <Arrow className="scroll__icon" />
             </button>
           }
         </Row>

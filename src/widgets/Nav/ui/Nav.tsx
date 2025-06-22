@@ -6,7 +6,6 @@ import BookstackSvg from 'shared/assets/icons/bookstack.svg';
 
 
 export const Nav = () => {
-  console.log(typeof BookstackSvg)
   return (
     <Navbar bg="dark" className="px-20">
 
