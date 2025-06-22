@@ -3,7 +3,7 @@
 // @import "~bootstrap/scss/variables";
 // @import "~bootstrap/scss/mixins";
 
-.mx-20 {
+.px-20 {
   padding-left: 200px !important;
   padding-right: 200px !important;
 }
@@ -24,9 +24,9 @@
   &__link {
     color: white;
     white-space: nowrap;
-    padding: 0 5px;
     margin: 0 10px;
     font-weight: bold;
+    font-size: 0.8rem;
 
     &:hover {
       color: rgb(255, 190, 115);
@@ -43,20 +43,92 @@
   }
 }
 
-.book {
-  width: 230px;
-  flex: 0 0 auto;
-  margin: 0 15px;
+.section {
+  padding: 0 200px;
+  transition: all 0.2s;
+  scroll-behavior: smooth;
+}
+.shelf {
+  position: relative;
+
+  &__title {
+    font-size: 1.5rem;
+    margin-top: 15px;
+  }
+
+  &__item {
+    width: 150px;
+    flex: 0 0 auto;
+    padding: 10px;
+    scroll-snap-align: start;
+  }
 
   &__container {
-    height: 100%;
-    padding: 15px 30px;
-    background-color: rgb(250, 250, 255);
-    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    width: 100%;
+    -ms-overflow-style: none; /* IE и Edge */
+    scrollbar-width: none; /* Firefox */
+    &::-webkit-scrollbar {
+      /* Chrome, Safari, Opera */
+      display: none;
+    }
+    flex-wrap: nowrap;
+    overflow: auto;
+    scroll-snap-type: x mandatory;
   }
+
+  &__nav {
+    position: absolute;
+    background-color: transparent;
+    width: 50px;
+    height: 50px;
+    transform: translateY(-50%, -50%);
+    border-style: none;
+    top: 37%;
+
+    &--right {
+      right: -10px;
+    }
+
+    &--left {
+      left: -25px;
+      rotate: 180deg;
+    }
+  }
+}
+
+.scroll__icon {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0.9;
+
+  &:hover {
+    opacity: 1;
+  }
+}
+
+.card {
+  border-style: none;
 
   &__cover {
     width: 100%;
-    height: 230px;
+    height: 180px;
+  }
+
+  &__description {
+    padding: 10px 10px 0 10px;
+  }
+
+  &__title {
+    font-weight: bold;
+    font-size: 0.8rem;
+  }
+
+  &__author {
+    font-size: 0.8rem;
+    margin: 0;
   }
 }

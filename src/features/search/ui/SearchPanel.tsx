@@ -27,7 +27,7 @@ export const SearchPanel = () => {
 
 const SearchIcon = styled(SearchSvg)`
   position: absolute;
-  height: 20px;
+  height: 15px;
   left: 0;
   top: 50%;
   transform: translateY(-50%);
@@ -39,11 +39,14 @@ const Container = styled.div`
   position: relative;
   width: 100%;
   margin: 0 30px;
+  height: 30px;
 `
 const SearchBar = styled.input`
   width: 100%;
+  height: 100%;
   border: 1px solid rgba(0, 0, 0, 0.3);
   border-radius: 3px;
-  padding: 10px 10px 10px 40px;
+  font-size: 0.9rem;
+padding: 10px 10px 10px 35px;
   outline: none;
 `

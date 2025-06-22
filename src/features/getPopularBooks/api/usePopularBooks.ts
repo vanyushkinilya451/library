@@ -7,7 +7,7 @@ export const usePopularBooks = () => {
   useEffect(() => {
     async function getBooks() {
       const response = await fetch(
-        "https://openlibrary.org/subjects/new_york_times_bestseller.json?limit=10"
+        "https://openlibrary.org/subjects/new_york_times_bestseller.json?limit=20"
       );
       const { works } = await response.json();
       setBooks(works);

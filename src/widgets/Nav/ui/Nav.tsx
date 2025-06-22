@@ -8,7 +8,7 @@ import BookstackSvg from 'shared/assets/icons/bookstack.svg';
 export const Nav = () => {
   console.log(typeof BookstackSvg)
   return (
-    <Navbar bg="dark" className="mx-20">
+    <Navbar bg="dark" className="px-20">
 
       <Navbar.Brand className="ms-4">
         <BookstackSvg className="nav__icon" />
