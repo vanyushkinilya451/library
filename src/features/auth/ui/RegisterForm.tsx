@@ -1,34 +1,44 @@
-import { useCallback, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import styled from "styled-components";
-
+import { useCallback, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
 
 export const RegisterForm = () => {
-  const [email, setEmail] = useState("");
-  const [login, setLogin] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [login, setLogin] = useState('');
+  const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
-  const handleSubmit = useCallback((e: React.FormEvent) => {
-    e.preventDefault();
-    navigate("/");
-  }, [email, login, password]);
+  const handleSubmit = useCallback(
+    (e: React.FormEvent) => {
+      e.preventDefault();
+      navigate('/');
+    },
+    [email, login, password]
+  );
 
-  const handleEmailChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    setEmail(e.target.value);
-  }, []);
+  const handleEmailChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setEmail(e.target.value);
+    },
+    []
+  );
 
-  const handleLoginChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    setLogin(e.target.value);
-  }, []);
+  const handleLoginChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setLogin(e.target.value);
+    },
+    []
+  );
 
-  const handlePasswordChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    setPassword(e.target.value);
-  }, []);
+  const handlePasswordChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setPassword(e.target.value);
+    },
+    []
+  );
 
   return (
     <AuthForm onSubmit={handleSubmit}>
-
       <FormTitle>Добро пожаловать</FormTitle>
       <FormSubtitle>Станьте частью большого сообщества YNOU</FormSubtitle>
       <FormDescription>
@@ -36,52 +46,50 @@ export const RegisterForm = () => {
       </FormDescription>
 
       <FormInput
-        type="email"
+        type='email'
         onChange={handleEmailChange}
-        placeholder="Почта"
+        placeholder='Почта'
         value={login}
       />
 
       <FormInput
-        type="text"
+        type='text'
         onChange={handleLoginChange}
-        placeholder="Логин"
+        placeholder='Логин'
         value={login}
       />
 
       <FormInput
-        type="password"
+        type='password'
         onChange={handlePasswordChange}
-        placeholder="Пароль"
+        placeholder='Пароль'
         value={password}
       />
 
       <FormFooter>
         <FormCheckboxWrapper>
           <FormLabel>
-            <input type="checkbox" />
-            Запомнить меня</FormLabel>
+            <input type='checkbox' />
+            Запомнить меня
+          </FormLabel>
         </FormCheckboxWrapper>
         <AccentLink to={'#'}>Забыли пароль?</AccentLink>
       </FormFooter>
-      <SubmitButton type="submit">Зарегистрироваться</SubmitButton>
+      <SubmitButton type='submit'>Зарегистрироваться</SubmitButton>
       <RegisterPrompt>
-        Уже есть аккаунт?{" "}
-        <AccentLink to={'/auth/login'}>Войти</AccentLink>
+        Уже есть аккаунт? <AccentLink to={'/auth/login'}>Войти</AccentLink>
       </RegisterPrompt>
     </AuthForm>
-  )
-}
-
-
+  );
+};
 
 const colors = {
-  primaryText: "rgb(79, 79, 79)",
-  secondaryText: "rgb(128, 128, 128)",
-  accent: "rgb(255, 0, 0)",
-  darkBlue: "rgb(6, 22, 39)",
-  lightText: "rgb(238, 238, 238)",
-  border: "rgb(227, 227, 227)",
+  primaryText: 'rgb(79, 79, 79)',
+  secondaryText: 'rgb(128, 128, 128)',
+  accent: 'rgb(255, 0, 0)',
+  darkBlue: 'rgb(6, 22, 39)',
+  lightText: 'rgb(238, 238, 238)',
+  border: 'rgb(227, 227, 227)',
 };
 
 const AuthForm = styled.form`
@@ -117,7 +125,7 @@ const FormDescription = styled.h3`
   color: ${colors.secondaryText};
   margin: 0;
   font-style: italic;
-  
+
   font-weight: 400;
   font-size: 1rem;
   text-align: center;
@@ -126,7 +134,7 @@ const FormDescription = styled.h3`
 
 const FormInput = styled.input`
   color: black;
-  
+
   font-weight: 400;
   padding: 17px 12px;
   border: 1px solid ${colors.border};
@@ -159,12 +167,10 @@ const FormCheckboxWrapper = styled.div`
 const FormLabel = styled.label`
   color: ${colors.secondaryText};
   user-select: none;
-  
 `;
 
 const AccentLink = styled(Link)`
   color: ${colors.accent};
-  
 `;
 
 const SubmitButton = styled.button`
@@ -173,7 +179,7 @@ const SubmitButton = styled.button`
   color: ${colors.lightText};
   width: 100%;
   padding: 10px 0;
-  
+
   margin-top: 22px;
 
   &:hover {
@@ -183,8 +189,6 @@ const SubmitButton = styled.button`
 
 const RegisterPrompt = styled.span`
   color: ${colors.primaryText};
-  
+
   margin-top: 11px;
 `;
-
-

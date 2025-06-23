@@ -1,22 +1,20 @@
-import { Outlet } from "react-router-dom";
-import { GradientBackground } from "shared/ui";
-import styled from "styled-components";
+import { Outlet } from 'react-router-dom';
+import { GradientBackground } from 'shared/ui';
+import styled from 'styled-components';
 
 export const AuthLayout = () => {
   return (
     <Layout>
-
       <FormContainer>
         <Outlet />
-      </FormContainer >
+      </FormContainer>
 
       <BackgroundContainer>
         <GradientBackground />
-      </BackgroundContainer >
-
+      </BackgroundContainer>
     </Layout>
-  )
-}
+  );
+};
 
 const BackgroundContainer = styled.div`
   height: 100%;
@@ -25,7 +23,7 @@ const BackgroundContainer = styled.div`
 
 const Layout = styled.section`
   display: flex;
-  width: 100%;    
+  width: 100%;
   height: 100vh;
 `;
 

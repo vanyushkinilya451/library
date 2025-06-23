@@ -1,12 +1,12 @@
-import { Book } from "entities/book";
-import { useEffect, useRef, useState } from "react";
+import { Book } from 'entities/book';
+import { useEffect, useRef, useState } from 'react';
+import { CONSTANTS } from 'shared/lib';
 
 type useBooksProps = {
   api: string;
-  limit?: number;
 };
 
-export const useBooks = ({ api, limit }: useBooksProps) => {
+export const useBooks = ({ api }: useBooksProps) => {
   const [books, setBooks] = useState<Book[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const elementRef = useRef<HTMLElement | null>(null);
@@ -17,7 +17,9 @@ export const useBooks = ({ api, limit }: useBooksProps) => {
         element.forEach((item) => {
           if (item.isIntersecting) {
             async function getBooks() {
-              const response = await fetch(`${api}&limit=${limit}`);
+              const response = await fetch(
+                `${api}&limit=${CONSTANTS.SHELF_LIMIT}`
+              );
               const data = await response.json();
               setBooks(data.works ? data.works : data.docs);
               setIsLoading(false);
@@ -26,16 +28,21 @@ export const useBooks = ({ api, limit }: useBooksProps) => {
           }
         });
       },
-      { threshold: 0.1, rootMargin: "100px" }
+      { threshold: 0.1, rootMargin: '100px' }
     );
 
-    console.log("elementRef.current: ", elementRef.current);
+    console.log('elementRef.current: ', elementRef.current);
     observer.observe(elementRef.current as HTMLElement);
 
     return () => {
       observer.disconnect();
     };
-  }, [api, limit]);
+  }, [api]);
 
-  return { books, isLoading, elementRef };
+  return {
+    books,
+    isLoading,
+    elementRef,
+    setIsLoading,
+  };
 };

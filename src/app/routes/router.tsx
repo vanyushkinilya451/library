@@ -1,36 +1,36 @@
-import { AuthLayout, MainLayout } from "app/layouts";
-import { LoginForm, RegisterForm } from "features/auth";
-import { HomePage } from "pages/home";
-import { createBrowserRouter } from "react-router-dom";
+import { AuthLayout, MainLayout } from 'app/layouts';
+import { LoginForm, RegisterForm } from 'features/auth';
+import { Categories } from 'pages/categories';
+import { HomePage } from 'pages/home';
+import { createBrowserRouter } from 'react-router-dom';
 
 export const router = createBrowserRouter([
   {
-    path: "/",
+    path: '/',
     Component: MainLayout,
     children: [
       {
         index: true,
-        Component: HomePage
+        Component: HomePage,
       },
       {
         path: '/categories',
-        Component: HomePage
-      }
-    ]
+        Component: Categories,
+      },
+    ],
   },
   {
-    path: "/auth",
+    path: '/auth',
     Component: AuthLayout,
     children: [
       {
-        path: "login",
-        Component: LoginForm
+        path: 'login',
+        Component: LoginForm,
       },
       {
-        path: "register",
-        Component: RegisterForm
-      }
-    ]
+        path: 'register',
+        Component: RegisterForm,
+      },
+    ],
   },
-
 ]);

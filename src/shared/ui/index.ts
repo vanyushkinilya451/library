@@ -1,2 +1,2 @@
-export { GradientBackground } from "./GradientBackground";
-export { SkeletonLoader } from "./SkeletonLoader";
+export { GradientBackground } from './GradientBackground';
+export { SkeletonLoader } from './SkeletonLoader';

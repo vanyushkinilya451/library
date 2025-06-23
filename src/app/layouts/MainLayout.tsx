@@ -1,5 +1,5 @@
-import { Outlet } from "react-router-dom";
-import { Nav } from "widgets/Nav";
+import { Outlet } from 'react-router-dom';
+import { Nav } from 'widgets/Nav';
 
 export const MainLayout = () => {
   return (
@@ -7,6 +7,5 @@ export const MainLayout = () => {
       <Nav />
       <Outlet />
     </>
-
   );
 };

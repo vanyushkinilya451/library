@@ -1,8 +1,8 @@
-import Container from 'react-bootstrap/Container';
+import { Container } from 'react-bootstrap';
 import { Shelf } from 'widgets/Shelf';
 import { shelvesConfig } from '../lib/shelvesConfig';
 
-export const HomePage = () => {
+export const Categories = () => {
   return (
     <Container
       fluid
