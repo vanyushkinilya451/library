@@ -31,13 +31,14 @@ export const useBooks = ({ api }: useBooksProps) => {
       { threshold: 0.1, rootMargin: '100px' }
     );
 
-    console.log('elementRef.current: ', elementRef.current);
     observer.observe(elementRef.current as HTMLElement);
 
     return () => {
       observer.disconnect();
     };
   }, [api]);
+
+  console.log(books);
 
   return {
     books,

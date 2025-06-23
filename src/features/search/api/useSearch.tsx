@@ -16,7 +16,7 @@ export const useSearch = ({ debouncedDelay = 500 }: useSearchProps) => {
     async function fetchBooks() {
       try {
         const response = await fetch(
-          `${CONSTANTS.OPEN_LIBRARY_API}?q=${processedSearch}&limit=${CONSTANTS.SEARCH_LIMIT}`
+          `${CONSTANTS.OL_SEARCH}?q=${processedSearch}&limit=${CONSTANTS.SEARCH_LIMIT}`
         );
         if (!response.ok) {
           console.error('Ошибки поиска книг', response.text());

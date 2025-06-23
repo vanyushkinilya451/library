@@ -1,5 +1,7 @@
 import { AuthLayout, MainLayout } from 'app/layouts';
 import { LoginForm, RegisterForm } from 'features/auth';
+import { AuthorPage } from 'pages/author/ui/AuthorPage';
+import { BookPage } from 'pages/book';
 import { Categories } from 'pages/categories';
 import { HomePage } from 'pages/home';
 import { createBrowserRouter } from 'react-router-dom';
@@ -16,6 +18,14 @@ export const router = createBrowserRouter([
       {
         path: '/categories',
         Component: Categories,
+      },
+      {
+        path: '/book/:id',
+        Component: BookPage,
+      },
+      {
+        path: '/author/:id',
+        Component: AuthorPage,
       },
     ],
   },

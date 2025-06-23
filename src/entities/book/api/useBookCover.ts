@@ -9,7 +9,7 @@ type useBookCoverProps = {
 
 export const useBookCover = ({ cover_id, cover_i }: useBookCoverProps) => {
   const [isLoading, setIsLoading] = useState(true);
-  const coverUrl = `${CONSTANTS.OPEN_LIBRARY_COVER_API}${cover_id ? cover_id : cover_i}-M.jpg`;
+  const coverUrl = `${CONSTANTS.OL_COVER}${cover_id ? cover_id : cover_i}-M.jpg`;
 
   return {
     isLoading,

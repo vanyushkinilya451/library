@@ -14,6 +14,7 @@ type ShelfProps = {
 };
 
 export const Shelf = ({ shelfTitle, api }: ShelfProps) => {
+  const navigate = useNavigate();
   const { books, isLoading, elementRef } = useBooks({ api });
   const {
     isScrolled,
@@ -23,9 +24,8 @@ export const Shelf = ({ shelfTitle, api }: ShelfProps) => {
     bookshelf,
   } = useShelfScroll(books);
 
-  const navigate = useNavigate();
   const handleBookClick = (book: Book) => {
-    navigate(`/book/${book.key}`);
+    navigate(`/book/${book.cover_edition_key}`);
   };
 
   const handleAuthorClick = (author: string) => {
@@ -71,13 +71,14 @@ export const Shelf = ({ shelfTitle, api }: ShelfProps) => {
                       className='card__cover'
                       cover_id={book.cover_id}
                       cover_i={book.cover_i}
+                      onClick={() => handleBookClick(book)}
                     />
                   ) : (
                     <Card.Img
-                      onClick={() => handleBookClick(book)}
                       className='card__cover'
                       alt='no image'
                       src={NoImageAvailable}
+                      onClick={() => handleBookClick(book)}
                     />
                   )}
                   <Card.Body className='card__description'>
@@ -90,7 +91,7 @@ export const Shelf = ({ shelfTitle, api }: ShelfProps) => {
                     {book.author_name && (
                       <Card.Text
                         className='card__author'
-                        onClick={() => handleAuthorClick(book.author_name[0])}
+                        onClick={() => handleAuthorClick(book.author_key[0])}
                       >
                         {handleAuthor(book.author_name[0])}
                       </Card.Text>

@@ -26,7 +26,7 @@ export const SearchResults = ({ books }: SearchResutlsProps) => {
                         {book.cover_i ? (
                           <BookCoverWrapper>
                             <BookCover
-                              src={`${CONSTANTS.OPEN_LIBRARY_COVER_API}${book.cover_i}-M.jpg`}
+                              src={`${CONSTANTS.OL_COVER}${book.cover_i}-M.jpg`}
                             />
                           </BookCoverWrapper>
                         ) : (

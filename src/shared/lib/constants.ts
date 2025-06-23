@@ -4,6 +4,8 @@ export const CONSTANTS = {
   SCROLL_DISTANCE: 300,
   SEARCH_LIMIT: 5,
   SHELF_LIMIT: 20,
-  OPEN_LIBRARY_API: 'https://openlibrary.org/search.json',
-  OPEN_LIBRARY_COVER_API: 'http://covers.openlibrary.org/b/id/',
+  OL_SEARCH: 'https://openlibrary.org/search.json',
+  OL_BOOK: 'https://openlibrary.org/books',
+  OL_AUTHOR: 'https://openlibrary.org/authors',
+  OL_COVER: 'http://covers.openlibrary.org/b/id/',
 };
