@@ -1,21 +1,19 @@
-import { Book } from "entities/book";
+import { BookCover, useBooks } from "entities/book";
 import { useEffect, useRef, useState } from "react";
 import Card from "react-bootstrap/Card";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
-import Arrow from "shared/assets/icons/arrow.svg";
-import NoImageAvailable from 'shared/assets/images/noimageavailable.png';
-import { SkeletonLoader } from "shared/ui/SkeletonLoader";
-import { BookCover } from "../api/BookCover";
+import { Arrow, NoImageAvailable } from "shared/assets";
+import { SkeletonLoader } from "shared/ui";
 
 type ShelfProps = {
-  books: Book[];
   shelfTitle: string;
-  isLoadingBooks: boolean;
-  ref: React.RefObject<HTMLElement | null>;
+  api: string;
 }
 
-export const Shelf = ({ books, shelfTitle, isLoadingBooks, ref }: ShelfProps) => {
+export const Shelf = ({ shelfTitle, api }: ShelfProps) => {
+
+  const { books, isLoading, elementRef } = useBooks({ api, limit: 20 });
   const bookshelf = useRef<HTMLDivElement>(null);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isScrollEnd, setIsScrollEnd] = useState(false);
@@ -23,6 +21,7 @@ export const Shelf = ({ books, shelfTitle, isLoadingBooks, ref }: ShelfProps) =>
   const titleCharactersLimit = 40;
   const authorCharactersLimit = 30;
   const scrollDistance = 320;
+
   useEffect(() => {
     const handleScroll = () => {
       if (!bookshelf.current) return;
@@ -33,6 +32,7 @@ export const Shelf = ({ books, shelfTitle, isLoadingBooks, ref }: ShelfProps) =>
     const container = bookshelf.current;
     container?.addEventListener('scroll', handleScroll)
     handleScroll();
+
     return () => {
       container?.removeEventListener('scroll', handleScroll)
     }
@@ -58,11 +58,11 @@ export const Shelf = ({ books, shelfTitle, isLoadingBooks, ref }: ShelfProps) =>
   }
 
   return (
-    <article ref={ref} className="shelf">
+    <article ref={elementRef} className="shelf">
       <Row>
         <h1 className="shelf__title">{shelfTitle}</h1>
       </Row>
-      {isLoadingBooks ?
+      {isLoading ?
         <Row className="shelf__container">
           {Array.from({ length: 10 }).map((_, index) => {
             return (

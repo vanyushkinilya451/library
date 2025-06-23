@@ -2,8 +2,7 @@ import { SearchPanel } from "features/search";
 import NavContainer from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import { NavLink } from "react-router-dom";
-import BookstackSvg from 'shared/assets/icons/bookstack.svg';
-
+import { BookstackSvg } from "shared/assets";
 
 export const Nav = () => {
   return (

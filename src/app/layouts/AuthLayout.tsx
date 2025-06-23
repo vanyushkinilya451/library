@@ -1,5 +1,5 @@
 import { Outlet } from "react-router-dom";
-import { GradientBackground } from "shared/ui/GradientBackground";
+import { GradientBackground } from "shared/ui";
 import styled from "styled-components";
 
 export const AuthLayout = () => {

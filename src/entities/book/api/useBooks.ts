@@ -1,4 +1,4 @@
-import { Book } from "entities/book/lib/types";
+import { Book } from "entities/book";
 import { useEffect, useRef, useState } from "react";
 
 type useBooksProps = {
@@ -16,7 +16,6 @@ export const useBooks = ({ api, limit }: useBooksProps) => {
       (element) => {
         element.forEach((item) => {
           if (item.isIntersecting) {
-            console.log("item: ", item.target);
             async function getBooks() {
               const response = await fetch(`${api}&limit=${limit}`);
               const data = await response.json();
@@ -30,6 +29,7 @@ export const useBooks = ({ api, limit }: useBooksProps) => {
       { threshold: 0.1, rootMargin: "100px" }
     );
 
+    console.log("elementRef.current: ", elementRef.current);
     observer.observe(elementRef.current as HTMLElement);
 
     return () => {

@@ -1,5 +1,5 @@
-import SearchSvg from "shared/assets/icons/search.svg";
-import { useModal } from "shared/lib/useModal";
+import { SearchSvg } from "shared/assets";
+import { useModal } from "shared/lib";
 import styled from "styled-components";
 import { useSearch } from "./../api/useSearch";
 import { SearchResults } from './SearchResults';
