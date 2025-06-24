@@ -5,6 +5,7 @@ import { BookPage } from 'pages/book';
 import { Categories } from 'pages/categories';
 import { HomePage } from 'pages/home';
 import { createBrowserRouter } from 'react-router-dom';
+import { NotFound404 } from 'shared/ui';
 
 export const router = createBrowserRouter([
   {
@@ -20,7 +21,7 @@ export const router = createBrowserRouter([
         Component: Categories,
       },
       {
-        path: '/book/:id',
+        path: '/book/:bookId',
         Component: BookPage,
       },
       {
@@ -28,6 +29,10 @@ export const router = createBrowserRouter([
         Component: AuthorPage,
       },
     ],
+  },
+  {
+    path: '*',
+    Component: NotFound404,
   },
   {
     path: '/auth',

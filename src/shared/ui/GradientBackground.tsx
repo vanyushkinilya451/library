@@ -1,11 +1,33 @@
 import styled, { keyframes } from 'styled-components';
 
 const gradientAnimation = keyframes`
-  from { filter: hue-rotate(0deg); }
-  to { filter: hue-rotate(360deg); }
+  0% { 
+    background-position: 0% 50%;
+    filter: hue-rotate(0deg);
+  }
+  25% { 
+    background-position: 100% 50%;
+    filter: hue-rotate(90deg);
+  }
+  50% { 
+    background-position: 100% 100%;
+    filter: hue-rotate(180deg);
+  }
+  75% { 
+    background-position: 0% 100%;
+    filter: hue-rotate(270deg);
+  }
+  100% { 
+    background-position: 0% 50%;
+    filter: hue-rotate(360deg);
+  }
 `;
 
-export const GradientBackground = styled.div`
+export const GradientBackground = () => {
+  return <Gradient></Gradient>;
+};
+
+const Gradient = styled.div`
   z-index: 1;
   overflow: hidden;
   display: flex;
@@ -17,9 +39,14 @@ export const GradientBackground = styled.div`
   position: relative;
   background: linear-gradient(
     45deg,
-    rgba(131, 58, 180, 1) 0%,
-    rgba(253, 29, 29, 1) 50%,
-    rgba(252, 176, 69, 1) 100%
+    #667eea 0%,
+    #764ba2 15%,
+    #f093fb 30%,
+    #f5576c 45%,
+    #4facfe 60%,
+    #00f2fe 75%,
+    #667eea 100%
   );
-  animation: ${gradientAnimation} 12s linear infinite alternate;
+  background-size: 400% 400%;
+  animation: ${gradientAnimation} 15s ease infinite;
 `;

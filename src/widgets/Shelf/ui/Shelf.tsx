@@ -1,4 +1,4 @@
-import { Book, BookCover, useBooks } from 'entities/book';
+import { BookCover, SearchBook, useBooks } from 'entities/book';
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
@@ -24,12 +24,12 @@ export const Shelf = ({ shelfTitle, api }: ShelfProps) => {
     bookshelf,
   } = useShelfScroll(books);
 
-  const handleBookClick = (book: Book) => {
-    navigate(`/book/${book.cover_edition_key}`);
+  const handleBookClick = (book: SearchBook) => {
+    navigate(`/book/${book.cover_edition_key}`, { state: { book } });
   };
 
   const handleAuthorClick = (author: string) => {
-    navigate(`/author/${author}`);
+    navigate(`/author/${author}`, { state: { author } });
   };
 
   const handleTitle = (title: string) => {
@@ -60,46 +60,48 @@ export const Shelf = ({ shelfTitle, api }: ShelfProps) => {
           className='shelf__container'
         >
           {books?.map((book) => {
-            return (
-              <Col
-                key={book.key}
-                className='shelf__item'
-              >
-                <Card className='card'>
-                  {book.cover_i || book.cover_id ? (
-                    <BookCover
-                      className='card__cover'
-                      cover_id={book.cover_id}
-                      cover_i={book.cover_i}
-                      onClick={() => handleBookClick(book)}
-                    />
-                  ) : (
-                    <Card.Img
-                      className='card__cover'
-                      alt='no image'
-                      src={NoImageAvailable}
-                      onClick={() => handleBookClick(book)}
-                    />
-                  )}
-                  <Card.Body className='card__description'>
-                    <Card.Title
-                      className='card__title'
-                      onClick={() => handleBookClick(book)}
-                    >
-                      {handleTitle(book.title)}
-                    </Card.Title>
-                    {book.author_name && (
-                      <Card.Text
-                        className='card__author'
-                        onClick={() => handleAuthorClick(book.author_key[0])}
-                      >
-                        {handleAuthor(book.author_name[0])}
-                      </Card.Text>
+            if (book.cover_edition_key) {
+              return (
+                <Col
+                  key={book.key}
+                  className='shelf__item'
+                >
+                  <Card className='card'>
+                    {book.cover_i || book.cover_id ? (
+                      <BookCover
+                        className='card__cover'
+                        cover_id={book.cover_id}
+                        cover_i={book.cover_i}
+                        onClick={() => handleBookClick(book)}
+                      />
+                    ) : (
+                      <Card.Img
+                        className='card__cover'
+                        alt='no image'
+                        src={NoImageAvailable}
+                        onClick={() => handleBookClick(book)}
+                      />
                     )}
-                  </Card.Body>
-                </Card>
-              </Col>
-            );
+                    <Card.Body className='card__description'>
+                      <Card.Title
+                        className='card__title'
+                        onClick={() => handleBookClick(book)}
+                      >
+                        {handleTitle(book.title)}
+                      </Card.Title>
+                      {book.author_name && (
+                        <Card.Text
+                          className='card__author'
+                          onClick={() => handleAuthorClick(book.author_key[0])}
+                        >
+                          {handleAuthor(book.author_name[0])}
+                        </Card.Text>
+                      )}
+                    </Card.Body>
+                  </Card>
+                </Col>
+              );
+            }
           })}
           {isScrolled && (
             <button

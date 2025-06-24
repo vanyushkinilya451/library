@@ -1,8 +1,8 @@
-import { Book } from 'entities/book';
+import { SearchBook } from 'entities/book';
 import { useEffect, useRef, useState } from 'react';
 import { CONSTANTS } from 'shared/lib';
 
-export const useShelfScroll = (books: Book[]) => {
+export const useShelfScroll = (books: SearchBook[]) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isScrollEnd, setIsScrollEnd] = useState(false);
   const bookshelf = useRef<HTMLDivElement>(null);

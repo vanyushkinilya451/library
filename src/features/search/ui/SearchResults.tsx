@@ -1,13 +1,20 @@
-import { Book } from 'entities/book';
+import { SearchBook } from 'entities/book';
+import { useNavigate } from 'react-router-dom';
 import { Fragment } from 'react/jsx-runtime';
 import { CONSTANTS } from 'shared/lib';
 import styled from 'styled-components';
 
 type SearchResutlsProps = {
-  books: Book[];
+  books: SearchBook[];
 };
 
 export const SearchResults = ({ books }: SearchResutlsProps) => {
+  const navigate = useNavigate();
+
+  const handleBookClick = (book: SearchBook) => {
+    navigate(`/book/${book.cover_edition_key}`, { state: { book } });
+  };
+
   return (
     <ResultsContainer>
       {books.length ? (
@@ -18,7 +25,11 @@ export const SearchResults = ({ books }: SearchResutlsProps) => {
                 <Fragment key={book.key}>
                   <BookItem>
                     <BookPropsList>
-                      <ChooseBookButton>
+                      <ChooseBookButton
+                        onMouseDown={() => {
+                          handleBookClick(book);
+                        }}
+                      >
                         <BookDescription>
                           <BookTitle>{book.title}</BookTitle>
                           <BookAuthor>{book.author_name}</BookAuthor>
@@ -50,45 +61,57 @@ export const SearchResults = ({ books }: SearchResutlsProps) => {
 };
 
 const BookDescription = styled.div`
-  margin-right: 10px;
+  margin-right: 12px;
   width: 100%;
+  flex: 1;
 `;
 
 const BookCoverWrapper = styled.div`
-  width: 50px;
-  height: 70px;
+  width: 45px;
+  height: 65px;
+  border-radius: 4px;
+  overflow: hidden;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 `;
 
 const BookCover = styled.img`
   width: 100%;
   height: 100%;
+  object-fit: cover;
 `;
 
 const Underline = styled.hr`
   margin: 0;
   padding: 0;
   width: 100%;
+  border: none;
+  height: 1px;
+  background: rgba(0, 0, 0, 0.08);
 `;
 
 const NoBooksFound = styled.p`
   border-style: none;
-  text-align: left;
-
-  padding: 10px 20px;
+  text-align: center;
+  padding: 20px;
   width: 100%;
+  color: rgba(0, 0, 0, 0.6);
+  font-style: italic;
+  margin: 0;
 `;
 
 const ResultsContainer = styled.div`
-  margin-top: 10px;
+  margin-top: 8px;
   display: flex;
   flex-direction: column;
   position: absolute;
   background-color: white;
-  border: 1px solid rgba(0, 0, 0, 0.2);
-  border-radius: 3px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
   width: 100%;
   z-index: 1000;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 `;
+
 const BookUnorderedList = styled.ul`
   list-style: none;
   margin: 0;
@@ -110,28 +133,52 @@ const BookProperty = styled(BookUnorderedItem)`
   user-select: none;
 `;
 
-const BookTitle = styled(BookProperty)``;
+const BookTitle = styled(BookProperty)`
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #2c3e50;
+  margin-bottom: 4px;
+  line-height: 1.3;
+`;
 
 const BookAuthor = styled(BookProperty)`
-  font-weight: 700;
+  font-weight: 500;
   font-style: italic;
+  font-size: 0.8rem;
+  color: #7f8c8d;
 `;
 
 const ChooseBookButton = styled.button`
   width: 100%;
-  border-style: none;
+  border: none;
   text-align: left;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 5px 15px;
+  padding: 12px 16px;
+  background: transparent;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
 
   &:hover {
-    background-color: rgba(0, 0, 0, 0.05);
+    background-color: rgba(102, 126, 234, 0.05);
+  }
+
+  &:active {
+    background-color: rgba(102, 126, 234, 0.1);
   }
 `;
 
 const LookMoreButton = styled(ChooseBookButton)`
-  border-style: none;
-  text-align: left;
+  border: none;
+  text-align: center;
+  justify-content: center;
+  font-weight: 500;
+  color: #667eea;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+
+  &:hover {
+    background-color: rgba(102, 126, 234, 0.08);
+    color: #5a6fd8;
+  }
 `;

@@ -1,4 +1,4 @@
-import { Book } from 'entities/book';
+import { SearchBook } from 'entities/book';
 import { useEffect, useRef, useState } from 'react';
 import { CONSTANTS } from 'shared/lib';
 
@@ -7,7 +7,7 @@ type useBooksProps = {
 };
 
 export const useBooks = ({ api }: useBooksProps) => {
-  const [books, setBooks] = useState<Book[]>([]);
+  const [books, setBooks] = useState<SearchBook[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const elementRef = useRef<HTMLElement | null>(null);
 

@@ -1,4 +1,4 @@
-import { Book } from 'entities/book';
+import { SearchBook } from 'entities/book';
 import { useEffect, useState } from 'react';
 import { CONSTANTS, useDebounce } from 'shared/lib';
 
@@ -7,7 +7,7 @@ type useSearchProps = {
 };
 export const useSearch = ({ debouncedDelay = 500 }: useSearchProps) => {
   const [search, setSearch] = useState<string>('');
-  const [books, setBooks] = useState<Book[]>();
+  const [books, setBooks] = useState<SearchBook[]>();
   const debouncedSearch = useDebounce(search, debouncedDelay);
 
   useEffect(() => {
@@ -16,7 +16,7 @@ export const useSearch = ({ debouncedDelay = 500 }: useSearchProps) => {
     async function fetchBooks() {
       try {
         const response = await fetch(
-          `${CONSTANTS.OL_SEARCH}?q=${processedSearch}&limit=${CONSTANTS.SEARCH_LIMIT}`
+          `${CONSTANTS.OL_SEARCH_BOOKS}?q=${processedSearch}&limit=${CONSTANTS.SEARCH_LIMIT}`
         );
         if (!response.ok) {
           console.error('Ошибки поиска книг', response.text());
@@ -36,9 +36,11 @@ export const useSearch = ({ debouncedDelay = 500 }: useSearchProps) => {
     setSearch(event.target.value);
   };
 
+  const filteredBooks = books?.filter((book) => book.cover_edition_key);
+
   return {
     handleSearchValue,
     search,
-    books,
+    filteredBooks,
   };
 };
