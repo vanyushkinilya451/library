@@ -9,4 +9,9 @@ export const CONSTANTS = {
   OL_BOOK: 'https://openlibrary.org/books',
   OL_AUTHOR: 'https://openlibrary.org/authors',
   OL_COVER: 'http://covers.openlibrary.org/b/id/',
+  OL_AUTHOR_IMAGE: 'https://covers.openlibrary.org/a/id/',
+  WIKIPEDIA_SEARCH: 'https://www.wikidata.org/w/api.php?action=wbgetentities',
+  OL_SUBJECTS: 'https://openlibrary.org/subjects.json?limit=1000&offset=0',
 };
+
+//&ids=Q121091992&format=json',

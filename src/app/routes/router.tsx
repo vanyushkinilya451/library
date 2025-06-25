@@ -25,7 +25,7 @@ export const router = createBrowserRouter([
         Component: BookPage,
       },
       {
-        path: '/author/:id',
+        path: '/author/:authorId',
         Component: AuthorPage,
       },
     ],
