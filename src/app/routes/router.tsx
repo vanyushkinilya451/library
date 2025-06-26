@@ -1,6 +1,6 @@
 import { AuthLayout, MainLayout } from 'app/layouts';
 import { LoginForm, RegisterForm } from 'features/auth';
-import { AuthorPage } from 'pages/author/ui/AuthorPage';
+import { AuthorPage } from 'pages/author';
 import { BookPage } from 'pages/book';
 import { Categories } from 'pages/categories';
 import { HomePage } from 'pages/home';

@@ -4,7 +4,7 @@
     "build": "webpack build mode --production",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "fsd": "steiger ./src --watch"
+    "fsd": "steiger ./src"
   },
   "devDependencies": {
     "@eslint/css": "^0.9.0",

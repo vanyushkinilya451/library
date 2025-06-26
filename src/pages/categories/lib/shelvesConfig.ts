@@ -1,10 +1,4 @@
-import { CONSTANTS } from 'shared/lib';
-
-const DATE_RANGE = '[2000 TO *]';
-
-const getApi = (subject: string) => {
-  return `${CONSTANTS.OL_SEARCH_BOOKS}?q=subject:${subject} AND first_publish_year:${DATE_RANGE}&sort=editions`;
-};
+import { getApi } from 'shared/lib';
 
 export const shelvesConfig = [
   {

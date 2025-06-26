@@ -4,7 +4,7 @@ import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import { useNavigate } from 'react-router-dom';
 import { Arrow, NoImageAvailable } from 'shared/assets';
-import { CONSTANTS } from 'shared/lib';
+import { handleAuthor, handleTitle } from '../lib/helperText';
 import { useShelfScroll } from '../lib/useShelfScroll';
 import { FakeShelfLoader } from './FakeShelfLoader';
 
@@ -30,18 +30,6 @@ export const Shelf = ({ shelfTitle, api }: ShelfProps) => {
 
   const handleAuthorClick = (author: string) => {
     navigate(`/author/${author}`, { state: { author } });
-  };
-
-  const handleTitle = (title: string) => {
-    return title.length > CONSTANTS.TITLE_CHAR_LIMIT
-      ? title.slice(0, CONSTANTS.TITLE_CHAR_LIMIT) + '...'
-      : title;
-  };
-
-  const handleAuthor = (author: string) => {
-    return author.length > CONSTANTS.AUTHOR_CHAR_LIMIT
-      ? author.slice(0, CONSTANTS.AUTHOR_CHAR_LIMIT) + '...'
-      : author;
   };
 
   return (
