@@ -96,12 +96,13 @@ const fadeIn = keyframes`
 // Стили
 const Container = styled.div`
   position: relative;
-  min-height: 100vh;
+  width: 100vw;
+  height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: var(--gradient-primary);
 `;
 
 const BackgroundGradient = styled.div`
@@ -113,14 +114,11 @@ const BackgroundGradient = styled.div`
   background:
     radial-gradient(
       circle at 30% 20%,
-      rgba(255, 190, 115, 0.3) 0%,
+      var(--orange-accent) 0%,
       transparent 50%
     ),
-    radial-gradient(
-      circle at 70% 80%,
-      rgba(33, 51, 212, 0.3) 0%,
-      transparent 50%
-    );
+    radial-gradient(circle at 70% 80%, var(--link-color) 0%, transparent 50%);
+  opacity: 0.3;
   animation: ${pulse} 4s ease-in-out infinite;
 `;
 
@@ -172,7 +170,7 @@ const BookSpine = styled.div`
   top: 0;
   width: 8px;
   height: 100%;
-  background: linear-gradient(45deg, #8b4513, #a0522d);
+  background: var(--gradient-brown);
   border-radius: 2px;
 `;
 
@@ -182,9 +180,10 @@ const BookCover = styled.div`
   top: 0;
   width: 32px;
   height: 100%;
-  background: linear-gradient(135deg, #ff6b6b, #4ecdc4);
+  background: var(--gradient-coral-teal);
   border-radius: 0 4px 4px 0;
-  box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: 2px 2px 8px;
+  opacity: 0.2;
 `;
 
 const Content = styled.div`
@@ -205,7 +204,7 @@ const Digit = styled.span`
   font-size: 120px;
   font-weight: 900;
   color: white;
-  text-shadow: 0 0 30px rgba(255, 255, 255, 0.5);
+  text-shadow: 0 0 30px #fff;
   animation: ${bounce} 2s ease-in-out infinite;
 
   &:first-child {
@@ -226,7 +225,7 @@ const Zero = styled.span`
   font-size: 120px;
   font-weight: 900;
   color: white;
-  text-shadow: 0 0 30px rgba(255, 255, 255, 0.5);
+  text-shadow: 0 0 30px #fff;
   animation: ${bounce} 2s ease-in-out infinite;
   animation-delay: 0.25s;
 `;
@@ -236,13 +235,15 @@ const Title = styled.h1`
   font-weight: 700;
   color: white;
   margin-bottom: 15px;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  text-shadow: 0 2px 10px;
+  opacity: 0.3;
   animation: ${fadeIn} 1s ease-out 0.5s both;
 `;
 
 const Description = styled.p`
   font-size: 18px;
-  color: rgba(255, 255, 255, 0.9);
+  color: #fff;
+  opacity: 0.9;
   margin-bottom: 40px;
   max-width: 500px;
   line-height: 1.6;
@@ -268,11 +269,13 @@ const Button = styled.button`
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 15px;
+  opacity: 0.2;
 
   &:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 6px 20px;
+    opacity: 0.3;
   }
 
   &:active {
@@ -281,22 +284,24 @@ const Button = styled.button`
 `;
 
 const PrimaryButton = styled(Button)`
-  background: linear-gradient(135deg, #ff6b6b, #ff8e53);
+  background: var(--gradient-coral-orange);
   color: white;
 
   &:hover {
-    background: linear-gradient(135deg, #ff5252, #ff7043);
+    background: var(--gradient-red-orange);
   }
 `;
 
 const SecondaryButton = styled(Button)`
-  background: rgba(255, 255, 255, 0.2);
+  background: #fff;
+  opacity: 0.2;
   color: white;
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  border: 1px solid #fff;
 
   &:hover {
-    background: rgba(255, 255, 255, 0.3);
+    background: #fff;
+    opacity: 0.3;
   }
 `;
 
@@ -306,6 +311,7 @@ const ButtonIcon = styled.span`
 
 const SearchHint = styled.p`
   font-size: 14px;
-  color: rgba(255, 255, 255, 0.7);
+  color: #fff;
+  opacity: 0.7;
   animation: ${fadeIn} 1s ease-out 1.1s both;
 `;

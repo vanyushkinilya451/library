@@ -110,7 +110,7 @@ const Description = styled.p`
 `;
 
 const TextHighlight = styled.span`
-  color: #2133d4;
+  color: var(--link-color);
 `;
 
 const Bold = styled.span`
@@ -123,12 +123,12 @@ const NoAuthorImage = styled.div`
   width: 300px;
   height: 450px;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  background: var(--gradient-gray);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  color: #6c757d;
+  color: var(--secondary-color);
   font-size: 14px;
   text-align: center;
   gap: 15px;

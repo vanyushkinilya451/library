@@ -36,7 +36,8 @@ const SearchIcon = styled(SearchSvg)`
   top: 50%;
   transform: translateY(-50%);
   width: min-content;
-  fill: rgba(0, 0, 0, 0.4);
+  fill: var(--black);
+  opacity: 0.4;
   z-index: 2;
   transition: fill 0.2s ease;
 `;
@@ -51,26 +52,27 @@ const Container = styled.div`
 const SearchBar = styled.input`
   width: 100%;
   height: 100%;
-  border: 1px solid rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--black);
   border-radius: 8px;
   font-size: 0.9rem;
   padding: 8px 12px 8px 40px;
   outline: none;
-  background: rgba(255, 255, 255, 0.9);
+  background: var(--white);
   transition: all 0.2s ease;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  box-shadow: var(--shadow-sm);
 
   &:focus {
-    border-color: #667eea;
-    box-shadow: 0 2px 12px rgba(102, 126, 234, 0.2);
+    border-color: var(--accent-blue);
+    box-shadow: var(--shadow-search);
     background: white;
   }
 
   &:focus + ${SearchIcon} {
-    fill: #667eea;
+    fill: var(--accent-blue);
   }
 
   &::placeholder {
-    color: rgba(0, 0, 0, 0.5);
+    color: var(--black);
+    opacity: 0.5;
   }
 `;

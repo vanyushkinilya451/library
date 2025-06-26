@@ -37,16 +37,7 @@ const Gradient = styled.div`
   width: 100%;
   height: 100%;
   position: relative;
-  background: linear-gradient(
-    45deg,
-    #667eea 0%,
-    #764ba2 15%,
-    #f093fb 30%,
-    #f5576c 45%,
-    #4facfe 60%,
-    #00f2fe 75%,
-    #667eea 100%
-  );
+  background: var(--gradient-multicolor);
   background-size: 400% 400%;
   animation: ${gradientAnimation} 15s ease infinite;
 `;

@@ -1,11 +1,14 @@
+@import './css-modules/App.module.css';
+
 .px-20 {
   padding-left: 200px !important;
   padding-right: 200px !important;
 }
 
 .nav {
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid var(--black);
+  box-shadow: var(--shadow-nav);
+  opacity: 0.1;
 
   &__link {
     color: white;
@@ -15,11 +18,13 @@
     font-size: 0.9rem;
 
     &:hover {
-      color: rgb(255, 190, 115);
+      color: var(--orange-accent);
     }
 
     &.active {
-      color: rgb(255, 190, 115) !important; /* Яркий цвет для активной ссылки */
+      color: var(
+        --orange-accent
+      ) !important; /* Яркий цвет для активной ссылки */
     }
   }
 
@@ -77,11 +82,13 @@
 
     &--right {
       right: -10px;
+      z-index: 1000;
     }
 
     &--left {
       left: -25px;
       rotate: 180deg;
+      z-index: 1000;
     }
   }
 }
@@ -108,7 +115,7 @@
     height: 180px;
     cursor: pointer;
     transition: transform 0.15s linear;
-    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 9px 0px;
+    box-shadow: var(--shadow-card);
     border-radius: 5px;
 
     &:hover {
@@ -140,7 +147,7 @@
 }
 
 .skeleton-loader {
-  background: linear-gradient(90deg, #eee 25%, #ddd 50%, #eee 75%);
+  background: var(--gradient-skeleton);
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite linear;
   border-radius: 4px;

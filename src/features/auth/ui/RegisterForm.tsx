@@ -83,15 +83,6 @@ export const RegisterForm = () => {
   );
 };
 
-const colors = {
-  primaryText: 'rgb(79, 79, 79)',
-  secondaryText: 'rgb(128, 128, 128)',
-  accent: 'rgb(255, 0, 0)',
-  darkBlue: 'rgb(6, 22, 39)',
-  lightText: 'rgb(238, 238, 238)',
-  border: 'rgb(227, 227, 227)',
-};
-
 const AuthForm = styled.form`
   display: flex;
   flex-direction: column;
@@ -101,7 +92,7 @@ const AuthForm = styled.form`
 `;
 
 const FormTitle = styled.h1`
-  color: ${colors.primaryText};
+  color: var(--auth-primary-text);
   font-size: 3.3rem;
   font-weight: 900;
   line-height: 46px;
@@ -111,7 +102,7 @@ const FormTitle = styled.h1`
 `;
 
 const FormSubtitle = styled.h2`
-  color: ${colors.secondaryText};
+  color: var(--auth-secondary-text);
   user-select: none;
   font-size: 1.1rem;
   font-weight: 400;
@@ -122,7 +113,7 @@ const FormSubtitle = styled.h2`
 `;
 
 const FormDescription = styled.h3`
-  color: ${colors.secondaryText};
+  color: var(--auth-secondary-text);
   margin: 0;
   font-style: italic;
 
@@ -137,18 +128,18 @@ const FormInput = styled.input`
 
   font-weight: 400;
   padding: 17px 12px;
-  border: 1px solid ${colors.border};
+  border: 1px solid var(--auth-border);
   border-radius: 8px;
   width: 100%;
   margin-top: 18px;
 
   &::placeholder {
-    color: ${colors.secondaryText};
+    color: var(--auth-secondary-text);
     font-style: italic;
   }
 
   &:focus {
-    outline: 2px solid ${colors.secondaryText};
+    outline: 2px solid var(--auth-secondary-text);
   }
 `;
 
@@ -165,18 +156,18 @@ const FormCheckboxWrapper = styled.div`
 `;
 
 const FormLabel = styled.label`
-  color: ${colors.secondaryText};
+  color: var(--auth-secondary-text);
   user-select: none;
 `;
 
 const AccentLink = styled(Link)`
-  color: ${colors.accent};
+  color: var(--auth-accent);
 `;
 
 const SubmitButton = styled.button`
   border-radius: 8px;
-  background: ${colors.darkBlue};
-  color: ${colors.lightText};
+  background: var(--auth-dark-blue);
+  color: var(--auth-light-text);
   width: 100%;
   padding: 10px 0;
 
@@ -188,7 +179,7 @@ const SubmitButton = styled.button`
 `;
 
 const RegisterPrompt = styled.span`
-  color: ${colors.primaryText};
+  color: var(--auth-primary-text);
 
   margin-top: 11px;
 `;

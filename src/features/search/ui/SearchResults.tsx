@@ -71,7 +71,7 @@ const BookCoverWrapper = styled.div`
   height: 65px;
   border-radius: 4px;
   overflow: hidden;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-xs);
 `;
 
 const BookCover = styled.img`
@@ -86,7 +86,8 @@ const Underline = styled.hr`
   width: 100%;
   border: none;
   height: 1px;
-  background: rgba(0, 0, 0, 0.08);
+  background: var(--black);
+  opacity: 0.08;
 `;
 
 const NoBooksFound = styled.p`
@@ -94,7 +95,8 @@ const NoBooksFound = styled.p`
   text-align: center;
   padding: 20px;
   width: 100%;
-  color: rgba(0, 0, 0, 0.6);
+  color: var(--black);
+  opacity: 0.6;
   font-style: italic;
   margin: 0;
 `;
@@ -105,11 +107,11 @@ const ResultsContainer = styled.div`
   flex-direction: column;
   position: absolute;
   background-color: white;
-  border: 1px solid rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--black);
   border-radius: 8px;
   width: 100%;
   z-index: 1000;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--shadow-xl);
 `;
 
 const BookUnorderedList = styled.ul`
@@ -136,7 +138,7 @@ const BookProperty = styled(BookUnorderedItem)`
 const BookTitle = styled(BookProperty)`
   font-weight: 600;
   font-size: 0.9rem;
-  color: #2c3e50;
+  color: var(--text-dark);
   margin-bottom: 4px;
   line-height: 1.3;
 `;
@@ -145,7 +147,7 @@ const BookAuthor = styled(BookProperty)`
   font-weight: 500;
   font-style: italic;
   font-size: 0.8rem;
-  color: #7f8c8d;
+  color: var(--text-gray);
 `;
 
 const ChooseBookButton = styled.button`
@@ -161,11 +163,13 @@ const ChooseBookButton = styled.button`
   transition: background-color 0.2s ease;
 
   &:hover {
-    background-color: rgba(102, 126, 234, 0.05);
+    background-color: var(--accent-blue);
+    opacity: 0.05;
   }
 
   &:active {
-    background-color: rgba(102, 126, 234, 0.1);
+    background-color: var(--accent-blue);
+    opacity: 0.1;
   }
 `;
 
@@ -174,11 +178,13 @@ const LookMoreButton = styled(ChooseBookButton)`
   text-align: center;
   justify-content: center;
   font-weight: 500;
-  color: #667eea;
-  border-top: 1px solid rgba(0, 0, 0, 0.08);
+  color: var(--accent-blue);
+  border-top: 1px solid var(--black);
+  opacity: 0.08;
 
   &:hover {
-    background-color: rgba(102, 126, 234, 0.08);
-    color: #5a6fd8;
+    background-color: var(--accent-blue);
+    opacity: 0.08;
+    color: var(--accent-blue-dark);
   }
 `;

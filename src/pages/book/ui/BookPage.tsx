@@ -128,7 +128,7 @@ const Cover = styled.div`
   min-height: 450px;
   width: 300px;
   height: 450px;
-  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  box-shadow: var(--shadow-card);
 `;
 
 const BookInformation = styled.div`
@@ -151,7 +151,7 @@ const Description = styled.p`
 `;
 
 const TextHighlight = styled.span`
-  color: #2133d4;
+  color: var(--link-color);
 `;
 
 const Bold = styled.span`
@@ -166,7 +166,7 @@ const Tags = styled.div`
 `;
 
 const Tag = styled.span`
-  background-color: rgb(255, 190, 115);
+  background-color: var(--orange-accent);
   padding: 5px 10px;
   border-radius: 5px;
   font-size: 14px;

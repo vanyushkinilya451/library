@@ -1,11 +1,12 @@
 import { createGlobalStyle } from 'styled-components';
 
 export const GlobalStyles = createGlobalStyle`
-
   html,
   body {
     padding: 0;
     margin: 0;
+    background-color: var(--background-color);
+    color: var(--text-primary);
   }
 
   a {
@@ -13,10 +14,10 @@ export const GlobalStyles = createGlobalStyle`
     text-decoration: none;
   }
 
-  button{
+  button {
     background-color: transparent;
     border-style: none;
-    border: 1px solid black;
+    border: 1px solid var(--border-color);
     cursor: pointer;
     padding: 0;
   }
@@ -27,4 +28,4 @@ export const GlobalStyles = createGlobalStyle`
     font-weight: 400;
     font-size: 1rem;
   }
-  `;
+`;
