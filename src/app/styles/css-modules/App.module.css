@@ -67,6 +67,7 @@
   --auth-dark-blue: #1e293b;
   --auth-light-text: #f8fafc;
   --auth-border: #e2e8f0;
+  --auth-error: #ef4444;
 
   /* Цвета для skeleton loader */
   --skeleton-light: #f1f5f9;

@@ -1,47 +1,56 @@
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { signIn } from '../lib/signIn';
 
 export const LoginForm = () => {
-  const [login, setLogin] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
-  const handleSubmit = useCallback(
-    (e: React.FormEvent) => {
-      e.preventDefault();
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(e.target.value);
+  };
+
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPassword(e.target.value);
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+    const { isSuccess, error } = await signIn(email, password);
+    if (isSuccess) {
       navigate('/');
-    },
-    [login, password]
-  );
-
-  const handleLoginChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      setLogin(e.target.value);
-    },
-    []
-  );
-
-  const handlePasswordChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      setPassword(e.target.value);
-    },
-    []
-  );
+    }
+    if (error) {
+      setError(error.message);
+    }
+    setIsLoading(false);
+  };
 
   return (
-    <AuthForm onSubmit={handleSubmit}>
+    <AuthForm onSubmit={(e) => handleSubmit(e)}>
       <FormTitle>С возвращением</FormTitle>
       <FormSubtitle>Привет! Рады снова Вас видеть!</FormSubtitle>
       <FormDescription>
         Введите ваш логин и пароль, чтобы войти в приложение
       </FormDescription>
 
+      {error && !isLoading && (
+        <FormError>
+          {error.includes('Invalid login credentials')
+            ? 'Неверный логин или пароль'
+            : error}
+        </FormError>
+      )}
       <FormInput
-        type='text'
-        onChange={handleLoginChange}
-        placeholder='Логин'
-        value={login}
+        type='email'
+        onChange={handleEmailChange}
+        placeholder='Почта'
+        value={email}
       />
 
       <FormInput
@@ -61,7 +70,12 @@ export const LoginForm = () => {
         <AccentLink to={'#'}>Забыли пароль?</AccentLink>
       </FormFooter>
 
-      <SubmitButton type='submit'>Войти</SubmitButton>
+      <SubmitButton
+        type='submit'
+        disabled={isLoading}
+      >
+        {isLoading ? 'Загрузка...' : 'Войти'}
+      </SubmitButton>
       <RegisterPrompt>
         Впервые здесь?{' '}
         <AccentLink to={'/auth/register'}>
@@ -109,6 +123,18 @@ const FormDescription = styled.h3`
   font-weight: 400;
   text-align: center;
   user-select: none;
+`;
+
+const FormError = styled.p`
+  margin-top: 10px;
+  font-size: 1.2rem;
+  background-color: var(--auth-error);
+  color: var(--auth-light-text);
+  font-size: 0.8rem;
+  padding: 10px;
+  border-radius: 8px;
+  width: 100%;
+  text-align: center;
 `;
 
 const FormInput = styled.input`
@@ -163,6 +189,11 @@ const SubmitButton = styled.button`
 
   &:hover {
     opacity: 0.9;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
   }
 `;
 

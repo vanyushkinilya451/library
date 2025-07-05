@@ -50,6 +50,7 @@ const Container = styled.div`
 `;
 
 const SearchBar = styled.input`
+  min-width: 200px;
   width: 100%;
   height: 100%;
   border: 1px solid var(--black);

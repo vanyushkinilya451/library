@@ -1,62 +1,62 @@
-import { useCallback, useState } from 'react';
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { signUp } from '../lib/signUp';
 
 export const RegisterForm = () => {
   const [email, setEmail] = useState('');
-  const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
-  const handleSubmit = useCallback(
-    (e: React.FormEvent) => {
-      e.preventDefault();
-      navigate('/');
-    },
-    [email, login, password]
-  );
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(e.target.value);
+  };
 
-  const handleEmailChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      setEmail(e.target.value);
-    },
-    []
-  );
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPassword(e.target.value);
+  };
 
-  const handleLoginChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      setLogin(e.target.value);
-    },
-    []
-  );
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setError(null);
 
-  const handlePasswordChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      setPassword(e.target.value);
-    },
-    []
-  );
+    const { isSuccess, error } = await signUp(email, password);
+
+    if (error) {
+      setError(error.message);
+    } else if (isSuccess) {
+      navigate('/auth/verify-email');
+    }
+
+    setIsLoading(false);
+  };
 
   return (
-    <AuthForm onSubmit={handleSubmit}>
+    <AuthForm onSubmit={(e) => handleSubmit(e)}>
       <FormTitle>Добро пожаловать</FormTitle>
       <FormSubtitle>Станьте частью большого сообщества YNOU</FormSubtitle>
       <FormDescription>
         Создайте аккаунт и получите доступ к функциям приложения
       </FormDescription>
 
+      {error && !isLoading && (
+        <FormError>
+          {error.includes('Invalid email')
+            ? 'Неверный email'
+            : error.includes('Password must be at least 6 characters')
+              ? 'Пароль должен быть не менее 6 символов'
+              : error}
+        </FormError>
+      )}
+
       <FormInput
         type='email'
         onChange={handleEmailChange}
         placeholder='Почта'
-        value={login}
-      />
-
-      <FormInput
-        type='text'
-        onChange={handleLoginChange}
-        placeholder='Логин'
-        value={login}
+        value={email}
       />
 
       <FormInput
@@ -75,7 +75,12 @@ export const RegisterForm = () => {
         </FormCheckboxWrapper>
         <AccentLink to={'#'}>Забыли пароль?</AccentLink>
       </FormFooter>
-      <SubmitButton type='submit'>Зарегистрироваться</SubmitButton>
+      <SubmitButton
+        type='submit'
+        disabled={isLoading}
+      >
+        {isLoading ? 'Загрузка...' : 'Зарегистрироваться'}
+      </SubmitButton>
       <RegisterPrompt>
         Уже есть аккаунт? <AccentLink to={'/auth/login'}>Войти</AccentLink>
       </RegisterPrompt>
@@ -176,10 +181,24 @@ const SubmitButton = styled.button`
   &:hover {
     opacity: 0.9;
   }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
 `;
 
 const RegisterPrompt = styled.span`
   color: var(--auth-primary-text);
 
   margin-top: 11px;
+`;
+
+const FormError = styled.p`
+  background-color: var(--auth-error);
+  color: var(--auth-light-text);
+  padding: 10px;
+  border-radius: 8px;
+  width: 100%;
+  text-align: center;
 `;

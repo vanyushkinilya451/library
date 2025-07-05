@@ -3,8 +3,10 @@ import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import { useNavigate } from 'react-router-dom';
-import { Arrow, NoImageAvailable } from 'shared/assets';
-import { CONSTANTS } from 'shared/lib';
+import { Arrow } from 'shared/assets';
+import EmptyStar from 'shared/assets/icons/emptystar.svg';
+import { CONSTANTS, supabase, useAppDispatch } from 'shared/lib';
+import { myBooksSlice } from 'shared/reducers/MyBooksSlice';
 import { useShelfScroll } from '../lib/useShelfScroll';
 import { FakeShelfLoader } from './FakeShelfLoader';
 
@@ -15,6 +17,8 @@ type ShelfProps = {
 
 export const Shelf = ({ shelfTitle, api }: ShelfProps) => {
   const navigate = useNavigate();
+  const { setMyBooks } = myBooksSlice.actions;
+  const dispatch = useAppDispatch();
   const { books, isLoading, elementRef } = useBooks({ api });
   const {
     isScrolled,
@@ -44,6 +48,31 @@ export const Shelf = ({ shelfTitle, api }: ShelfProps) => {
       : author;
   };
 
+  const handleStarClick = async (e: React.MouseEvent, book_id: number) => {
+    e.stopPropagation();
+    e.currentTarget.classList.toggle('card__star--filled');
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    const { error } = await supabase.from('books').insert({
+      book_id: book_id,
+      user_id: user?.id,
+    });
+    const { data: bkn } = await supabase
+      .from('books')
+      .select('book_id')
+      .eq('user_id', user?.id);
+    if (error) {
+      console.error(error);
+    } else {
+      dispatch(
+        setMyBooks({
+          myBooks: [...(bkn?.map((book) => book.book_id) || []), book_id],
+        })
+      );
+    }
+  };
+
   return (
     <article
       ref={elementRef}
@@ -67,21 +96,12 @@ export const Shelf = ({ shelfTitle, api }: ShelfProps) => {
                   className='shelf__item'
                 >
                   <Card className='card'>
-                    {book.cover_i || book.cover_id ? (
-                      <BookCover
-                        className='card__cover'
-                        cover_id={book.cover_id}
-                        cover_i={book.cover_i}
-                        onClick={() => handleBookClick(book)}
-                      />
-                    ) : (
-                      <Card.Img
-                        className='card__cover'
-                        alt='no image'
-                        src={NoImageAvailable}
-                        onClick={() => handleBookClick(book)}
-                      />
-                    )}
+                    <BookCover
+                      className='card__cover'
+                      cover_id={book.cover_id}
+                      cover_i={book.cover_i}
+                      onClick={() => handleBookClick(book)}
+                    />
                     <Card.Body className='card__description'>
                       <Card.Title
                         className='card__title'
@@ -97,6 +117,12 @@ export const Shelf = ({ shelfTitle, api }: ShelfProps) => {
                           {handleAuthor(book.author_name[0])}
                         </Card.Text>
                       )}
+                      <EmptyStar
+                        className='card__star'
+                        onClick={(e) =>
+                          handleStarClick(e, (book.cover_id || book.cover_i)!)
+                        }
+                      />
                     </Card.Body>
                   </Card>
                 </Col>

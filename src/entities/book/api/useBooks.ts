@@ -38,8 +38,6 @@ export const useBooks = ({ api }: useBooksProps) => {
     };
   }, [api]);
 
-  console.log(books);
-
   return {
     books,
     isLoading,

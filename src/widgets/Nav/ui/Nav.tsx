@@ -1,10 +1,16 @@
+import { handleLogout } from 'features/auth/lib/handleLogout';
 import { SearchPanel } from 'features/search';
 import NavContainer from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { BookstackSvg } from 'shared/assets';
+import { useAppSelector } from 'shared/lib';
 
 export const Nav = () => {
+  const session = useAppSelector((state) => state.session);
+  const navigate = useNavigate();
+  const isLoggedIn = !!session.session;
+
   return (
     <Navbar
       bg='dark'
@@ -32,18 +38,46 @@ export const Nav = () => {
       <SearchPanel />
 
       <NavContainer>
-        <NavLink
-          to={'/auth/login'}
-          className='nav__link'
-        >
-          Войти
-        </NavLink>
-        <NavLink
-          to={'/auth/register'}
-          className='nav__link'
-        >
-          Зарегистрироваться
-        </NavLink>
+        {!isLoggedIn ? (
+          <>
+            <NavLink
+              to={'/auth/login'}
+              className='nav__link'
+            >
+              Войти
+            </NavLink>
+            <NavLink
+              to={'/auth/register'}
+              className='nav__link'
+            >
+              Зарегистрироваться
+            </NavLink>
+          </>
+        ) : (
+          <>
+            <NavLink
+              to={'/profile'}
+              className='nav__link'
+            >
+              Профиль
+            </NavLink>
+            <NavLink
+              to={'/mybooks'}
+              className='nav__link'
+            >
+              Мои книги
+            </NavLink>
+            <a
+              onClick={() => {
+                handleLogout();
+                navigate('/auth/login');
+              }}
+              className='nav__link'
+            >
+              Выйти
+            </a>
+          </>
+        )}
       </NavContainer>
     </Navbar>
   );

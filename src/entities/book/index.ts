@@ -1,4 +1,4 @@
 export { useBook } from './api/useBook';
 export { useBooks } from './api/useBooks';
-export { SearchBook } from './lib/types';
+export { Book, SearchBook } from './lib/types';
 export { BookCover } from './ui/BookCover';

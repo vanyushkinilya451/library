@@ -1,9 +1,11 @@
 import { AuthLayout, MainLayout } from 'app/layouts';
-import { LoginForm, RegisterForm } from 'features/auth';
+import { LoginForm, RegisterForm, VerifyEmail } from 'features/auth';
 import { AuthorPage } from 'pages/author/ui/AuthorPage';
 import { BookPage } from 'pages/book';
 import { Categories } from 'pages/categories';
 import { HomePage } from 'pages/home';
+import { Mybooks } from 'pages/mybooks/ui/Mybooks';
+import { ProfilePage } from 'pages/profile/ui/ProfilePage';
 import { createBrowserRouter } from 'react-router-dom';
 import { NotFound404 } from 'shared/ui';
 
@@ -28,6 +30,14 @@ export const router = createBrowserRouter([
         path: '/author/:authorId',
         Component: AuthorPage,
       },
+      {
+        path: '/mybooks',
+        Component: Mybooks,
+      },
+      {
+        path: '/profile',
+        Component: ProfilePage,
+      },
     ],
   },
   {
@@ -45,6 +55,10 @@ export const router = createBrowserRouter([
       {
         path: 'register',
         Component: RegisterForm,
+      },
+      {
+        path: 'verify-email',
+        Component: VerifyEmail,
       },
     ],
   },
