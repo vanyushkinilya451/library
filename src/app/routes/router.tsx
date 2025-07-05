@@ -1,6 +1,11 @@
 import { AuthLayout, MainLayout } from 'app/layouts';
+<<<<<<< HEAD
 import { LoginForm, RegisterForm, VerifyEmail } from 'features/auth';
 import { AuthorPage } from 'pages/author/ui/AuthorPage';
+=======
+import { LoginForm, RegisterForm } from 'features/auth';
+import { AuthorPage } from 'pages/author';
+>>>>>>> 9a314ec82d297bc97c5d1502b796314dfcdf67fd
 import { BookPage } from 'pages/book';
 import { Categories } from 'pages/categories';
 import { HomePage } from 'pages/home';

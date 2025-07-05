@@ -1,5 +1,5 @@
-import { useBookCover } from 'entities/book/api/useBookCover';
 import { SkeletonLoader } from 'shared/ui';
+import { useAuthorCover } from '../api/useAuthorCover';
 
 type AuthorImageProps = {
   onClick?: () => void;
@@ -20,7 +20,7 @@ export const AuthorImage = ({
   skeletonHeight = '180px',
   objectFit = 'contain',
 }: AuthorImageProps) => {
-  const { isLoading, setIsLoading, coverUrl } = useBookCover({
+  const { isLoading, setIsLoading, coverUrl } = useAuthorCover({
     cover_id,
     cover_i,
     coverSize,

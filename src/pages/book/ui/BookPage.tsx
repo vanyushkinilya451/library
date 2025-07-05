@@ -1,5 +1,4 @@
-import { BookCover, SearchBook, useBook } from 'entities/book';
-import { Book } from 'entities/book/lib/types';
+import { Book, BookCover, SearchBook, useBook } from 'entities/book';
 import { useLocation, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -10,8 +9,6 @@ export const BookPage = () => {
   });
   const { state } = useLocation();
   const { book: bookSearch }: { book: SearchBook } = state;
-  console.log('bookWork', bookWork);
-  console.log('bookSearch', bookSearch);
 
   return (
     bookWork && (

@@ -1,5 +1,4 @@
-import { Author, useAuthor } from 'entities/author';
-import { AuthorImage } from 'entities/author/ui/AuthorImage';
+import { Author, AuthorImage, useAuthor } from 'entities/author';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -9,8 +8,6 @@ export const AuthorPage = () => {
   const { author }: { author: Author | null } = useAuthor({
     id: authorId as string,
   });
-
-  console.log('author', author);
 
   return (
     author && (
