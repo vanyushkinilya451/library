@@ -1,3 +1,4 @@
+import { User } from '@supabase/supabase-js';
 import { handleLogout } from 'features/auth/lib/handleLogout';
 import { useAuth } from 'features/auth/lib/useAuth';
 import { SearchPanel } from 'features/search';
@@ -5,12 +6,13 @@ import NavContainer from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { BookstackSvg } from 'shared/assets';
+import { useAppSelector } from 'shared/lib';
 import { SkeletonLoader } from 'shared/ui';
 
 export const Nav = () => {
   const { isLoggedIn, isLoading: isLoadingAuth } = useAuth();
   const navigate = useNavigate();
-
+  const { user }: { user: User | null } = useAppSelector((state) => state.user);
   return (
     <Navbar
       bg='dark'
@@ -63,7 +65,7 @@ export const Nav = () => {
         ) : (
           <>
             <NavLink
-              to={'/profile'}
+              to={`/profile/${user?.id}`}
               className='nav__link'
             >
               Профиль

@@ -1,6 +1,6 @@
+import { userSlice } from 'entities/user/lib/UserSlice';
 import { useEffect, useState } from 'react';
 import { supabase, useAppDispatch, useAppSelector } from 'shared/lib';
-import { userSlice } from 'shared/reducers/UserSlice';
 
 export const useAuth = () => {
   const { session, user } = useAppSelector((state) => state.user);

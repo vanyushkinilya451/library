@@ -1,11 +1,11 @@
 import { AuthLayout, MainLayout } from 'app/layouts';
 import { LoginForm, RegisterForm, VerifyEmail } from 'features/auth';
-import { AuthorPage } from 'pages/author/ui/AuthorPage';
+import { AuthorPage } from 'pages/author';
 import { BookPage } from 'pages/book';
 import { Categories } from 'pages/categories';
 import { HomePage } from 'pages/home';
-import { Mybooks } from 'pages/mybooks/ui/Mybooks';
-import { ProfilePage } from 'pages/profile/ui/ProfilePage';
+import { Mybooks } from 'pages/mybooks';
+import { ProfilePage } from 'pages/profile';
 import { createBrowserRouter } from 'react-router-dom';
 import { NotFound404 } from 'shared/ui';
 
@@ -35,7 +35,7 @@ export const router = createBrowserRouter([
         Component: Mybooks,
       },
       {
-        path: '/profile',
+        path: '/profile/:userId',
         Component: ProfilePage,
       },
     ],

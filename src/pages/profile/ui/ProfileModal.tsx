@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { UnknownPerson } from 'shared/assets';
 import { supabase, useAppSelector } from 'shared/lib';
 import styled from 'styled-components';
@@ -11,13 +11,10 @@ type UserAttributes = {
   patronymic: string;
 };
 
-export const EditProfileModal = ({
-  closeModal,
-}: {
-  closeModal: () => void;
-}) => {
+export const ProfileModal = ({ closeModal }: { closeModal: () => void }) => {
   const [isLoading, setIsLoading] = useState(false);
   const user = useAppSelector((state) => state.user.user);
+  const [profileExists, setProfileExists] = useState(false);
   const [userAttributes, setUserAttributes] = useState<UserAttributes>({
     firstname: '',
     lastname: '',
@@ -30,31 +27,62 @@ export const EditProfileModal = ({
     setUserAttributes({ ...userAttributes, [e.target.name]: e.target.value });
   };
 
+  useEffect(() => {
+    async function fetchUser() {
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('user_id', user?.id);
+      if (error) {
+        console.log(error);
+      } else if (data.length) {
+        console.log('Загруженные данные профиля:', data[0]);
+        setProfileExists(true);
+        setUserAttributes(data[0]);
+        console.log('Установлены атрибуты:', data[0]);
+      }
+    }
+    fetchUser();
+  }, [user]);
+
   const handleSave = async () => {
     setIsLoading(true);
-    const { error } = await supabase.from('profiles').insert({
-      user_id: user?.id,
-      firstname: userAttributes.firstname,
-      lastname: userAttributes.lastname,
-      patronymic: userAttributes.patronymic,
-      birthdate: userAttributes.birthdate,
-      gender: userAttributes.gender,
-    });
+    try {
+      const { error } = await supabase.from('profiles').upsert(
+        {
+          user_id: user?.id,
+          firstname: userAttributes.firstname,
+          lastname: userAttributes.lastname,
+          patronymic: userAttributes.patronymic,
+          birthdate: userAttributes.birthdate,
+          gender: userAttributes.gender,
+        },
+        {
+          onConflict: 'user_id',
+          ignoreDuplicates: false,
+        }
+      );
 
-    if (error) {
-      console.log(error);
-    } else {
-      closeModal();
+      if (error) {
+        console.error('Ошибка при сохранении профиля:', error);
+      } else {
+        closeModal();
+        window.location.reload();
+      }
+    } catch (err) {
+      console.error('Неожиданная ошибка:', err);
+    } finally {
+      setIsLoading(false);
     }
-
-    setIsLoading(false);
   };
 
   return (
-    <ModalOverlay onClick={closeModal}>
+    <ModalOverlay>
       <ModalContent onClick={(e) => e.stopPropagation()}>
         <ModalHeader>
-          <ModalTitle>Редактировать профиль</ModalTitle>
+          <ModalTitle>
+            {profileExists ? 'Редактировать профиль' : 'Заполнить профиль'}
+          </ModalTitle>
           <CloseButton onClick={closeModal}>
             <CloseIcon>×</CloseIcon>
           </CloseButton>
@@ -116,6 +144,7 @@ export const EditProfileModal = ({
                     name='gender'
                     value='male'
                     id='male'
+                    checked={userAttributes.gender === 'male'}
                     onChange={handleChange}
                   />
                   <RadioLabel htmlFor='male'>
@@ -129,6 +158,7 @@ export const EditProfileModal = ({
                     name='gender'
                     value='female'
                     id='female'
+                    checked={userAttributes.gender === 'female'}
                     onChange={handleChange}
                   />
                   <RadioLabel htmlFor='female'>
@@ -161,7 +191,7 @@ export const EditProfileModal = ({
             onClick={handleSave}
             disabled={isLoading}
           >
-            Сохранить изменения
+            {profileExists ? 'Сохранить изменения' : 'Сохранить профиль'}
           </SaveButton>
         </ModalFooter>
       </ModalContent>
@@ -332,7 +362,7 @@ const RadioCircle = styled.div`
   position: relative;
   transition: all 0.3s ease;
 
-  ${RadioInput}:checked + ${RadioLabel} & {
+  input[type='radio']:checked + label & {
     border-color: var(--primary-color);
     background: var(--primary-color);
 

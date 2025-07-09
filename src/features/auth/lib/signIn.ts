@@ -1,6 +1,6 @@
 import { Dispatch } from '@reduxjs/toolkit';
+import { userSlice } from 'entities/user/lib/UserSlice';
 import { supabase } from 'shared/lib';
-import { userSlice } from 'shared/reducers/UserSlice';
 
 export const signIn = async (
   email: string,

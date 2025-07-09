@@ -1,10 +1,11 @@
 import { User } from '@supabase/supabase-js';
 import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { UnknownPerson } from 'shared/assets';
 import { supabase, useAppSelector, useModal } from 'shared/lib';
 import { SkeletonLoader } from 'shared/ui';
 import styled from 'styled-components';
-import { EditProfileModal } from './EditProfileModal';
+import { ProfileModal } from './ProfileModal';
 
 type UserProfile = {
   firstname: string;
@@ -16,6 +17,7 @@ type UserProfile = {
 
 export const ProfilePage = () => {
   const { user }: { user: User | null } = useAppSelector((state) => state.user);
+  const { userId } = useParams();
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const { isModalOpen, openModal, closeModal } = useModal();
   const [isLoading, setIsLoading] = useState(true);
@@ -33,16 +35,17 @@ export const ProfilePage = () => {
       const { data, error } = await supabase
         .from('profiles')
         .select('*')
-        .eq('user_id', user?.id);
+        .eq('user_id', userId);
       if (error) {
         console.log(error);
+        setIsLoading(false);
       } else if (data) {
         setProfile(data[0]);
+        setIsLoading(false);
       }
-      setIsLoading(false);
     }
     fetchUser();
-  }, [user]);
+  }, [userId, user]);
 
   return (
     <Container>
@@ -114,68 +117,66 @@ export const ProfilePage = () => {
             </StatCard>
           </StatsSection>
 
-          <DetailsSection>
-            <SectionTitle>Информация о профиле</SectionTitle>
-            <DetailsGrid>
-              {profile && (
-                <>
-                  <DetailItem>
-                    <DetailLabel>Дата рождения</DetailLabel>
-                    <DetailValue>{formatDate(profile.birthdate)}</DetailValue>
-                  </DetailItem>
-                  <DetailItem>
-                    <DetailLabel>Пол</DetailLabel>
-                    <DetailValue>
-                      {profile.gender === 'male' ? 'Мужской' : 'Женский'}
-                    </DetailValue>
-                  </DetailItem>
-                </>
-              )}
-              <DetailItem>
-                <DetailLabel>Email</DetailLabel>
-                <DetailValue>{user?.email}</DetailValue>
-              </DetailItem>
-              <DetailItem>
-                <DetailLabel>Статус</DetailLabel>
-                <DetailValue>
-                  <StatusBadge>Подтвержден</StatusBadge>
-                </DetailValue>
-              </DetailItem>
-              <DetailItem>
-                <DetailLabel>Дата регистрации</DetailLabel>
-                <DetailValue>
-                  {user?.created_at
-                    ? formatDate(user.created_at)
-                    : 'Не указана'}
-                </DetailValue>
-              </DetailItem>
-              <DetailItem>
-                <DetailLabel>Последний вход</DetailLabel>
-                <DetailValue>
-                  {user?.last_sign_in_at
-                    ? formatDate(user.last_sign_in_at)
-                    : 'Не указан'}
-                </DetailValue>
-              </DetailItem>
-            </DetailsGrid>
-          </DetailsSection>
-
+          {isLoading ? (
+            <SkeletonLoader
+              width='100%'
+              height='300px'
+              margin='20px 0'
+            />
+          ) : (
+            <DetailsSection>
+              <SectionTitle>Информация о профиле</SectionTitle>
+              <DetailsGrid>
+                {profile && (
+                  <>
+                    <DetailItem>
+                      <DetailLabel>Дата рождения</DetailLabel>
+                      <DetailValue>{formatDate(profile.birthdate)}</DetailValue>
+                    </DetailItem>
+                    <DetailItem>
+                      <DetailLabel>Пол</DetailLabel>
+                      <DetailValue>
+                        {profile.gender === 'male' ? 'Мужской' : 'Женский'}
+                      </DetailValue>
+                    </DetailItem>
+                  </>
+                )}
+                <DetailItem>
+                  <DetailLabel>Email</DetailLabel>
+                  <DetailValue>{user?.email}</DetailValue>
+                </DetailItem>
+                <DetailItem>
+                  <DetailLabel>Статус</DetailLabel>
+                  <DetailValue>
+                    <StatusBadge>Подтвержден</StatusBadge>
+                  </DetailValue>
+                </DetailItem>
+                <DetailItem>
+                  <DetailLabel>Дата регистрации</DetailLabel>
+                  <DetailValue>
+                    {user?.created_at
+                      ? formatDate(user.created_at)
+                      : 'Не указана'}
+                  </DetailValue>
+                </DetailItem>
+                <DetailItem>
+                  <DetailLabel>Последний вход</DetailLabel>
+                  <DetailValue>
+                    {user?.last_sign_in_at
+                      ? formatDate(user.last_sign_in_at)
+                      : 'Не указан'}
+                  </DetailValue>
+                </DetailItem>
+              </DetailsGrid>
+            </DetailsSection>
+          )}
           <ActionsSection>
             <ActionButton
               onClick={openModal}
               primary
             >
-              {profile ? (
-                <>
-                  <ButtonIcon>✏️</ButtonIcon>
-                  Редактировать профиль
-                </>
-              ) : (
-                <>
-                  <ButtonIcon>✏️</ButtonIcon>
-                  Заполнить профиль
-                </>
-              )}
+              <ButtonIcon>✏️</ButtonIcon>
+              {profile ? 'Редактировать профиль' : 'Заполнить профиль'}
             </ActionButton>
             <ActionButton>
               <ButtonIcon>🔒</ButtonIcon>
@@ -184,7 +185,7 @@ export const ProfilePage = () => {
           </ActionsSection>
         </ProfileCard>
       </Content>
-      {isModalOpen && <EditProfileModal closeModal={closeModal} />}
+      {isModalOpen && <ProfileModal closeModal={closeModal} />}
     </Container>
   );
 };
@@ -215,7 +216,7 @@ const AvatarSection = styled.div`
   display: flex;
   align-items: center;
   gap: 30px;
-  margin-bottom: 40px;
+  margin-bottom: 20px;
   padding-bottom: 30px;
   border-bottom: 2px solid var(--border-color);
 `;
@@ -268,7 +269,7 @@ const UserName = styled.h1`
   background-clip: text;
 `;
 
-const UserEmail = styled.p`
+const UserEmail = styled.div`
   font-size: 1.1rem;
   color: var(--text-secondary);
   margin: 0 0 15px 0;
@@ -294,7 +295,7 @@ const StatsSection = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   gap: 20px;
-  margin-bottom: 40px;
+  margin-bottom: 30px;
 `;
 
 const StatCard = styled.div`
@@ -323,7 +324,7 @@ const StatLabel = styled.div`
 `;
 
 const DetailsSection = styled.div`
-  margin-bottom: 40px;
+  margin-bottom: 30px;
 `;
 
 const SectionTitle = styled.h2`

@@ -4,6 +4,7 @@ export const SkeletonLoader = ({
   width = '100%',
   height = '100%',
   margin = '0',
+  padding = '0',
   background = 'linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%)',
 }) => {
   return (
@@ -16,7 +17,7 @@ export const SkeletonLoader = ({
         backgroundSize: '200% 100%',
         animation: 'shimmer 1.5s infinite linear',
         borderRadius: '4px',
-        padding: '0',
+        padding: padding,
         zIndex: '999',
       }}
     ></Skeleton>
