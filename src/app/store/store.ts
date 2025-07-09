@@ -1,9 +1,8 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { myBooksReducer, sessionReducer, userReducer } from 'shared/reducers';
+import { myBooksReducer, userReducer } from 'shared/reducers';
 
 export const store = configureStore({
   reducer: {
-    session: sessionReducer,
     user: userReducer,
     myBooks: myBooksReducer,
   },

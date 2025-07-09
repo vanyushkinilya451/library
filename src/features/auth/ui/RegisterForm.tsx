@@ -1,5 +1,7 @@
 import { useState } from 'react';
+import toast from 'react-hot-toast';
 import { Link, useNavigate } from 'react-router-dom';
+import { useAppDispatch } from 'shared/lib';
 import styled from 'styled-components';
 import { signUp } from '../lib/signUp';
 
@@ -7,8 +9,8 @@ export const RegisterForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
@@ -21,14 +23,13 @@ export const RegisterForm = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    setError(null);
+    const { isSuccess, error } = await signUp(email, password, dispatch);
 
-    const { isSuccess, error } = await signUp(email, password);
-
-    if (error) {
-      setError(error.message);
-    } else if (isSuccess) {
+    if (isSuccess) {
       navigate('/auth/verify-email');
+    }
+    if (error) {
+      toast.error('Неверный логин или пароль')
     }
 
     setIsLoading(false);
@@ -41,16 +42,6 @@ export const RegisterForm = () => {
       <FormDescription>
         Создайте аккаунт и получите доступ к функциям приложения
       </FormDescription>
-
-      {error && !isLoading && (
-        <FormError>
-          {error.includes('Invalid email')
-            ? 'Неверный email'
-            : error.includes('Password must be at least 6 characters')
-              ? 'Пароль должен быть не менее 6 символов'
-              : error}
-        </FormError>
-      )}
 
       <FormInput
         type='email'
@@ -192,13 +183,4 @@ const RegisterPrompt = styled.span`
   color: var(--auth-primary-text);
 
   margin-top: 11px;
-`;
-
-const FormError = styled.p`
-  background-color: var(--auth-error);
-  color: var(--auth-light-text);
-  padding: 10px;
-  border-radius: 8px;
-  width: 100%;
-  text-align: center;
 `;

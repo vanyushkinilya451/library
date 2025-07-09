@@ -4,9 +4,9 @@ import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import { useNavigate } from 'react-router-dom';
 import { Arrow } from 'shared/assets';
-import EmptyStar from 'shared/assets/icons/emptystar.svg';
-import { CONSTANTS, supabase, useAppDispatch } from 'shared/lib';
-import { myBooksSlice } from 'shared/reducers/MyBooksSlice';
+import {
+  CONSTANTS
+} from 'shared/lib';
 import { useShelfScroll } from '../lib/useShelfScroll';
 import { FakeShelfLoader } from './FakeShelfLoader';
 
@@ -17,9 +17,8 @@ type ShelfProps = {
 
 export const Shelf = ({ shelfTitle, api }: ShelfProps) => {
   const navigate = useNavigate();
-  const { setMyBooks } = myBooksSlice.actions;
-  const dispatch = useAppDispatch();
   const { books, isLoading, elementRef } = useBooks({ api });
+
   const {
     isScrolled,
     isScrollEnd,
@@ -48,30 +47,8 @@ export const Shelf = ({ shelfTitle, api }: ShelfProps) => {
       : author;
   };
 
-  const handleStarClick = async (e: React.MouseEvent, book_id: number) => {
-    e.stopPropagation();
-    e.currentTarget.classList.toggle('card__star--filled');
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-    const { error } = await supabase.from('books').insert({
-      book_id: book_id,
-      user_id: user?.id,
-    });
-    const { data: bkn } = await supabase
-      .from('books')
-      .select('book_id')
-      .eq('user_id', user?.id);
-    if (error) {
-      console.error(error);
-    } else {
-      dispatch(
-        setMyBooks({
-          myBooks: [...(bkn?.map((book) => book.book_id) || []), book_id],
-        })
-      );
-    }
-  };
+
+
 
   return (
     <article
@@ -117,12 +94,7 @@ export const Shelf = ({ shelfTitle, api }: ShelfProps) => {
                           {handleAuthor(book.author_name[0])}
                         </Card.Text>
                       )}
-                      <EmptyStar
-                        className='card__star'
-                        onClick={(e) =>
-                          handleStarClick(e, (book.cover_id || book.cover_i)!)
-                        }
-                      />
+
                     </Card.Body>
                   </Card>
                 </Col>

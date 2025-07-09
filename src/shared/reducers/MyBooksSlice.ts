@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 type MyBooksState = {
-  myBooks: string[] | null;
+  myBooks: number[] | null;
 };
 
 const initialState: MyBooksState = {
@@ -12,7 +12,7 @@ export const myBooksSlice = createSlice({
   name: 'myBooks',
   initialState,
   reducers: {
-    setMyBooks(state, action: PayloadAction<MyBooksState>) {
+    setMyBooks: (state, action: PayloadAction<MyBooksState>) => {
       state.myBooks = action.payload.myBooks;
     },
   },

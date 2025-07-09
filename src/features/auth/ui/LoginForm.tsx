@@ -1,5 +1,7 @@
 import { useState } from 'react';
+import toast, { Toaster } from 'react-hot-toast';
 import { Link, useNavigate } from 'react-router-dom';
+import { useAppDispatch } from 'shared/lib';
 import styled from 'styled-components';
 import { signIn } from '../lib/signIn';
 
@@ -7,7 +9,7 @@ export const LoginForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -21,31 +23,27 @@ export const LoginForm = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    const { isSuccess, error } = await signIn(email, password);
+    const { isSuccess, error } = await signIn(email, password, dispatch);
+
     if (isSuccess) {
       navigate('/');
     }
     if (error) {
-      setError(error.message);
+      toast.error('Неверный логин или пароль')
     }
+
     setIsLoading(false);
   };
 
   return (
     <AuthForm onSubmit={(e) => handleSubmit(e)}>
+      <Toaster />
       <FormTitle>С возвращением</FormTitle>
       <FormSubtitle>Привет! Рады снова Вас видеть!</FormSubtitle>
       <FormDescription>
         Введите ваш логин и пароль, чтобы войти в приложение
       </FormDescription>
 
-      {error && !isLoading && (
-        <FormError>
-          {error.includes('Invalid login credentials')
-            ? 'Неверный логин или пароль'
-            : error}
-        </FormError>
-      )}
       <FormInput
         type='email'
         onChange={handleEmailChange}
@@ -123,18 +121,6 @@ const FormDescription = styled.h3`
   font-weight: 400;
   text-align: center;
   user-select: none;
-`;
-
-const FormError = styled.p`
-  margin-top: 10px;
-  font-size: 1.2rem;
-  background-color: var(--auth-error);
-  color: var(--auth-light-text);
-  font-size: 0.8rem;
-  padding: 10px;
-  border-radius: 8px;
-  width: 100%;
-  text-align: center;
 `;
 
 const FormInput = styled.input`

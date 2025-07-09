@@ -1,18 +1,17 @@
-import { Session } from '@supabase/supabase-js';
-import { useEffect } from 'react';
-import { supabase, useAppDispatch } from 'shared/lib';
-import { sessionSlice } from 'shared/reducers/SessionSlice';
+import { useEffect, useState } from 'react';
+import { useAppSelector } from 'shared/lib';
 
 export const useAuth = () => {
-  const dispatch = useAppDispatch();
-  const { setSession } = sessionSlice.actions;
+  const { session, user } = useAppSelector((state) => state.user);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  console.log('USER:', user, '\n', 'SESSION', session);
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      dispatch(setSession({ session: session as Session }));
-    });
+    if (session) {
+      setIsLoggedIn(true);
+    } else {
+      setIsLoggedIn(false);
+    }
+  }, [session]);
 
-    supabase.auth.onAuthStateChange((_, session) => {
-      dispatch(setSession({ session: session as Session }));
-    });
-  }, [dispatch]);
+  return { isLoggedIn };
 };

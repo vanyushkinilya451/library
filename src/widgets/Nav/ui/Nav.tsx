@@ -1,15 +1,14 @@
 import { handleLogout } from 'features/auth/lib/handleLogout';
+import { useAuth } from 'features/auth/lib/useAuth';
 import { SearchPanel } from 'features/search';
 import NavContainer from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { BookstackSvg } from 'shared/assets';
-import { useAppSelector } from 'shared/lib';
 
 export const Nav = () => {
-  const session = useAppSelector((state) => state.session);
+  const { isLoggedIn } = useAuth();
   const navigate = useNavigate();
-  const isLoggedIn = !!session.session;
 
   return (
     <Navbar

@@ -1,6 +1,6 @@
-import { useAuth } from 'features/auth/lib/useAuth';
+import { useAuth } from "features/auth/lib/useAuth";
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  useAuth();
+  const { isLoggedIn } = useAuth();
   return <>{children}</>;
 };
