@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import toast from 'react-hot-toast';
+import toast, { Toaster } from 'react-hot-toast';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAppDispatch } from 'shared/lib';
 import styled from 'styled-components';
@@ -8,6 +8,7 @@ import { signUp } from '../lib/signUp';
 export const RegisterForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -22,6 +23,17 @@ export const RegisterForm = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (email === '' || password === '') {
+      toast.error('Пожалуйста, заполните все поля');
+      return;
+    }
+
+    if (password.length < 8) {
+      toast.error('Пароль должен быть не менее 8 символов');
+      return;
+    }
+
     setIsLoading(true);
     const { isSuccess, error } = await signUp(email, password, dispatch);
 
@@ -29,7 +41,7 @@ export const RegisterForm = () => {
       navigate('/auth/verify-email');
     }
     if (error) {
-      toast.error('Неверный логин или пароль')
+      toast.error('Неверный логин или пароль');
     }
 
     setIsLoading(false);
@@ -37,6 +49,7 @@ export const RegisterForm = () => {
 
   return (
     <AuthForm onSubmit={(e) => handleSubmit(e)}>
+      <Toaster />
       <FormTitle>Добро пожаловать</FormTitle>
       <FormSubtitle>Станьте частью большого сообщества YNOU</FormSubtitle>
       <FormDescription>
@@ -51,7 +64,7 @@ export const RegisterForm = () => {
       />
 
       <FormInput
-        type='password'
+        type={showPassword ? 'text' : 'password'}
         onChange={handlePasswordChange}
         placeholder='Пароль'
         value={password}
@@ -60,8 +73,11 @@ export const RegisterForm = () => {
       <FormFooter>
         <FormCheckboxWrapper>
           <FormLabel>
-            <input type='checkbox' />
-            Запомнить меня
+            <input
+              type='checkbox'
+              onChange={() => setShowPassword(!showPassword)}
+            />
+            Показать пароль
           </FormLabel>
         </FormCheckboxWrapper>
         <AccentLink to={'#'}>Забыли пароль?</AccentLink>
@@ -154,6 +170,9 @@ const FormCheckboxWrapper = styled.div`
 const FormLabel = styled.label`
   color: var(--auth-secondary-text);
   user-select: none;
+  display: flex;
+  align-items: center;
+  gap: 5px;
 `;
 
 const AccentLink = styled(Link)`

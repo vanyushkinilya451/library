@@ -13,7 +13,7 @@
   --accent-dark: #d97706;
 
   /* Семантические цвета */
-  --success-color: #10b981; /* Изумрудный */
+  --success-color: #f59e0b; /* Изумрудный */
   --danger-color: #ef4444; /* Красный */
   --warning-color: #f59e0b; /* Янтарный */
   --info-color: #3b82f6; /* Синий */
@@ -114,7 +114,12 @@
     #e2e8f0 50%,
     #f1f5f9 75%
   );
-
+  --gradient-skeleton-dark: linear-gradient(
+    90deg,
+    #374151 25%,
+    #6b7280 50%,
+    #374151 75%
+  );
   /* Типовые тени */
   --shadow-xs: 0 2px 6px;
   --shadow-sm: 0 2px 8px;

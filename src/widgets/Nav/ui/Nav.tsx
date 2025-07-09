@@ -5,9 +5,10 @@ import NavContainer from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { BookstackSvg } from 'shared/assets';
+import { SkeletonLoader } from 'shared/ui';
 
 export const Nav = () => {
-  const { isLoggedIn } = useAuth();
+  const { isLoggedIn, isLoading: isLoadingAuth } = useAuth();
   const navigate = useNavigate();
 
   return (
@@ -37,7 +38,14 @@ export const Nav = () => {
       <SearchPanel />
 
       <NavContainer>
-        {!isLoggedIn ? (
+        {!isLoggedIn && isLoadingAuth ? (
+          <SkeletonLoader
+            width='200px'
+            height='30px'
+            background='var(--gradient-skeleton-dark)'
+            margin='0 20px'
+          />
+        ) : !isLoggedIn && !isLoadingAuth ? (
           <>
             <NavLink
               to={'/auth/login'}

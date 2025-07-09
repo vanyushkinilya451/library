@@ -4,14 +4,11 @@ import { RouterProvider } from 'react-router-dom';
 import { router } from './routes';
 import { store } from './store/store';
 import { GlobalStyles } from './styles/styled-components';
-import { AuthProvider } from './providers/AuthProvider';
 
 export const App = () => {
   return (
     <Provider store={store}>
-      <AuthProvider>
-        <RouterProvider router={router} />
-      </AuthProvider>
+      <RouterProvider router={router} />
       <GlobalStyles />
     </Provider>
   );

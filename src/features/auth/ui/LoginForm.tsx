@@ -9,6 +9,7 @@ export const LoginForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -29,7 +30,7 @@ export const LoginForm = () => {
       navigate('/');
     }
     if (error) {
-      toast.error('Неверный логин или пароль')
+      toast.error('Неверный логин или пароль');
     }
 
     setIsLoading(false);
@@ -52,7 +53,7 @@ export const LoginForm = () => {
       />
 
       <FormInput
-        type='password'
+        type={showPassword ? 'text' : 'password'}
         onChange={handlePasswordChange}
         placeholder='Пароль'
         value={password}
@@ -61,8 +62,11 @@ export const LoginForm = () => {
       <FormFooter>
         <FormCheckboxWrapper>
           <FormLabel>
-            <input type='checkbox' />
-            Запомнить меня
+            <input
+              type='checkbox'
+              onChange={() => setShowPassword(!showPassword)}
+            />
+            Показать пароль
           </FormLabel>
         </FormCheckboxWrapper>
         <AccentLink to={'#'}>Забыли пароль?</AccentLink>
@@ -158,6 +162,9 @@ const FormCheckboxWrapper = styled.div`
 const FormLabel = styled.label`
   color: var(--auth-secondary-text);
   user-select: none;
+  display: flex;
+  align-items: center;
+  gap: 5px;
 `;
 
 const AccentLink = styled(Link)`
