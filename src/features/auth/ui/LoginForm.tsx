@@ -1,39 +1,43 @@
+import { loginUser } from 'entities/user';
 import { useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import { Link, useNavigate } from 'react-router-dom';
-import { useAppDispatch } from 'shared/lib';
+import { useAppDispatch, useAppSelector, validatePassword } from 'shared/lib';
 import styled from 'styled-components';
-import { signIn } from '../lib/signIn';
 
 export const LoginForm = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
+  const [credentials, setCredentials] = useState({ email: '', password: '' });
   const [showPassword, setShowPassword] = useState(false);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const { isLoading } = useAppSelector((state) => state.user);
 
-  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEmail(e.target.value);
-  };
-
-  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPassword(e.target.value);
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setCredentials({ ...credentials, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
-    const { isSuccess, error } = await signIn(email, password, dispatch);
 
-    if (isSuccess) {
+    if (credentials.email === '' || credentials.password === '') {
+      toast.error('Пожалуйста, заполните все поля');
+      return;
+    }
+
+    const errors = validatePassword(credentials.password);
+    if (errors.length > 0) {
+      errors.forEach((error) => toast.error(error));
+      return;
+    }
+
+    const result = await dispatch(loginUser(credentials));
+    if (result.meta.requestStatus == 'fulfilled') {
       navigate('/');
     }
-    if (error) {
+
+    if (result.meta.requestStatus == 'rejected') {
       toast.error('Неверный логин или пароль');
     }
-
-    setIsLoading(false);
   };
 
   return (
@@ -47,16 +51,18 @@ export const LoginForm = () => {
 
       <FormInput
         type='email'
-        onChange={handleEmailChange}
+        onChange={handleChange}
         placeholder='Почта'
-        value={email}
+        name='email'
+        value={credentials.email}
       />
 
       <FormInput
         type={showPassword ? 'text' : 'password'}
-        onChange={handlePasswordChange}
+        onChange={handleChange}
         placeholder='Пароль'
-        value={password}
+        name='password'
+        value={credentials.password}
       />
 
       <FormFooter>

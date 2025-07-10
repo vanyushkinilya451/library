@@ -1,9 +1,10 @@
 export { CONSTANTS } from './constants/constants';
 export { supabase } from './constants/supabase';
+export { formatDate } from './helpers/formatDate';
 export { getApi } from './helpers/getApi';
+export { validatePassword } from './helpers/validatePassword';
 export { useAppDispatch } from './hooks/useAppDispatch';
 export { useAppSelector } from './hooks/useAppSelector';
 export { useDebounce } from './hooks/useDebounce';
 export { useEnfOfPage } from './hooks/useEnfOfPage';
 export { useModal } from './hooks/useModal';
-export { useSignOut } from './hooks/useSignOut';

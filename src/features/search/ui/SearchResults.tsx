@@ -1,17 +1,17 @@
-import { SearchBook } from 'entities/book';
+import { BookSearchFormat } from 'entities/book';
 import { useNavigate } from 'react-router-dom';
 import { Fragment } from 'react/jsx-runtime';
 import { CONSTANTS } from 'shared/lib';
 import styled from 'styled-components';
 
 type SearchResutlsProps = {
-  books: SearchBook[];
+  books: BookSearchFormat[];
 };
 
 export const SearchResults = ({ books }: SearchResutlsProps) => {
   const navigate = useNavigate();
 
-  const handleBookClick = (book: SearchBook) => {
+  const handleBookClick = (book: BookSearchFormat) => {
     navigate(`/book/${book.cover_edition_key}`, { state: { book } });
   };
 

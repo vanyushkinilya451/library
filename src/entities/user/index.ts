@@ -1,1 +1,9 @@
-export { userReducer } from './lib/UserSlice';
+export {
+  getUserAndSession,
+  loginUser,
+  logoutUser,
+  registerUser,
+  setUser,
+  userReducer,
+  userSlice,
+} from './model/UserSlice';

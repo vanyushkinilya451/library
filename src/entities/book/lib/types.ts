@@ -1,4 +1,4 @@
-export type SearchBook = {
+export type BookSearchFormat = {
   author_key: string[];
   author_name: string[];
   cover_edition_key: string;
@@ -15,7 +15,7 @@ export type SearchBook = {
   cover_i?: number;
 };
 
-export type Book = {
+export type BookWorkFormat = {
   subjects: string[];
   subtitle: string;
   covers: number[];

@@ -2,18 +2,11 @@ import { User } from '@supabase/supabase-js';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { UnknownPerson } from 'shared/assets';
-import { supabase, useAppSelector, useModal } from 'shared/lib';
+import { formatDate, supabase, useAppSelector, useModal } from 'shared/lib';
 import { SkeletonLoader } from 'shared/ui';
 import styled from 'styled-components';
+import { UserProfile } from '../lib/types';
 import { ProfileModal } from './ProfileModal';
-
-type UserProfile = {
-  firstname: string;
-  lastname: string;
-  patronymic: string;
-  birthdate: string;
-  gender: string;
-};
 
 export const ProfilePage = () => {
   const { user }: { user: User | null } = useAppSelector((state) => state.user);
@@ -22,14 +15,6 @@ export const ProfilePage = () => {
   const { isModalOpen, openModal, closeModal } = useModal();
   const [isLoading, setIsLoading] = useState(true);
 
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('ru-RU', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-    });
-  };
-
   useEffect(() => {
     async function fetchUser() {
       const { data, error } = await supabase
@@ -37,7 +22,6 @@ export const ProfilePage = () => {
         .select('*')
         .eq('user_id', userId);
       if (error) {
-        console.log(error);
         setIsLoading(false);
       } else if (data) {
         setProfile(data[0]);
@@ -45,7 +29,7 @@ export const ProfilePage = () => {
       }
     }
     fetchUser();
-  }, [userId, user]);
+  }, [userId]);
 
   return (
     <Container>

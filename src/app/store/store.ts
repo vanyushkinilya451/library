@@ -1,5 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { myBooksReducer, userReducer } from 'shared/reducers';
+import { myBooksReducer } from 'entities/book';
+import { userReducer } from 'entities/user';
 
 export const store = configureStore({
   reducer: {

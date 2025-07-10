@@ -1,4 +1,4 @@
-import { SearchBook } from 'entities/book';
+import { BookSearchFormat } from 'entities/book';
 import { useEffect, useState } from 'react';
 import { CONSTANTS, useDebounce } from 'shared/lib';
 
@@ -7,7 +7,7 @@ type useSearchProps = {
 };
 export const useSearch = ({ debouncedDelay = 500 }: useSearchProps) => {
   const [search, setSearch] = useState<string>('');
-  const [books, setBooks] = useState<SearchBook[]>();
+  const [books, setBooks] = useState<BookSearchFormat[]>();
   const debouncedSearch = useDebounce(search, debouncedDelay);
 
   useEffect(() => {
@@ -23,7 +23,6 @@ export const useSearch = ({ debouncedDelay = 500 }: useSearchProps) => {
         } else {
           const { docs } = await response.json();
           setBooks(docs);
-          console.log(docs);
         }
       } catch (err) {
         console.error(err);

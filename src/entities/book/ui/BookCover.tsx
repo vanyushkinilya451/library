@@ -1,5 +1,5 @@
 import { SkeletonLoader } from 'shared/ui';
-import { useBookCover } from '../api/useBookCover';
+import { useGetBookCover } from '../api/useGetBookCover';
 
 type BookCoverProps = {
   onClick?: () => void;
@@ -18,7 +18,7 @@ export const BookCover = ({
   coverSize = 'M',
   skeletonHeight = '180px',
 }: BookCoverProps) => {
-  const { isLoading, setIsLoading, coverUrl } = useBookCover({
+  const { isLoading, setIsLoading, coverUrl } = useGetBookCover({
     cover_id,
     cover_i,
     coverSize,

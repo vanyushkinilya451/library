@@ -1,14 +1,19 @@
-import { Book, BookCover, SearchBook, useBook } from 'entities/book';
+import {
+  BookCover,
+  BookSearchFormat,
+  BookWorkFormat,
+  useGetBookById,
+} from 'entities/book';
 import { useLocation, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 export const BookPage = () => {
   const { bookId } = useParams();
-  const { book: bookWork }: { book: Book | null } = useBook({
+  const { book: bookWork }: { book: BookWorkFormat | null } = useGetBookById({
     id: bookId as string,
   });
   const { state } = useLocation();
-  const { book: bookSearch }: { book: SearchBook } = state;
+  const { book: bookSearch }: { book: BookSearchFormat } = state;
 
   return (
     bookWork && (

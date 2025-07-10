@@ -1,13 +1,13 @@
-import { SearchBook } from 'entities/book';
+import { BookSearchFormat } from 'entities/book';
 import { useEffect, useRef, useState } from 'react';
 import { CONSTANTS } from 'shared/lib';
 
-type useBooksProps = {
+type useGetBooksByCategoryProps = {
   api: string;
 };
 
-export const useBooks = ({ api }: useBooksProps) => {
-  const [books, setBooks] = useState<SearchBook[]>([]);
+export const useGetBooksByCategory = ({ api }: useGetBooksByCategoryProps) => {
+  const [books, setBooks] = useState<BookSearchFormat[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const elementRef = useRef<HTMLElement | null>(null);
 

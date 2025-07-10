@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
 import { CONSTANTS } from 'shared/lib';
-import { Book } from '../lib/types';
+import { BookWorkFormat } from '../lib/types';
 
-export const useBook = ({ id }: { id: string }) => {
-  const [book, setBook] = useState<Book | null>(null);
+export const useGetBookById = ({ id }: { id: string }) => {
+  const [book, setBook] = useState<BookWorkFormat | null>(null);
 
   useEffect(() => {
     const fetchBook = async () => {

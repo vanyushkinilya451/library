@@ -1,18 +1,23 @@
 import { User } from '@supabase/supabase-js';
-import { handleLogout } from 'features/auth/lib/handleLogout';
-import { useAuth } from 'features/auth/lib/useAuth';
+import { logoutUser } from 'entities/user';
 import { SearchPanel } from 'features/search';
 import NavContainer from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { BookstackSvg } from 'shared/assets';
-import { useAppSelector } from 'shared/lib';
+import { useAppDispatch, useAppSelector } from 'shared/lib';
 import { SkeletonLoader } from 'shared/ui';
 
 export const Nav = () => {
-  const { isLoggedIn, isLoading: isLoadingAuth } = useAuth();
   const navigate = useNavigate();
-  const { user }: { user: User | null } = useAppSelector((state) => state.user);
+  const { user, isLoading }: { user: User | null; isLoading: boolean } =
+    useAppSelector((state) => state.user);
+  const dispatch = useAppDispatch();
+
+  const handleLogout = () => {
+    dispatch(logoutUser());
+    navigate('/auth/login');
+  };
   return (
     <Navbar
       bg='dark'
@@ -40,14 +45,14 @@ export const Nav = () => {
       <SearchPanel />
 
       <NavContainer>
-        {!isLoggedIn && isLoadingAuth ? (
+        {isLoading ? (
           <SkeletonLoader
             width='200px'
             height='30px'
             background='var(--gradient-skeleton-dark)'
             margin='0 20px'
           />
-        ) : !isLoggedIn && !isLoadingAuth ? (
+        ) : !user && !isLoading ? (
           <>
             <NavLink
               to={'/auth/login'}
@@ -77,10 +82,7 @@ export const Nav = () => {
               Мои книги
             </NavLink>
             <a
-              onClick={() => {
-                handleLogout();
-                navigate('/auth/login');
-              }}
+              onClick={() => handleLogout()}
               className='nav__link'
             >
               Выйти

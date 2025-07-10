@@ -34,12 +34,10 @@ export const ProfileModal = ({ closeModal }: { closeModal: () => void }) => {
         .select('*')
         .eq('user_id', user?.id);
       if (error) {
-        console.log(error);
+        console.error('Ошибка при загрузке профиля:', error);
       } else if (data.length) {
-        console.log('Загруженные данные профиля:', data[0]);
         setProfileExists(true);
         setUserAttributes(data[0]);
-        console.log('Установлены атрибуты:', data[0]);
       }
     }
     fetchUser();

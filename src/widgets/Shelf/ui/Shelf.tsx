@@ -1,12 +1,14 @@
-import { BookCover, SearchBook, useBooks } from 'entities/book';
+import {
+  BookCover,
+  BookSearchFormat,
+  useGetBooksByCategory,
+} from 'entities/book';
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import { useNavigate } from 'react-router-dom';
 import { Arrow } from 'shared/assets';
-import {
-  CONSTANTS
-} from 'shared/lib';
+import { CONSTANTS } from 'shared/lib';
 import { useShelfScroll } from '../lib/useShelfScroll';
 import { FakeShelfLoader } from './FakeShelfLoader';
 
@@ -17,7 +19,7 @@ type ShelfProps = {
 
 export const Shelf = ({ shelfTitle, api }: ShelfProps) => {
   const navigate = useNavigate();
-  const { books, isLoading, elementRef } = useBooks({ api });
+  const { books, isLoading, elementRef } = useGetBooksByCategory({ api });
 
   const {
     isScrolled,
@@ -27,7 +29,7 @@ export const Shelf = ({ shelfTitle, api }: ShelfProps) => {
     bookshelf,
   } = useShelfScroll(books);
 
-  const handleBookClick = (book: SearchBook) => {
+  const handleBookClick = (book: BookSearchFormat) => {
     navigate(`/book/${book.cover_edition_key}`, { state: { book } });
   };
 
@@ -46,9 +48,6 @@ export const Shelf = ({ shelfTitle, api }: ShelfProps) => {
       ? author.slice(0, CONSTANTS.AUTHOR_CHAR_LIMIT) + '...'
       : author;
   };
-
-
-
 
   return (
     <article
@@ -94,7 +93,6 @@ export const Shelf = ({ shelfTitle, api }: ShelfProps) => {
                           {handleAuthor(book.author_name[0])}
                         </Card.Text>
                       )}
-
                     </Card.Body>
                   </Card>
                 </Col>

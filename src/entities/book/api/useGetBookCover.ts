@@ -1,22 +1,21 @@
 import { useEffect, useState } from 'react';
 import { CONSTANTS } from 'shared/lib';
 
-type useBookCoverProps = {
+type useGetBookCoverProps = {
   cover_id?: number;
   cover_i?: number;
   className?: string;
   coverSize?: 'S' | 'M' | 'L';
 };
 
-export const useBookCover = ({
+export const useGetBookCover = ({
   cover_id,
   cover_i,
   coverSize = 'S',
-}: useBookCoverProps) => {
+}: useGetBookCoverProps) => {
   const [isLoading, setIsLoading] = useState(true);
   const coverUrl = `${CONSTANTS.OL_COVER}${cover_id ? cover_id : cover_i}-${coverSize}.jpg`;
 
-  // Сбрасываем состояние загрузки при изменении cover_id или cover_i
   useEffect(() => {
     setIsLoading(true);
   }, [cover_id, cover_i]);

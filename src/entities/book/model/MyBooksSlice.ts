@@ -18,4 +18,4 @@ export const myBooksSlice = createSlice({
   },
 });
 
-export default myBooksSlice.reducer;
+export const myBooksReducer = myBooksSlice.reducer;

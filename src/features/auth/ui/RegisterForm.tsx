@@ -1,50 +1,44 @@
+import { registerUser } from 'entities/user';
 import { useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import { Link, useNavigate } from 'react-router-dom';
-import { useAppDispatch } from 'shared/lib';
+import { useAppDispatch, useAppSelector, validatePassword } from 'shared/lib';
 import styled from 'styled-components';
-import { signUp } from '../lib/signUp';
 
 export const RegisterForm = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [credentials, setCredentials] = useState({ email: '', password: '' });
   const [showPassword, setShowPassword] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const { isLoading } = useAppSelector((state) => state.user);
 
-  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEmail(e.target.value);
-  };
-
-  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setPassword(e.target.value);
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setCredentials({ ...credentials, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (email === '' || password === '') {
+    if (credentials.email === '' || credentials.password === '') {
       toast.error('Пожалуйста, заполните все поля');
       return;
     }
 
-    if (password.length < 8) {
-      toast.error('Пароль должен быть не менее 8 символов');
+    const errors = validatePassword(credentials.password);
+
+    if (errors.length > 0) {
+      errors.forEach((error) => toast.error(error));
       return;
     }
 
-    setIsLoading(true);
-    const { isSuccess, error } = await signUp(email, password, dispatch);
-
-    if (isSuccess) {
+    const result = await dispatch(registerUser(credentials));
+    if (result.meta.requestStatus == 'fulfilled') {
       navigate('/auth/verify-email');
     }
-    if (error) {
-      toast.error('Неверный логин или пароль');
-    }
 
-    setIsLoading(false);
+    if (result.meta.requestStatus == 'rejected') {
+      toast.error('Произошла ошибка при регистрации');
+    }
   };
 
   return (
@@ -58,16 +52,18 @@ export const RegisterForm = () => {
 
       <FormInput
         type='email'
-        onChange={handleEmailChange}
+        onChange={handleChange}
+        name='email'
         placeholder='Почта'
-        value={email}
+        value={credentials.email}
       />
 
       <FormInput
         type={showPassword ? 'text' : 'password'}
-        onChange={handlePasswordChange}
+        onChange={handleChange}
+        name='password'
         placeholder='Пароль'
-        value={password}
+        value={credentials.password}
       />
 
       <FormFooter>
@@ -94,7 +90,6 @@ export const RegisterForm = () => {
     </AuthForm>
   );
 };
-
 const AuthForm = styled.form`
   display: flex;
   flex-direction: column;

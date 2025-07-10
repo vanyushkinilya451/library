@@ -4,7 +4,6 @@ import styled from 'styled-components';
 
 export const AuthorPage = () => {
   const { authorId } = useParams();
-  console.log('authorId', authorId);
   const { author }: { author: Author | null } = useAuthor({
     id: authorId as string,
   });
