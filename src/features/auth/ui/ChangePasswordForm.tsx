@@ -2,12 +2,17 @@ import { useEffect, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { useLogin } from '../api/useLogin';
+import { useChangePassword } from '../api/useChangePassword';
 
-export const LoginForm = () => {
-  const [credentials, setCredentials] = useState({ email: '', password: '' });
+export const ChangePasswordForm = () => {
+  const [credentials, setCredentials] = useState({
+    email: '',
+    password: '',
+    passwordConfirm: '',
+  });
   const [showPassword, setShowPassword] = useState(false);
-  const { login, error, passwordErrors, isLoading } = useLogin();
+  const { changePassword, isLoading, error, passwordErrors, isSuccess } =
+    useChangePassword();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCredentials({ ...credentials, [e.target.name]: e.target.value });
@@ -15,7 +20,7 @@ export const LoginForm = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    login(credentials);
+    changePassword(credentials);
   };
 
   useEffect(() => {
@@ -26,31 +31,40 @@ export const LoginForm = () => {
     if (passwordErrors.length > 0) {
       passwordErrors.forEach((error) => toast.error(error));
     }
-  }, [error, passwordErrors]);
+
+    if (isSuccess) {
+      toast.success('Пароль успешно сброшен');
+    }
+  }, [error, passwordErrors, isSuccess]);
 
   return (
     <AuthForm onSubmit={(e) => handleSubmit(e)}>
       <Toaster />
-      <FormTitle>С возвращением</FormTitle>
-      <FormSubtitle>Привет! Рады снова Вас видеть!</FormSubtitle>
-      <FormDescription>
-        Введите ваш логин и пароль, чтобы войти в приложение
-      </FormDescription>
+      <FormTitle>Сброс пароля</FormTitle>
+      <FormSubtitle>Введите вашу почту и новый пароль</FormSubtitle>
 
       <FormInput
         type='email'
         onChange={handleChange}
-        placeholder='Почта'
         name='email'
+        placeholder='Почта'
         value={credentials.email}
       />
 
       <FormInput
         type={showPassword ? 'text' : 'password'}
         onChange={handleChange}
-        placeholder='Пароль'
         name='password'
+        placeholder='Новый пароль'
         value={credentials.password}
+      />
+
+      <FormInput
+        type={showPassword ? 'text' : 'password'}
+        onChange={handleChange}
+        name='passwordConfirm'
+        placeholder='Повторите пароль'
+        value={credentials.passwordConfirm}
       />
 
       <FormFooter>
@@ -63,25 +77,19 @@ export const LoginForm = () => {
             Показать пароль
           </FormLabel>
         </FormCheckboxWrapper>
-        <AccentLink to={'/auth/reset-password'}>Забыли пароль?</AccentLink>
       </FormFooter>
-
       <SubmitButton
         type='submit'
         disabled={isLoading}
       >
-        {isLoading ? 'Загрузка...' : 'Войти'}
+        {isLoading ? 'Загрузка...' : 'Изменить пароль'}
       </SubmitButton>
       <RegisterPrompt>
-        Впервые здесь?{' '}
-        <AccentLink to={'/auth/register'}>
-          Зарегистрируйте Ваш аккаунт
-        </AccentLink>
+        Вспомнили пароль? <AccentLink to={'/auth/login'}>Войти</AccentLink>
       </RegisterPrompt>
     </AuthForm>
   );
 };
-
 const AuthForm = styled.form`
   display: flex;
   flex-direction: column;
@@ -109,16 +117,6 @@ const FormSubtitle = styled.h2`
   text-align: center;
   margin: 0;
   margin: 30px 0 5px 0;
-`;
-
-const FormDescription = styled.h3`
-  color: var(--auth-secondary-text);
-  margin: 0;
-  font-style: italic;
-  font-size: 1rem;
-  font-weight: 400;
-  text-align: center;
-  user-select: none;
 `;
 
 const FormInput = styled.input`

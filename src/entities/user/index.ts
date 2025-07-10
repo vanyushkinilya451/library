@@ -3,7 +3,6 @@ export {
   loginUser,
   logoutUser,
   registerUser,
-  setUser,
   userReducer,
   userSlice,
 } from './model/UserSlice';

@@ -1,5 +1,12 @@
 import { AuthLayout, MainLayout } from 'app/layouts';
-import { LoginForm, RegisterForm, VerifyEmail } from 'features/auth';
+import {
+  ChangePasswordForm,
+  LoginForm,
+  RegisterForm,
+  VerifyEmailForm,
+  VerifyResetPasswordForm,
+} from 'features/auth';
+import { ResetPasswordForm } from 'features/auth/ui/ResetPasswordForm';
 import { AuthorPage } from 'pages/author';
 import { BookPage } from 'pages/book';
 import { Categories } from 'pages/categories';
@@ -58,7 +65,19 @@ export const router = createBrowserRouter([
       },
       {
         path: 'verify-email',
-        Component: VerifyEmail,
+        Component: VerifyEmailForm,
+      },
+      {
+        path: 'verify-reset-password',
+        Component: VerifyResetPasswordForm,
+      },
+      {
+        path: 'reset-password',
+        Component: ResetPasswordForm,
+      },
+      {
+        path: 'change-password',
+        Component: ChangePasswordForm,
       },
     ],
   },

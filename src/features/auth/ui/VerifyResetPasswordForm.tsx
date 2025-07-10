@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import styled, { keyframes } from 'styled-components';
 
-export const VerifyEmail = () => {
+export const VerifyResetPasswordForm = () => {
   const navigate = useNavigate();
 
   const handleGoHome = () => {
@@ -34,7 +34,7 @@ export const VerifyEmail = () => {
         <Title>Проверьте вашу почту</Title>
         <Description>
           Мы отправили письмо с подтверждением на ваш email адрес. Пожалуйста,
-          проверьте почту и перейдите по ссылке для завершения регистрации.
+          проверьте почту и перейдите по ссылке для сброса пароля.
         </Description>
 
         <InfoBox>

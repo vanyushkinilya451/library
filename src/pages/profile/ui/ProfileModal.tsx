@@ -1,51 +1,29 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { UnknownPerson } from 'shared/assets';
 import { supabase, useAppSelector } from 'shared/lib';
 import styled from 'styled-components';
-
-type UserAttributes = {
-  firstname: string;
-  lastname: string;
-  birthdate: string;
-  gender: string;
-  patronymic: string;
-};
+import { UserProfile } from '../lib/types';
 
 export const ProfileModal = ({ closeModal }: { closeModal: () => void }) => {
-  const [isLoading, setIsLoading] = useState(false);
   const user = useAppSelector((state) => state.user.user);
-  const [profileExists, setProfileExists] = useState(false);
-  const [userAttributes, setUserAttributes] = useState<UserAttributes>({
-    firstname: '',
-    lastname: '',
-    birthdate: '',
-    gender: '',
-    patronymic: '',
+  const { profile } = useAppSelector((state) => state.user);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const [userAttributes, setUserAttributes] = useState<UserProfile>({
+    firstname: profile?.firstname || '',
+    lastname: profile?.lastname || '',
+    birthdate: profile?.birthdate || '',
+    gender: profile?.gender || '',
+    patronymic: profile?.patronymic || '',
   });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUserAttributes({ ...userAttributes, [e.target.name]: e.target.value });
   };
 
-  useEffect(() => {
-    async function fetchUser() {
-      const { data, error } = await supabase
-        .from('profiles')
-        .select('*')
-        .eq('user_id', user?.id);
-      if (error) {
-        console.error('Ошибка при загрузке профиля:', error);
-      } else if (data.length) {
-        setProfileExists(true);
-        setUserAttributes(data[0]);
-      }
-    }
-    fetchUser();
-  }, [user]);
-
   const handleSave = async () => {
-    setIsLoading(true);
     try {
+      setIsLoading(true);
       const { error } = await supabase.from('profiles').upsert(
         {
           user_id: user?.id,
@@ -67,10 +45,9 @@ export const ProfileModal = ({ closeModal }: { closeModal: () => void }) => {
         closeModal();
         window.location.reload();
       }
+      setIsLoading(false);
     } catch (err) {
       console.error('Неожиданная ошибка:', err);
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -79,7 +56,7 @@ export const ProfileModal = ({ closeModal }: { closeModal: () => void }) => {
       <ModalContent onClick={(e) => e.stopPropagation()}>
         <ModalHeader>
           <ModalTitle>
-            {profileExists ? 'Редактировать профиль' : 'Заполнить профиль'}
+            {profile ? 'Редактировать профиль' : 'Заполнить профиль'}
           </ModalTitle>
           <CloseButton onClick={closeModal}>
             <CloseIcon>×</CloseIcon>
@@ -189,7 +166,7 @@ export const ProfileModal = ({ closeModal }: { closeModal: () => void }) => {
             onClick={handleSave}
             disabled={isLoading}
           >
-            {profileExists ? 'Сохранить изменения' : 'Сохранить профиль'}
+            {profile ? 'Сохранить изменения' : 'Сохранить профиль'}
           </SaveButton>
         </ModalFooter>
       </ModalContent>
@@ -254,7 +231,6 @@ const CloseButton = styled.button`
   justify-content: center;
 
   &:hover {
-    background: var(--background-secondary);
     transform: scale(1.1);
   }
 `;

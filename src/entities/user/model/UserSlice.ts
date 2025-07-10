@@ -1,11 +1,20 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { Session, User } from '@supabase/supabase-js';
 import { supabase } from 'shared/lib';
+
+export type UserProfile = {
+  firstname: string;
+  lastname: string;
+  birthdate: string;
+  gender: string;
+  patronymic: string;
+};
 
 type UserState = {
   user: User | null;
   session: Session | null;
   error: string;
+  profile: UserProfile | null;
   isLoading: boolean;
 };
 
@@ -14,6 +23,7 @@ const initialState: UserState = {
   session: null,
   error: '',
   isLoading: false,
+  profile: null,
 };
 
 export const registerUser = createAsyncThunk(
@@ -29,7 +39,7 @@ export const registerUser = createAsyncThunk(
         return thunkAPI.rejectWithValue(error);
       }
 
-      return { error, data };
+      return { data };
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
@@ -49,7 +59,7 @@ export const loginUser = createAsyncThunk(
         return thunkAPI.rejectWithValue(error);
       }
 
-      return { error, data };
+      return { data };
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
@@ -69,9 +79,37 @@ export const getUserAndSession = createAsyncThunk(
         await supabase.auth.getUser();
       const { data: sessionData, error: sessionError } =
         await supabase.auth.getSession();
-      return { userData, userError, sessionData, sessionError };
+
+      if (userError) {
+        return thunkAPI.rejectWithValue(userError);
+      }
+
+      if (sessionError) {
+        return thunkAPI.rejectWithValue(sessionError);
+      }
+
+      return { userData, sessionData };
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
+export const getUserProfile = createAsyncThunk(
+  'auth/getUserProfile',
+  async (userId: string, thunkApi) => {
+    try {
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('user_id', userId);
+
+      if (error) {
+        return thunkApi.rejectWithValue(error);
+      }
+      return { data };
+    } catch (error) {
+      return thunkApi.rejectWithValue(error);
     }
   }
 );
@@ -79,12 +117,7 @@ export const getUserAndSession = createAsyncThunk(
 export const userSlice = createSlice({
   name: 'user',
   initialState,
-  reducers: {
-    setUser(state, action: PayloadAction<UserState>) {
-      state.user = action.payload.user;
-      state.session = action.payload.session;
-    },
-  },
+  reducers: {},
   extraReducers(builder) {
     builder.addCase(registerUser.pending, (state) => {
       state.isLoading = true;
@@ -119,11 +152,15 @@ export const userSlice = createSlice({
       state.user = null;
       state.session = null;
       state.isLoading = false;
+      state.profile = null;
       state.error = '';
     });
     builder.addCase(logoutUser.rejected, (state, action) => {
       state.isLoading = false;
       state.error = action.error?.message || 'Произошла ошибка при выходе';
+      state.profile = null;
+      state.error = '';
+      state.profile = null;
     });
     builder.addCase(getUserAndSession.pending, (state) => {
       state.isLoading = true;
@@ -140,8 +177,21 @@ export const userSlice = createSlice({
         action.error?.message ||
         'Произошла ошибка при получении пользователя и сессии';
     });
+    builder.addCase(getUserProfile.pending, (state) => {
+      state.isLoading = true;
+    });
+    builder.addCase(getUserProfile.fulfilled, (state, action) => {
+      state.profile = action.payload.data[0];
+      state.error = '';
+      state.isLoading = false;
+    });
+    builder.addCase(getUserProfile.rejected, (state, action) => {
+      state.isLoading = false;
+      state.profile = null;
+      state.error =
+        action.error?.message || 'Произошла ошибка при получении профиля';
+    });
   },
 });
 
 export const userReducer = userSlice.reducer;
-export const { setUser } = userSlice.actions;

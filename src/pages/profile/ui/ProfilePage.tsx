@@ -1,38 +1,66 @@
 import { User } from '@supabase/supabase-js';
+import { getUserProfile } from 'entities/user/model/UserSlice';
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import toast, { Toaster } from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
 import { UnknownPerson } from 'shared/assets';
-import { formatDate, supabase, useAppSelector, useModal } from 'shared/lib';
-import { SkeletonLoader } from 'shared/ui';
+import {
+  formatDate,
+  supabase,
+  useAppDispatch,
+  useAppSelector,
+  useModal,
+} from 'shared/lib';
+import { FullScreenLoader, SkeletonLoader } from 'shared/ui';
 import styled from 'styled-components';
-import { UserProfile } from '../lib/types';
+import { UserProfile } from '../../../entities/user/model/UserSlice';
 import { ProfileModal } from './ProfileModal';
 
 export const ProfilePage = () => {
   const { user }: { user: User | null } = useAppSelector((state) => state.user);
-  const { userId } = useParams();
-  const [profile, setProfile] = useState<UserProfile | null>(null);
+  const { profile }: { profile: UserProfile | null } = useAppSelector(
+    (state) => state.user
+  );
   const { isModalOpen, openModal, closeModal } = useModal();
-  const [isLoading, setIsLoading] = useState(true);
+  const { isLoading } = useAppSelector((state) => state.user);
+  const [isLoadingResetPassword, setIsLoadingResetPassword] = useState(false);
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    async function fetchUser() {
-      const { data, error } = await supabase
-        .from('profiles')
-        .select('*')
-        .eq('user_id', userId);
-      if (error) {
-        setIsLoading(false);
-      } else if (data) {
-        setProfile(data[0]);
-        setIsLoading(false);
+    async function getProfile() {
+      if (user) {
+        await dispatch(getUserProfile(user.id));
       }
     }
-    fetchUser();
-  }, [userId]);
+    getProfile();
+  }, [user]);
+
+  const handleChangePassword = async () => {
+    setIsLoadingResetPassword(true);
+    if (user && user.email) {
+      const { error } = await supabase.auth.resetPasswordForEmail(user.email, {
+        redirectTo: 'http://localhost:8080/auth/reset-password',
+      });
+
+      if (error) {
+        toast.error('Произошла ошибка при сбросе пароля');
+      } else {
+        navigate('/auth/verify-reset-password');
+      }
+    }
+    setIsLoadingResetPassword(false);
+  };
 
   return (
     <Container>
+      {isLoadingResetPassword && (
+        <FullScreenLoader
+          text='Сброс пароля...'
+          subText='Пожалуйста, подождите...'
+        />
+      )}
+      <Toaster />
       <Content>
         <ProfileCard>
           <AvatarSection>
@@ -158,11 +186,15 @@ export const ProfilePage = () => {
             <ActionButton
               onClick={openModal}
               primary
+              disabled={isLoading}
             >
               <ButtonIcon>✏️</ButtonIcon>
               {profile ? 'Редактировать профиль' : 'Заполнить профиль'}
             </ActionButton>
-            <ActionButton>
+            <ActionButton
+              onClick={handleChangePassword}
+              disabled={isLoading}
+            >
               <ButtonIcon>🔒</ButtonIcon>
               Изменить пароль
             </ActionButton>
@@ -362,6 +394,16 @@ const ActionsSection = styled.div`
   flex-wrap: wrap;
   gap: 15px;
   justify-content: center;
+
+  :disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+
+    &:hover {
+      transform: none;
+      box-shadow: none;
+    }
+  }
 `;
 
 const ActionButton = styled.button<{ primary?: boolean }>`
@@ -387,6 +429,16 @@ const ActionButton = styled.button<{ primary?: boolean }>`
 
   &:active {
     transform: translateY(0);
+  }
+
+  :disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+
+    &:hover {
+      transform: none;
+      box-shadow: none;
+    }
   }
 `;
 

@@ -1,16 +1,13 @@
-import { registerUser } from 'entities/user';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
-import { Link, useNavigate } from 'react-router-dom';
-import { useAppDispatch, useAppSelector, validatePassword } from 'shared/lib';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { useRegister } from '../api/useRegister';
 
 export const RegisterForm = () => {
   const [credentials, setCredentials] = useState({ email: '', password: '' });
   const [showPassword, setShowPassword] = useState(false);
-  const navigate = useNavigate();
-  const dispatch = useAppDispatch();
-  const { isLoading } = useAppSelector((state) => state.user);
+  const { register, error, passwordErrors, isLoading } = useRegister();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCredentials({ ...credentials, [e.target.name]: e.target.value });
@@ -18,28 +15,18 @@ export const RegisterForm = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    if (credentials.email === '' || credentials.password === '') {
-      toast.error('Пожалуйста, заполните все поля');
-      return;
-    }
-
-    const errors = validatePassword(credentials.password);
-
-    if (errors.length > 0) {
-      errors.forEach((error) => toast.error(error));
-      return;
-    }
-
-    const result = await dispatch(registerUser(credentials));
-    if (result.meta.requestStatus == 'fulfilled') {
-      navigate('/auth/verify-email');
-    }
-
-    if (result.meta.requestStatus == 'rejected') {
-      toast.error('Произошла ошибка при регистрации');
-    }
+    register(credentials);
   };
+
+  useEffect(() => {
+    if (error) {
+      toast.error(error);
+    }
+
+    if (passwordErrors.length > 0) {
+      passwordErrors.forEach((error) => toast.error(error));
+    }
+  }, [error, passwordErrors]);
 
   return (
     <AuthForm onSubmit={(e) => handleSubmit(e)}>
