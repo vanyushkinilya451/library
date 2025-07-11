@@ -1,6 +1,7 @@
+import { getUserProfile } from 'entities/user/model/UserSlice';
 import { useState } from 'react';
 import { UnknownPerson } from 'shared/assets';
-import { supabase, useAppSelector } from 'shared/lib';
+import { supabase, useAppDispatch, useAppSelector } from 'shared/lib';
 import styled from 'styled-components';
 import { UserProfile } from '../lib/types';
 
@@ -8,7 +9,7 @@ export const ProfileModal = ({ closeModal }: { closeModal: () => void }) => {
   const user = useAppSelector((state) => state.user.user);
   const { profile } = useAppSelector((state) => state.user);
   const [isLoading, setIsLoading] = useState(false);
-
+  const dispatch = useAppDispatch();
   const [userAttributes, setUserAttributes] = useState<UserProfile>({
     firstname: profile?.firstname || '',
     lastname: profile?.lastname || '',
@@ -43,7 +44,9 @@ export const ProfileModal = ({ closeModal }: { closeModal: () => void }) => {
         console.error('Ошибка при сохранении профиля:', error);
       } else {
         closeModal();
-        window.location.reload();
+        if (user) {
+          dispatch(getUserProfile(user.id));
+        }
       }
       setIsLoading(false);
     } catch (err) {

@@ -1,16 +1,18 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { myBooksReducer, openlibraryApi } from 'entities/book';
+import { openlibraryApi, supabaseApi } from 'entities/book';
 import { userReducer } from 'entities/user';
 
 export const store = configureStore({
   reducer: {
     user: userReducer,
-    myBooks: myBooksReducer,
     [openlibraryApi.reducerPath]: openlibraryApi.reducer,
+    [supabaseApi.reducerPath]: supabaseApi.reducer,
   },
 
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(openlibraryApi.middleware),
+    getDefaultMiddleware()
+      .concat(openlibraryApi.middleware)
+      .concat(supabaseApi.middleware),
 });
 
 export type RootState = ReturnType<typeof store.getState>;

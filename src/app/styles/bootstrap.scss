@@ -48,7 +48,7 @@
     width: 150px;
     flex: 0 0 auto;
     padding: 10px 10px 0 10px;
-    scroll-snap-align: start;
+    scroll-snap-align: center;
     height: 300px;
   }
 
@@ -62,7 +62,9 @@
     }
     flex-wrap: nowrap;
     overflow: auto;
-    scroll-snap-type: x mandatory;
+    scroll-snap-type: x proximity;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch; /* Для лучшей производительности на iOS */
   }
 
   &__nav {
@@ -120,10 +122,14 @@
     width: 20px;
     height: 20px;
     cursor: pointer;
-    fill: white;
+    path {
+      fill: white;
+    }
 
     &--filled {
-      fill: var(--orange-accent);
+      path {
+        fill: var(--orange-accent);
+      }
     }
   }
 

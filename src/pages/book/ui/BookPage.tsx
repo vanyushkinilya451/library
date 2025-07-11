@@ -1,7 +1,4 @@
-import {
-  BookCover,
-  useGetBookByIdQuery
-} from 'entities/book';
+import { BookCover, useGetBookByIdQuery } from 'entities/book';
 import { useGetBookAdditionalInfoQuery } from 'entities/book/api/openlibrary';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
@@ -9,10 +6,11 @@ import styled from 'styled-components';
 export const BookPage = () => {
   const { bookId } = useParams();
   const { data: book } = useGetBookByIdQuery(bookId as string);
-  const { data: additionalInfo } = useGetBookAdditionalInfoQuery(bookId as string);
+  const { data: additionalInfo } = useGetBookAdditionalInfoQuery(
+    bookId as string
+  );
 
-
-  console.log('book', book)
+  console.log('book', book);
   return (
     book && (
       <Container>
@@ -39,7 +37,9 @@ export const BookPage = () => {
               <div>
                 {additionalInfo?.author_name.map((author, index) => (
                   <div>
-                    {additionalInfo?.author_name.length === 1 ? 'Автор:' : 'Авторы:'}
+                    {additionalInfo?.author_name.length === 1
+                      ? 'Автор:'
+                      : 'Авторы:'}
                     <TextHighlight>{author}</TextHighlight>
                     {index !== additionalInfo?.author_name.length - 1 && ', '}
                   </div>

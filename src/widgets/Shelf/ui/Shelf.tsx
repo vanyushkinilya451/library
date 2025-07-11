@@ -1,15 +1,8 @@
-import {
-  BookCover,
-  BookSearchFormat,
-  useGetBooksByCategoryQuery,
-} from 'entities/book';
-import Card from 'react-bootstrap/Card';
-import Col from 'react-bootstrap/Col';
+import { useGetBooksByCategoryQuery } from 'entities/book';
 import Row from 'react-bootstrap/Row';
-import { useNavigate } from 'react-router-dom';
 import { Arrow } from 'shared/assets';
-import { CONSTANTS } from 'shared/lib';
 import { useShelfScroll } from '../lib/useShelfScroll';
+import { BookCard } from './BookShelfCard';
 import { FakeShelfLoader } from './FakeShelfLoader';
 
 type ShelfProps = {
@@ -18,7 +11,6 @@ type ShelfProps = {
 };
 
 export const Shelf = ({ shelfTitle, api }: ShelfProps) => {
-  const navigate = useNavigate();
   const { data, isLoading } = useGetBooksByCategoryQuery(api);
 
   const {
@@ -27,33 +19,10 @@ export const Shelf = ({ shelfTitle, api }: ShelfProps) => {
     handleScrollRight,
     handleScrollLeft,
     bookshelf,
-  } = useShelfScroll();
-
-  const handleBookClick = (book: BookSearchFormat) => {
-    navigate(`/book/${book.cover_edition_key}`);
-  };
-
-  const handleAuthorClick = (author: string) => {
-    navigate(`/author/${author}`, { state: { author } });
-  };
-
-  const handleTitle = (title: string) => {
-    return title.length > CONSTANTS.TITLE_CHAR_LIMIT
-      ? title.slice(0, CONSTANTS.TITLE_CHAR_LIMIT) + '...'
-      : title;
-  };
-
-  const handleAuthor = (author: string) => {
-    return author.length > CONSTANTS.AUTHOR_CHAR_LIMIT
-      ? author.slice(0, CONSTANTS.AUTHOR_CHAR_LIMIT) + '...'
-      : author;
-  };
-
+  } = useShelfScroll(isLoading);
 
   return (
-    <article
-      className='shelf'
-    >
+    <article className='shelf'>
       <Row>
         <h1 className='shelf__title'>{shelfTitle}</h1>
       </Row>
@@ -67,35 +36,10 @@ export const Shelf = ({ shelfTitle, api }: ShelfProps) => {
           {data?.docs?.map((book) => {
             if (book.cover_edition_key) {
               return (
-                <Col
-                  key={book.key}
-                  className='shelf__item'
-                >
-                  <Card className='card'>
-                    <BookCover
-                      className='card__cover'
-                      cover_id={book.cover_id}
-                      cover_i={book.cover_i}
-                      onClick={() => handleBookClick(book)}
-                    />
-                    <Card.Body className='card__description'>
-                      <Card.Title
-                        className='card__title'
-                        onClick={() => handleBookClick(book)}
-                      >
-                        {handleTitle(book.title)}
-                      </Card.Title>
-                      {book.author_name && (
-                        <Card.Text
-                          className='card__author'
-                          onClick={() => handleAuthorClick(book.author_key[0])}
-                        >
-                          {handleAuthor(book.author_name[0])}
-                        </Card.Text>
-                      )}
-                    </Card.Body>
-                  </Card>
-                </Col>
+                <BookCard
+                  book={book}
+                  key={book.cover_edition_key}
+                />
               );
             }
           })}

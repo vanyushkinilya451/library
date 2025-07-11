@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { CONSTANTS } from 'shared/lib';
 
-export const useShelfScroll = () => {
+export const useShelfScroll = (isLoading: boolean) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isScrollEnd, setIsScrollEnd] = useState(false);
   const bookshelf = useRef<HTMLDivElement>(null);
@@ -12,7 +12,7 @@ export const useShelfScroll = () => {
       setIsScrolled(bookshelf.current.scrollLeft > 0);
       setIsScrollEnd(
         bookshelf.current.scrollLeft >
-        bookshelf.current.scrollWidth - bookshelf.current.clientWidth - 1
+          bookshelf.current.scrollWidth - bookshelf.current.clientWidth - 1
       );
     };
 
@@ -23,7 +23,7 @@ export const useShelfScroll = () => {
     return () => {
       container?.removeEventListener('scroll', handleScroll);
     };
-  }, []);
+  }, [isLoading]);
 
   const handleScrollRight = () => {
     if (!bookshelf.current) return;

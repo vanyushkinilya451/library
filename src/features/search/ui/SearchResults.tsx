@@ -12,7 +12,7 @@ export const SearchResults = ({ books }: SearchResutlsProps) => {
   const navigate = useNavigate();
 
   const handleBookClick = (book: BookSearchFormat) => {
-    navigate(`/book/${book.cover_edition_key}`, { state: { book } });
+    navigate(`/book/${book.cover_i || book.cover_id}`, { state: { book } });
   };
 
   return (
