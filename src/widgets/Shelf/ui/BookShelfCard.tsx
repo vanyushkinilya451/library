@@ -4,6 +4,7 @@ import {
   BookSearchFormat,
   useAddToMyBooksMutation,
   useGetMyBooksQuery,
+  useRemoveFromMyBooksMutation,
 } from 'entities/book';
 import { Card, Col } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
@@ -15,11 +16,12 @@ type BookCardProps = {
   book: BookSearchFormat;
 };
 
-export const BookCard = ({ book }: BookCardProps) => {
+export const BookShelfCard = ({ book }: BookCardProps) => {
   const navigate = useNavigate();
   const { user } = useAppSelector((state) => state.user);
   const { data: myBooks } = useGetMyBooksQuery(user?.id ?? skipToken);
   const [addToMyBooks] = useAddToMyBooksMutation();
+  const [removeFromMyBooks] = useRemoveFromMyBooksMutation();
   const handleBookClick = (book: BookSearchFormat) => {
     navigate(`/book/${book.cover_edition_key}`);
   };
@@ -28,10 +30,17 @@ export const BookCard = ({ book }: BookCardProps) => {
     navigate(`/author/${author}`, { state: { author } });
   };
 
-  const handleStarClick = (book: BookSearchFormat) => {
+  const handleAddToMyBooks = (book: BookSearchFormat) => {
     const bookId = book.cover_i ? book.cover_i : book.cover_id;
     if (bookId && user?.id) {
       addToMyBooks({ bookId, userId: user.id });
+    }
+  };
+
+  const handleRemoveFromMyBooks = (book: BookSearchFormat) => {
+    const bookId = book.cover_i ? book.cover_i : book.cover_id;
+    if (bookId && user?.id) {
+      removeFromMyBooks({ bookId, userId: user.id });
     }
   };
 
@@ -62,14 +71,17 @@ export const BookCard = ({ book }: BookCardProps) => {
               {handleBookAuthor(book.author_name[0])}
             </Card.Text>
           )}
-          <Star
-            className={
-              myBooks?.includes((book.cover_i || book.cover_id)!)
-                ? 'card__star card__star--filled'
-                : 'card__star'
-            }
-            onClick={() => handleStarClick(book)}
-          />
+          {myBooks?.includes((book.cover_i || book.cover_id)!) ? (
+            <Star
+              className='card__star card__star--filled'
+              onClick={() => handleRemoveFromMyBooks(book)}
+            />
+          ) : (
+            <Star
+              className='card__star'
+              onClick={() => handleAddToMyBooks(book)}
+            />
+          )}
         </Card.Body>
       </Card>
     </Col>

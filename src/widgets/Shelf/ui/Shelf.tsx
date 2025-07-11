@@ -2,7 +2,7 @@ import { useGetBooksByCategoryQuery } from 'entities/book';
 import Row from 'react-bootstrap/Row';
 import { Arrow } from 'shared/assets';
 import { useShelfScroll } from '../lib/useShelfScroll';
-import { BookCard } from './BookShelfCard';
+import { BookShelfCard } from './BookShelfCard';
 import { FakeShelfLoader } from './FakeShelfLoader';
 
 type ShelfProps = {
@@ -11,8 +11,8 @@ type ShelfProps = {
 };
 
 export const Shelf = ({ shelfTitle, api }: ShelfProps) => {
-  const { data, isLoading } = useGetBooksByCategoryQuery(api);
-
+  const { data: { docs: books } = {}, isLoading } =
+    useGetBooksByCategoryQuery(api);
   const {
     isScrolled,
     isScrollEnd,
@@ -23,9 +23,7 @@ export const Shelf = ({ shelfTitle, api }: ShelfProps) => {
 
   return (
     <article className='shelf'>
-      <Row>
-        <h1 className='shelf__title'>{shelfTitle}</h1>
-      </Row>
+      <h1 className='shelf__title'>{shelfTitle}</h1>
       {isLoading ? (
         <FakeShelfLoader />
       ) : (
@@ -33,16 +31,15 @@ export const Shelf = ({ shelfTitle, api }: ShelfProps) => {
           ref={bookshelf}
           className='shelf__container'
         >
-          {data?.docs?.map((book) => {
-            if (book.cover_edition_key) {
-              return (
-                <BookCard
+          {books?.map(
+            (book) =>
+              book.cover_edition_key && (
+                <BookShelfCard
                   book={book}
-                  key={book.cover_edition_key}
+                  key={book.key}
                 />
-              );
-            }
-          })}
+              )
+          )}
           {isScrolled && (
             <button
               className='shelf__nav shelf__nav--left'

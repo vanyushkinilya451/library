@@ -51,7 +51,45 @@ export const supabaseApi = createApi({
         }
       },
     }),
+    removeFromMyBooks: builder.mutation<
+      number[],
+      { userId: string; bookId: number } & Partial<{
+        userId: string;
+        bookId: number;
+      }>
+    >({
+      queryFn: async (arg) => {
+        const { data, error } = await supabase
+          .from('mybooks')
+          .delete()
+          .eq('book_id', arg.bookId)
+          .eq('user_id', arg.userId);
+        if (error) return { error: error.message };
+        if (!data) return { error: 'Произошла ошибка' };
+        return { data: data as number[] };
+      },
+      invalidatesTags: ['MyBooks'],
+      onQueryStarted: async (
+        { userId, ...patch },
+        { dispatch, queryFulfilled }
+      ) => {
+        const patchResult = dispatch(
+          supabaseApi.util.updateQueryData('getMyBooks', userId, (draft) => {
+            draft.splice(draft.indexOf(patch.bookId), 1);
+          })
+        );
+        try {
+          await queryFulfilled;
+        } catch {
+          patchResult.undo();
+        }
+      },
+    }),
   }),
 });
 
-export const { useGetMyBooksQuery, useAddToMyBooksMutation } = supabaseApi;
+export const {
+  useGetMyBooksQuery,
+  useAddToMyBooksMutation,
+  useRemoveFromMyBooksMutation,
+} = supabaseApi;
