@@ -5,6 +5,7 @@ export const CONSTANTS = {
   SEARCH_LIMIT: 5,
   SHELF_LIMIT: 15,
   CATEGORIES_LIMIT: 3,
+  OPEN_LIBRARY_URL: 'https://openlibrary.org',
   OL_SEARCH_BOOKS: 'https://openlibrary.org/search.json',
   OL_SEARCH_AUTHORS: 'https://openlibrary.org/search/authors.json',
   OL_BOOK: 'https://openlibrary.org/books',

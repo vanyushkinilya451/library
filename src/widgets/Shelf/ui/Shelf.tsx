@@ -1,7 +1,7 @@
 import {
   BookCover,
   BookSearchFormat,
-  useGetBooksByCategory,
+  useGetBooksByCategoryQuery,
 } from 'entities/book';
 import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
@@ -19,7 +19,7 @@ type ShelfProps = {
 
 export const Shelf = ({ shelfTitle, api }: ShelfProps) => {
   const navigate = useNavigate();
-  const { books, isLoading, elementRef } = useGetBooksByCategory({ api });
+  const { data, isLoading } = useGetBooksByCategoryQuery(api);
 
   const {
     isScrolled,
@@ -27,10 +27,10 @@ export const Shelf = ({ shelfTitle, api }: ShelfProps) => {
     handleScrollRight,
     handleScrollLeft,
     bookshelf,
-  } = useShelfScroll(books);
+  } = useShelfScroll();
 
   const handleBookClick = (book: BookSearchFormat) => {
-    navigate(`/book/${book.cover_edition_key}`, { state: { book } });
+    navigate(`/book/${book.cover_edition_key}`);
   };
 
   const handleAuthorClick = (author: string) => {
@@ -49,9 +49,9 @@ export const Shelf = ({ shelfTitle, api }: ShelfProps) => {
       : author;
   };
 
+
   return (
     <article
-      ref={elementRef}
       className='shelf'
     >
       <Row>
@@ -64,7 +64,7 @@ export const Shelf = ({ shelfTitle, api }: ShelfProps) => {
           ref={bookshelf}
           className='shelf__container'
         >
-          {books?.map((book) => {
+          {data?.docs?.map((book) => {
             if (book.cover_edition_key) {
               return (
                 <Col

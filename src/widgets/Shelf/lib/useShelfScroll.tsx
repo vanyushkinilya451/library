@@ -1,8 +1,7 @@
-import { BookSearchFormat } from 'entities/book';
 import { useEffect, useRef, useState } from 'react';
 import { CONSTANTS } from 'shared/lib';
 
-export const useShelfScroll = (books: BookSearchFormat[]) => {
+export const useShelfScroll = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isScrollEnd, setIsScrollEnd] = useState(false);
   const bookshelf = useRef<HTMLDivElement>(null);
@@ -13,7 +12,7 @@ export const useShelfScroll = (books: BookSearchFormat[]) => {
       setIsScrolled(bookshelf.current.scrollLeft > 0);
       setIsScrollEnd(
         bookshelf.current.scrollLeft >
-          bookshelf.current.scrollWidth - bookshelf.current.clientWidth - 1
+        bookshelf.current.scrollWidth - bookshelf.current.clientWidth - 1
       );
     };
 
@@ -24,7 +23,7 @@ export const useShelfScroll = (books: BookSearchFormat[]) => {
     return () => {
       container?.removeEventListener('scroll', handleScroll);
     };
-  }, [books]);
+  }, []);
 
   const handleScrollRight = () => {
     if (!bookshelf.current) return;

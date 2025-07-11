@@ -1,12 +1,13 @@
+import { useState } from 'react';
 import { SkeletonLoader } from 'shared/ui';
-import { useGetBookCover } from '../api/useGetBookCover';
+import { handleCoverUrlProps } from '../lib/handleCoverUrl';
 
 type BookCoverProps = {
   onClick?: () => void;
   cover_id?: number;
   cover_i?: number;
   className?: string;
-  coverSize?: 'S' | 'M' | 'L';
+  size?: 'S' | 'M' | 'L';
   skeletonHeight?: string;
 };
 
@@ -15,13 +16,13 @@ export const BookCover = ({
   cover_i,
   className = 'cover-image',
   onClick,
-  coverSize = 'M',
+  size = 'M',
   skeletonHeight = '180px',
 }: BookCoverProps) => {
-  const { isLoading, setIsLoading, coverUrl } = useGetBookCover({
-    cover_id,
-    cover_i,
-    coverSize,
+  const [isLoading, setIsLoading] = useState(true);
+  const coverUrl = handleCoverUrlProps({
+    id: (cover_i ? cover_i : cover_id)!,
+    size,
   });
   return (
     <>

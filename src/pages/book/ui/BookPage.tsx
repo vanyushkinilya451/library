@@ -1,92 +1,90 @@
 import {
   BookCover,
-  BookSearchFormat,
-  BookWorkFormat,
-  useGetBookById,
+  useGetBookByIdQuery
 } from 'entities/book';
-import { useLocation, useParams } from 'react-router-dom';
+import { useGetBookAdditionalInfoQuery } from 'entities/book/api/openlibrary';
+import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
 export const BookPage = () => {
   const { bookId } = useParams();
-  const { book: bookWork }: { book: BookWorkFormat | null } = useGetBookById({
-    id: bookId as string,
-  });
-  const { state } = useLocation();
-  const { book: bookSearch }: { book: BookSearchFormat } = state;
+  const { data: book } = useGetBookByIdQuery(bookId as string);
+  const { data: additionalInfo } = useGetBookAdditionalInfoQuery(bookId as string);
 
+
+  console.log('book', book)
   return (
-    bookWork && (
+    book && (
       <Container>
         <Cover>
           <BookCover
-            cover_id={bookWork.covers[0]}
-            cover_i={bookWork.covers[0]}
-            coverSize='L'
+            cover_id={book.covers[0]}
+            cover_i={book.covers[0]}
+            size='L'
             skeletonHeight='450px'
           />
         </Cover>
         <BookInformation>
-          {bookWork.subjects && (
+          {book.subjects && (
             <Tags>
-              {bookWork.subjects.map((subject) => (
+              {book.subjects.map((subject) => (
                 <Tag>{subject}</Tag>
               ))}
             </Tags>
           )}
           <BookProperties>
-            <Title>{bookWork.title}</Title>
-            {bookWork.subtitle && <SubTitle>{bookWork.subtitle}</SubTitle>}
-            {bookSearch.author_name && (
+            <Title>{book.title}</Title>
+            {book.subtitle && <SubTitle>{book.subtitle}</SubTitle>}
+            {additionalInfo?.author_name && (
               <div>
-                {bookSearch.author_name.map((author, index) => (
+                {additionalInfo?.author_name.map((author, index) => (
                   <div>
-                    {bookSearch.author_name.length === 1 ? 'Автор:' : 'Авторы:'}
+                    {additionalInfo?.author_name.length === 1 ? 'Автор:' : 'Авторы:'}
                     <TextHighlight>{author}</TextHighlight>
-                    {index !== bookSearch.author_name.length - 1 && ', '}
+                    {index !== additionalInfo?.author_name.length - 1 && ', '}
                   </div>
                 ))}
               </div>
             )}
-            {bookWork.series && (
+            {book.series && (
               <div>
-                {bookWork.series.map((series, index) => (
+                {book.series.map((series, index) => (
                   <div>
                     Серия: <TextHighlight>{series}</TextHighlight>
-                    {index !== bookWork.series.length - 1 && ', '}
+                    {index !== book.series.length - 1 && ', '}
                   </div>
                 ))}
               </div>
             )}
             <div>
               Дата публикации:{' '}
-              <TextHighlight>{bookWork.publish_date}</TextHighlight>
+              <TextHighlight>{book.publish_date}</TextHighlight>
             </div>
-            {bookWork.publishers && (
+            {book.publishers && (
               <div>
                 Издательство:{' '}
-                {bookWork.publishers.map((publisher, index) => (
+                {book.publishers.map((publisher, index) => (
                   <TextHighlight>
                     {publisher}
-                    {index !== bookWork.publishers.length - 1 && ', '}
+                    {index !== book.publishers.length - 1 && ', '}
                   </TextHighlight>
                 ))}
               </div>
             )}
-            {bookWork.number_of_pages && (
+            {book.number_of_pages && (
               <div>
                 Количество страниц:{' '}
-                <TextHighlight>{bookWork.number_of_pages}</TextHighlight>
+                <TextHighlight>{book.number_of_pages}</TextHighlight>
               </div>
             )}
-            {bookSearch.language && (
+            {additionalInfo?.language && (
               <div>
                 Языки:{' '}
-                {bookSearch.language.map((language, index) => {
+                {additionalInfo?.language.map((language, index) => {
                   return (
                     <TextHighlight>
                       {language}
-                      {index !== bookSearch.language.length - 1 && ', '}
+                      {index !== additionalInfo?.language.length - 1 && ', '}
                     </TextHighlight>
                   );
                 })}
@@ -94,10 +92,10 @@ export const BookPage = () => {
             )}
           </BookProperties>
           <Description>
-            {bookWork.description && (
+            {book.description && (
               <>
                 <Bold>О книге:</Bold>
-                {bookWork.description.value}
+                {book.description.value}
               </>
             )}
           </Description>

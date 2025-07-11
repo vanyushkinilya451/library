@@ -15,6 +15,17 @@ export type BookSearchFormat = {
   cover_i?: number;
 };
 
+export type BookShelf = {
+  docs: BookSearchFormat[];
+  documentation_url: string;
+  numFound: number;
+  numFoundExact: boolean;
+  num_found: number;
+  offset: number | null;
+  q: string;
+  start: number;
+};
+
 export type BookWorkFormat = {
   subjects: string[];
   subtitle: string;
@@ -44,4 +55,9 @@ export type BookWorkFormat = {
   title: string;
   type: { key: string };
   work: { key: string };
+};
+
+export type BookCoverProps = {
+  id: number;
+  size: 'S' | 'M' | 'L';
 };
