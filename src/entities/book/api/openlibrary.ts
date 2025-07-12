@@ -1,6 +1,10 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { CONSTANTS } from 'shared/lib';
-import { BookSearchFormat, BookShelf, BookWorkFormat } from '../lib/types';
+import {
+  BookSearchFormat,
+  BookWorkFormat,
+  SearchApiResponse,
+} from '../lib/types';
 export const openlibraryApi = createApi({
   reducerPath: 'openlibrary',
   baseQuery: fetchBaseQuery({ baseUrl: `${CONSTANTS.OPEN_LIBRARY_URL}` }),
@@ -10,9 +14,11 @@ export const openlibraryApi = createApi({
     }),
     getBookAdditionalInfo: build.query<BookSearchFormat, string>({
       query: (id) => `/search.json?q=${id}`,
+      transformResponse: (response: SearchApiResponse) => response.docs[0],
     }),
-    getBooksByCategory: build.query<BookShelf, string>({
+    getBooksByCategory: build.query<BookSearchFormat[], string>({
       query: (api) => `${api}&limit=${CONSTANTS.SHELF_LIMIT}`,
+      transformResponse: (response: SearchApiResponse) => response.docs,
     }),
   }),
 });

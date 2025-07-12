@@ -11,7 +11,7 @@ import { AuthorPage } from 'pages/author';
 import { BookPage } from 'pages/book';
 import { Categories } from 'pages/categories';
 import { HomePage } from 'pages/home';
-import { Mybooks } from 'pages/mybooks';
+import { MyBooks } from 'pages/mybooks';
 import { ProfilePage } from 'pages/profile';
 import { createBrowserRouter } from 'react-router-dom';
 import { NotFound404 } from 'shared/ui';
@@ -39,7 +39,7 @@ export const router = createBrowserRouter([
       },
       {
         path: '/mybooks',
-        Component: Mybooks,
+        Component: MyBooks,
       },
       {
         path: '/profile/:userId',

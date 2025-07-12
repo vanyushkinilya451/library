@@ -6,9 +6,8 @@ export {
 } from './api/openlibrary';
 export {
   supabaseApi,
-  useAddToMyBooksMutation,
+  useChangeMyBooksMutation,
   useGetMyBooksQuery,
-  useRemoveFromMyBooksMutation,
 } from './api/supabase';
 export { BookSearchFormat, BookWorkFormat } from './lib/types';
 export { BookCover } from './ui/BookCover';

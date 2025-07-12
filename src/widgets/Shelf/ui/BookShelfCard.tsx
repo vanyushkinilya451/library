@@ -1,10 +1,8 @@
-import { skipToken } from '@reduxjs/toolkit/query';
 import {
   BookCover,
   BookSearchFormat,
-  useAddToMyBooksMutation,
+  useChangeMyBooksMutation,
   useGetMyBooksQuery,
-  useRemoveFromMyBooksMutation,
 } from 'entities/book';
 import { Card, Col } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
@@ -19,9 +17,14 @@ type BookCardProps = {
 export const BookShelfCard = ({ book }: BookCardProps) => {
   const navigate = useNavigate();
   const { user } = useAppSelector((state) => state.user);
-  const { data: myBooks } = useGetMyBooksQuery(user?.id ?? skipToken);
-  const [addToMyBooks] = useAddToMyBooksMutation();
-  const [removeFromMyBooks] = useRemoveFromMyBooksMutation();
+  const { data: myBooks } = useGetMyBooksQuery({
+    userId: user?.id as string,
+    bookStatus: 'will_read',
+    from: 'mybooks',
+    select: 'book_id',
+  });
+
+  const [changeMyBooks] = useChangeMyBooksMutation();
   const handleBookClick = (book: BookSearchFormat) => {
     navigate(`/book/${book.cover_edition_key}`);
   };
@@ -31,16 +34,26 @@ export const BookShelfCard = ({ book }: BookCardProps) => {
   };
 
   const handleAddToMyBooks = (book: BookSearchFormat) => {
-    const bookId = book.cover_i ? book.cover_i : book.cover_id;
-    if (bookId && user?.id) {
-      addToMyBooks({ bookId, userId: user.id });
+    if (book.cover_edition_key && user?.id) {
+      changeMyBooks({
+        from: 'mybooks',
+        bookId: book.cover_edition_key,
+        userId: user.id,
+        bookStatus: 'will_read',
+        method: 'insert',
+      });
     }
   };
 
   const handleRemoveFromMyBooks = (book: BookSearchFormat) => {
-    const bookId = book.cover_i ? book.cover_i : book.cover_id;
-    if (bookId && user?.id) {
-      removeFromMyBooks({ bookId, userId: user.id });
+    if (book.cover_edition_key && user?.id) {
+      changeMyBooks({
+        from: 'mybooks',
+        bookId: book.cover_edition_key,
+        userId: user.id,
+        bookStatus: 'will_read',
+        method: 'delete',
+      });
     }
   };
 
@@ -71,7 +84,7 @@ export const BookShelfCard = ({ book }: BookCardProps) => {
               {handleBookAuthor(book.author_name[0])}
             </Card.Text>
           )}
-          {myBooks?.includes((book.cover_i || book.cover_id)!) ? (
+          {myBooks?.some((item) => item.book_id === book.cover_edition_key) ? (
             <Star
               className='card__star card__star--filled'
               onClick={() => handleRemoveFromMyBooks(book)}

@@ -9,6 +9,7 @@ type BookCoverProps = {
   className?: string;
   size?: 'S' | 'M' | 'L';
   skeletonHeight?: string;
+  borderRadius?: string;
 };
 
 export const BookCover = ({
@@ -18,6 +19,7 @@ export const BookCover = ({
   onClick,
   size = 'M',
   skeletonHeight = '180px',
+  borderRadius = '0px',
 }: BookCoverProps) => {
   const [isLoading, setIsLoading] = useState(true);
   const coverUrl = handleCoverUrlProps({
@@ -32,7 +34,10 @@ export const BookCover = ({
         className={className}
         src={coverUrl}
         alt='cover'
-        style={{ display: isLoading ? 'none' : 'block' }}
+        style={{
+          display: isLoading ? 'none' : 'block',
+          borderRadius: borderRadius,
+        }}
         onLoad={() => setIsLoading(false)}
       />
     </>

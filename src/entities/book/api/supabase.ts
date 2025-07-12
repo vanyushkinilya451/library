@@ -1,82 +1,109 @@
 import { createApi, fakeBaseQuery } from '@reduxjs/toolkit/query/react';
 import { supabase } from 'shared/lib';
 
+type MyBooksQuery = {
+  from: string;
+  select: string;
+  userId: string;
+  bookStatus: 'will_read' | 'reading' | 'read' | 'favorite';
+};
+
+type MyBooksMutation = {
+  from: string;
+  userId: string;
+  bookId: string;
+  bookStatus: 'will_read' | 'reading' | 'read' | 'favorite';
+  method: 'insert' | 'update' | 'delete';
+};
+
 export const supabaseApi = createApi({
   reducerPath: 'supabaseApi',
   baseQuery: fakeBaseQuery(),
   tagTypes: ['MyBooks'],
   endpoints: (builder) => ({
-    getMyBooks: builder.query<number[], string>({
-      queryFn: async (userId: string) => {
+    getMyBooks: builder.query<
+      { book_id: string; book_status: string }[],
+      MyBooksQuery
+    >({
+      queryFn: async ({ userId, from, select }) => {
         const { data, error } = await supabase
-          .from('mybooks')
-          .select('book_id')
+          .from(from)
+          .select(select)
           .eq('user_id', userId);
         if (error) return { error: error.message };
-        if (!data) return { error: 'Произошла ошибка' };
-        console.log(data);
-        return { data: data.map((item) => item.book_id) };
+        if (!data) return { error: 'Ошибка получения книг пользователя' };
+        return {
+          data: data as unknown as { book_id: string; book_status: string }[],
+        };
       },
       providesTags: ['MyBooks'],
     }),
-    addToMyBooks: builder.mutation<
-      number[],
-      { userId: string; bookId: number } & Partial<{
-        userId: string;
-        bookId: number;
-      }>
-    >({
-      queryFn: async (arg) => {
-        const { data, error } = await supabase
-          .from('mybooks')
-          .insert({ book_id: arg.bookId, user_id: arg.userId });
-        if (error) return { error: error.message };
-        if (!data) return { error: 'Произошла ошибка' };
-        return { data: data as number[] };
-      },
-      invalidatesTags: ['MyBooks'],
-      onQueryStarted: async (
-        { userId, ...patch },
-        { dispatch, queryFulfilled }
-      ) => {
-        const patchResult = dispatch(
-          supabaseApi.util.updateQueryData('getMyBooks', userId, (draft) => {
-            draft.push(patch.bookId);
-          })
-        );
-        try {
-          await queryFulfilled;
-        } catch {
-          patchResult.undo();
+
+    changeMyBooks: builder.mutation<void, MyBooksMutation>({
+      queryFn: async ({ from, userId, bookId, bookStatus, method }) => {
+        switch (method) {
+          case 'insert': {
+            const { error } = await supabase.from(from).insert({
+              book_id: bookId,
+              user_id: userId,
+              book_status: bookStatus,
+            });
+
+            if (error) {
+              return { error: error.message };
+            }
+            return { data: undefined };
+          }
+
+          case 'update': {
+            const { error } = await supabase
+              .from(from)
+              .update({
+                book_status: bookStatus,
+              })
+              .eq('book_id', bookId)
+              .eq('user_id', userId);
+            if (error) {
+              return { error: error.message };
+            }
+            return { data: undefined };
+          }
+
+          case 'delete': {
+            const { error } = await supabase
+              .from(from)
+              .delete()
+              .eq('book_id', bookId)
+              .eq('user_id', userId);
+            if (error) {
+              return { error: error.message };
+            }
+            return { data: undefined };
+          }
         }
       },
-    }),
-    removeFromMyBooks: builder.mutation<
-      number[],
-      { userId: string; bookId: number } & Partial<{
-        userId: string;
-        bookId: number;
-      }>
-    >({
-      queryFn: async (arg) => {
-        const { data, error } = await supabase
-          .from('mybooks')
-          .delete()
-          .eq('book_id', arg.bookId)
-          .eq('user_id', arg.userId);
-        if (error) return { error: error.message };
-        if (!data) return { error: 'Произошла ошибка' };
-        return { data: data as number[] };
-      },
       invalidatesTags: ['MyBooks'],
       onQueryStarted: async (
-        { userId, ...patch },
+        { userId, bookStatus, method, ...patch },
         { dispatch, queryFulfilled }
       ) => {
         const patchResult = dispatch(
-          supabaseApi.util.updateQueryData('getMyBooks', userId, (draft) => {
-            draft.splice(draft.indexOf(patch.bookId), 1);
-          })
+          supabaseApi.util.updateQueryData(
+            'getMyBooks',
+            { from: 'mybooks', bookStatus, userId, select: 'book_id' },
+            (draft) => {
+              if (method === 'insert') {
+                draft.push({ book_id: patch.bookId, book_status: bookStatus });
+              } else if (method === 'delete') {
+                const index = draft.findIndex(
+                  (item) => item.book_id === patch.bookId
+                );
+                if (index > -1) {
+                  draft.splice(index, 1);
+                }
+              }
+            }
+          )
         );
         try {
           await queryFulfilled;
@@ -88,8 +115,4 @@ export const supabaseApi = createApi({
   }),
 });
 
-export const {
-  useGetMyBooksQuery,
-  useAddToMyBooksMutation,
-  useRemoveFromMyBooksMutation,
-} = supabaseApi;
+export const { useGetMyBooksQuery, useChangeMyBooksMutation } = supabaseApi;

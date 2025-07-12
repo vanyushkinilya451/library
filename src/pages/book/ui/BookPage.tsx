@@ -10,9 +10,9 @@ export const BookPage = () => {
     bookId as string
   );
 
-  console.log('book', book);
   return (
-    book && (
+    book &&
+    additionalInfo && (
       <Container>
         <Cover>
           <BookCover

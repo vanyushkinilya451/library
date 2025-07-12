@@ -11,8 +11,7 @@ type ShelfProps = {
 };
 
 export const Shelf = ({ shelfTitle, api }: ShelfProps) => {
-  const { data: { docs: books } = {}, isLoading } =
-    useGetBooksByCategoryQuery(api);
+  const { data: books, isLoading } = useGetBooksByCategoryQuery(api);
   const {
     isScrolled,
     isScrollEnd,

@@ -15,8 +15,9 @@ export type BookSearchFormat = {
   cover_i?: number;
 };
 
-export type BookShelf = {
-  docs: BookSearchFormat[];
+export type SearchApiResponse = {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  docs: any;
   documentation_url: string;
   numFound: number;
   numFoundExact: boolean;
