@@ -1,18 +1,33 @@
 import {
   BookCover,
   BookSearchFormat,
+  useChangeMyBooksMutation,
   useGetBookAdditionalInfoQuery,
 } from 'entities/book';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import styled, { keyframes } from 'styled-components';
+import { useAppSelector } from 'shared/lib';
+import { SkeletonLoader } from 'shared/ui';
+import styled from 'styled-components';
 import {
   handleBookAuthor,
   handleBookTitle,
 } from 'widgets/Shelf/lib/sliceTextHelper';
 
-export const BookCard = ({ bookId }: { bookId: string }) => {
-  const { data: book } = useGetBookAdditionalInfoQuery(bookId);
+export const BookCard = ({
+  bookId,
+  bookStatus,
+}: {
+  bookId: string;
+  bookStatus: string;
+}) => {
+  const { data: book, isLoading } = useGetBookAdditionalInfoQuery(bookId);
+  const [changeMyBooks] = useChangeMyBooksMutation();
+  const { user } = useAppSelector((state) => state.user);
   const navigate = useNavigate();
+  const [currentStatus, setCurrentStatus] = useState<
+    'will_read' | 'reading' | 'read' | 'favorite'
+  >(bookStatus as 'will_read' | 'reading' | 'read' | 'favorite');
 
   const handleBookClick = (book: BookSearchFormat) => {
     navigate(`/book/${book.cover_edition_key}`);
@@ -22,135 +37,125 @@ export const BookCard = ({ bookId }: { bookId: string }) => {
     navigate(`/author/${author}`, { state: { author } });
   };
 
-  if (!book) {
-    return <BookCardSkeleton />;
+  const handleStatusChange = async (newStatus: string) => {
+    if (!user?.id) return;
+
+    try {
+      await changeMyBooks({
+        from: 'mybooks',
+        userId: user.id,
+        bookId,
+        bookStatus: newStatus as 'will_read' | 'reading' | 'read' | 'favorite',
+        method: newStatus === 'remove' ? 'delete' : 'update',
+      }).unwrap();
+      setCurrentStatus(
+        newStatus as 'will_read' | 'reading' | 'read' | 'favorite'
+      );
+    } catch (error) {
+      console.error('Failed to update book status:', error);
+    }
+  };
+
+  if (isLoading) {
+    return (
+      <Card>
+        <CoverContainer>
+          <SkeletonLoader height='200px' />
+        </CoverContainer>
+        <CardContent>
+          <SkeletonLoader
+            height='1rem'
+            margin='0 0 0.4rem 0'
+          />
+          <SkeletonLoader
+            height='0.9rem'
+            margin='0 0 0.8rem 0'
+            width='60%'
+          />
+          <SkeletonLoader
+            height='1.5rem'
+            margin='0 0 1rem 0'
+            width='40%'
+          />
+          <BookActions>
+            <SkeletonLoader height='32px' />
+            <SkeletonLoader
+              height='32px'
+              width='32px'
+            />
+          </BookActions>
+        </CardContent>
+      </Card>
+    );
   }
 
   return (
-    <CardContainer>
-      <Card>
-        <CoverContainer>
-          <StyledBookCover
-            cover_id={book.cover_id}
-            cover_i={book.cover_i}
-            onClick={() => handleBookClick(book)}
-          />
-          <CoverOverlay>
-            <ReadButton onClick={() => handleBookClick(book)}>
-              Читать
-            </ReadButton>
-          </CoverOverlay>
-        </CoverContainer>
+    <>
+      {book && (
+        <Card>
+          <CoverContainer>
+            <StyledBookCover
+              cover_id={book.cover_id}
+              cover_i={book.cover_i}
+              onClick={() => handleBookClick(book)}
+            />
+          </CoverContainer>
 
-        <CardContent>
-          <BookTitle onClick={() => handleBookClick(book)}>
-            {handleBookTitle(book.title)}
-          </BookTitle>
+          <CardContent>
+            <BookTitle onClick={() => handleBookClick(book)}>
+              {handleBookTitle(book.title)}
+            </BookTitle>
 
-          {book.author_name && (
-            <AuthorName onClick={() => handleAuthorClick(book.author_key[0])}>
-              {handleBookAuthor(book.author_name[0])}
-            </AuthorName>
-          )}
-
-          <BookMeta>
-            {book.first_publish_year && (
-              <MetaItem>
-                <MetaIcon>📅</MetaIcon>
-                {book.first_publish_year}
-              </MetaItem>
+            {book.author_name && (
+              <AuthorName onClick={() => handleAuthorClick(book.author_key[0])}>
+                {handleBookAuthor(book.author_name[0])}
+              </AuthorName>
             )}
-          </BookMeta>
-        </CardContent>
 
-        <CardActions>
-          <ActionButton onClick={() => handleBookClick(book)}>
-            <ActionIcon>👁️</ActionIcon>
-            Подробнее
-          </ActionButton>
-        </CardActions>
-      </Card>
-    </CardContainer>
+            <BookActions>
+              <StatusSelect
+                value={currentStatus}
+                onChange={(e) => handleStatusChange(e.target.value)}
+              >
+                <option value='will_read'>📚 Буду читать</option>
+                <option value='reading'>📖 Читаю</option>
+                <option value='read'>✅ Прочитано</option>
+                <option value='favorite'>💖 Избранное</option>
+                <option value='remove'>🗑️ Удалить</option>
+              </StatusSelect>
+            </BookActions>
+          </CardContent>
+        </Card>
+      )}
+    </>
   );
 };
 
-const BookCardSkeleton = () => (
-  <CardContainer>
-    <Card>
-      <SkeletonCover />
-      <CardContent>
-        <SkeletonTitle />
-        <SkeletonAuthor />
-        <SkeletonMeta />
-      </CardContent>
-    </Card>
-  </CardContainer>
-);
-
-// Анимации
-const fadeIn = keyframes`
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-`;
-
-const shimmer = keyframes`
-  0% { background-position: -200px 0; }
-  100% { background-position: calc(200px + 100%) 0; }
-`;
-
-// Стили
-const CardContainer = styled.div`
-  animation: ${fadeIn} 0.6s ease-out;
-`;
-
 const Card = styled.div`
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(10px);
-  border-radius: 20px;
-  padding: 1.5rem;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  transition: all 0.3s ease;
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 16px;
+  padding: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   overflow: hidden;
-
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(
-      135deg,
-      rgba(255, 255, 255, 0.1),
-      rgba(255, 255, 255, 0.05)
-    );
-    opacity: 0;
-    transition: opacity 0.3s ease;
-  }
-
-  &:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-    border-color: rgba(255, 255, 255, 0.4);
-
-    &::before {
-      opacity: 1;
-    }
-  }
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
 `;
 
 const CoverContainer = styled.div`
   position: relative;
-  margin-bottom: 1.5rem;
-  border-radius: 15px;
+  border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  margin-bottom: 0.8rem;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
 `;
 
 const StyledBookCover = styled(BookCover)`
   width: 100%;
-  height: 300px;
+  height: 200px;
   object-fit: cover;
   transition: transform 0.3s ease;
   cursor: pointer;
@@ -160,187 +165,77 @@ const StyledBookCover = styled(BookCover)`
   }
 `;
 
-const CoverOverlay = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-
-  ${CoverContainer}:hover & {
-    opacity: 1;
-  }
-`;
-
-const ReadButton = styled.button`
-  background: linear-gradient(135deg, var(--orange-accent), var(--link-color));
-  color: white;
-  border: none;
-  padding: 0.8rem 2rem;
-  border-radius: 25px;
-  font-weight: 600;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-
-  &:hover {
-    transform: scale(1.1);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
-  }
-`;
-
-const CardContent = styled.div`
-  margin-bottom: 1.5rem;
-`;
+const CardContent = styled.div``;
 
 const BookTitle = styled.h3`
-  font-size: 1.3rem;
-  font-weight: 700;
-  color: white;
-  margin-bottom: 0.5rem;
-  line-height: 1.4;
+  font-size: 1rem;
+  font-weight: 600;
+  color: black;
+  margin-bottom: 0.4rem;
+  line-height: 1.3;
   cursor: pointer;
   transition: color 0.3s ease;
 
   &:hover {
     color: var(--orange-accent);
   }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+  }
 `;
 
 const AuthorName = styled.p`
-  font-size: 1rem;
-  color: rgba(255, 255, 255, 0.8);
-  margin-bottom: 1rem;
+  font-size: 0.9rem;
+  color: rgba(0, 0, 0, 0.7);
+  margin-bottom: 0.8rem;
   cursor: pointer;
   transition: color 0.3s ease;
 
   &:hover {
     color: var(--link-color);
   }
-`;
 
-const BookMeta = styled.div`
-  display: flex;
-  gap: 1rem;
-  flex-wrap: wrap;
-`;
-
-const MetaItem = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 0.3rem;
-  font-size: 0.9rem;
-  color: rgba(255, 255, 255, 0.7);
-  background: rgba(255, 255, 255, 0.1);
-  padding: 0.3rem 0.8rem;
-  border-radius: 15px;
-  backdrop-filter: blur(5px);
-`;
-
-const MetaIcon = styled.span`
-  font-size: 0.8rem;
-`;
-
-const CardActions = styled.div`
-  display: flex;
-  justify-content: center;
-`;
-
-const ActionButton = styled.button`
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  color: white;
-  padding: 0.6rem 1.5rem;
-  border-radius: 20px;
-  font-size: 0.9rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  backdrop-filter: blur(5px);
-
-  &:hover {
-    background: rgba(255, 255, 255, 0.2);
-    border-color: rgba(255, 255, 255, 0.5);
-    transform: translateY(-2px);
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
   }
 `;
 
-const ActionIcon = styled.span`
-  font-size: 0.8rem;
-`;
-
-// Скелетон компоненты
-const SkeletonCover = styled.div`
-  width: 100%;
-  height: 300px;
-  background: linear-gradient(
-    90deg,
-    rgba(255, 255, 255, 0.1) 25%,
-    rgba(255, 255, 255, 0.2) 50%,
-    rgba(255, 255, 255, 0.1) 75%
-  );
-  background-size: 200px 100%;
-  animation: ${shimmer} 1.5s infinite;
-  border-radius: 15px;
-  margin-bottom: 1.5rem;
-`;
-
-const SkeletonTitle = styled.div`
-  height: 1.5rem;
-  background: linear-gradient(
-    90deg,
-    rgba(255, 255, 255, 0.1) 25%,
-    rgba(255, 255, 255, 0.2) 50%,
-    rgba(255, 255, 255, 0.1) 75%
-  );
-  background-size: 200px 100%;
-  animation: ${shimmer} 1.5s infinite;
-  border-radius: 8px;
-  margin-bottom: 0.5rem;
-  width: 80%;
-`;
-
-const SkeletonAuthor = styled.div`
-  height: 1rem;
-  background: linear-gradient(
-    90deg,
-    rgba(255, 255, 255, 0.1) 25%,
-    rgba(255, 255, 255, 0.2) 50%,
-    rgba(255, 255, 255, 0.1) 75%
-  );
-  background-size: 200px 100%;
-  animation: ${shimmer} 1.5s infinite;
-  border-radius: 6px;
-  margin-bottom: 1rem;
-  width: 60%;
-`;
-
-const SkeletonMeta = styled.div`
+const BookActions = styled.div`
   display: flex;
-  gap: 1rem;
+  gap: 0.5rem;
+`;
 
-  &::before,
-  &::after {
-    content: '';
-    height: 1.5rem;
-    width: 60px;
-    background: linear-gradient(
-      90deg,
-      rgba(255, 255, 255, 0.1) 25%,
-      rgba(255, 255, 255, 0.2) 50%,
-      rgba(255, 255, 255, 0.1) 75%
-    );
-    background-size: 200px 100%;
-    animation: ${shimmer} 1.5s infinite;
-    border-radius: 10px;
+const StatusSelect = styled.select`
+  flex: 1;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  background: #f8f9fa;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 0.4rem 0.8rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: rgba(0, 0, 0, 0.8);
+  font-size: 0.75rem;
+  font-weight: 500;
+  appearance: none;
+
+  &:focus {
+    outline: none;
+    border-color: var(--orange-accent);
+    box-shadow: 0 0 0 2px rgba(255, 138, 76, 0.2);
+  }
+
+  option {
+    background: white;
+    color: rgba(0, 0, 0, 0.8);
+    padding: 0.5rem;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+    &:hover {
+      transform: none;
+    }
   }
 `;

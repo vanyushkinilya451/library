@@ -25,13 +25,14 @@ export const supabaseApi = createApi({
       { book_id: string; book_status: string }[],
       MyBooksQuery
     >({
-      queryFn: async ({ userId, from, select }) => {
+      queryFn: async ({ userId, from, select, bookStatus }) => {
         const { data, error } = await supabase
           .from(from)
           .select(select)
-          .eq('user_id', userId);
+          .eq('user_id', userId)
+          .eq('book_status', bookStatus);
         if (error) return { error: error.message };
-        if (!data) return { error: 'Ошибка получения книг пользователя' };
+        if (!data) return { data: [] };
         return {
           data: data as unknown as { book_id: string; book_status: string }[],
         };

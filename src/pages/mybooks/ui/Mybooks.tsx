@@ -1,244 +1,92 @@
 import { useGetMyBooksQuery } from 'entities/book';
+import { useState } from 'react';
 import { useAppSelector } from 'shared/lib';
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 import { BookCard } from './BookCard';
 
 export const MyBooks = () => {
+  const [status, setStatus] = useState<
+    'will_read' | 'reading' | 'read' | 'favorite'
+  >('will_read');
   const { user } = useAppSelector((state) => state.user);
-  const {
-    data: myBooks,
-    isLoading,
-    error,
-  } = useGetMyBooksQuery({
+  const { data: myBooks, isLoading } = useGetMyBooksQuery({
     userId: user?.id as string,
-    bookStatus: 'will_read',
+    bookStatus: status,
     from: 'mybooks',
     select: 'book_id, book_status',
   });
 
   return (
-    <Container>
-      <BackgroundGradient />
-      <FloatingElements>
-        {[...Array(8)].map((_, index) => (
-          <FloatingElement
-            key={index}
-            delay={index * 0.3}
-            size={Math.floor(Math.random() * 20 + 10)}
-          />
-        ))}
-      </FloatingElements>
+    <PageContainer>
+      <Header>
+        <Title>Моя библиотека</Title>
+        <Subtitle>Управляйте своими книгами</Subtitle>
+      </Header>
+
+      <StatusTabs>
+        <StatusTab
+          active={status === 'will_read'}
+          onClick={() => setStatus('will_read')}
+          data-active={status === 'will_read'}
+        >
+          <TabIcon>📚</TabIcon>
+          Буду читать
+        </StatusTab>
+        <StatusTab
+          active={status === 'favorite'}
+          onClick={() => setStatus('favorite')}
+          data-active={status === 'favorite'}
+        >
+          <TabIcon>💖</TabIcon>
+          Избранное
+        </StatusTab>
+        <StatusTab
+          active={status === 'reading'}
+          onClick={() => setStatus('reading')}
+          data-active={status === 'reading'}
+        >
+          <TabIcon>📖</TabIcon>
+          Читаю
+        </StatusTab>
+        <StatusTab
+          active={status === 'read'}
+          onClick={() => setStatus('read')}
+          data-active={status === 'read'}
+        >
+          <TabIcon>✅</TabIcon>
+          Прочитано
+        </StatusTab>
+      </StatusTabs>
 
       <Content>
-        <Header>
-          <Title>Моя библиотека</Title>
-          <Subtitle>Книги, которые вы планируете прочитать</Subtitle>
-        </Header>
-
-        {isLoading && (
-          <LoadingContainer>
+        {isLoading ? (
+          <LoadingState>
             <LoadingSpinner />
             <LoadingText>Загружаем ваши книги...</LoadingText>
-          </LoadingContainer>
-        )}
-
-        {!!error && (
-          <ErrorContainer>
-            <ErrorIcon>📚</ErrorIcon>
-            <ErrorText>Не удалось загрузить книги</ErrorText>
-          </ErrorContainer>
-        )}
-
-        {!isLoading && !error && myBooks && myBooks.length === 0 && (
-          <EmptyState>
-            <EmptyIcon>📖</EmptyIcon>
-            <EmptyTitle>Библиотека пуста</EmptyTitle>
-            <EmptyText>
-              Добавьте книги в "Буду читать" чтобы они появились здесь
-            </EmptyText>
-          </EmptyState>
-        )}
-
-        {!isLoading && !error && myBooks && myBooks.length > 0 && (
+          </LoadingState>
+        ) : myBooks && myBooks.length > 0 ? (
           <BooksGrid>
             {myBooks.map((book) => (
               <BookCard
                 key={book.book_id}
                 bookId={book.book_id}
+                bookStatus={book.book_status}
               />
             ))}
           </BooksGrid>
+        ) : (
+          <EmptyState>
+            <EmptyIcon>📖</EmptyIcon>
+            <EmptyTitle>Нет книг</EmptyTitle>
+            <EmptyText>
+              В этой категории пока нет книг. Добавьте книги из поиска!
+            </EmptyText>
+          </EmptyState>
         )}
       </Content>
-    </Container>
+    </PageContainer>
   );
 };
-
-// Анимации
-const float = keyframes`
-  0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.3; }
-  50% { transform: translateY(-30px) rotate(180deg); opacity: 0.7; }
-`;
-
-const slideIn = keyframes`
-  from { 
-    opacity: 0; 
-    transform: translateY(30px); 
-  }
-  to { 
-    opacity: 1; 
-    transform: translateY(0); 
-  }
-`;
-
-const fadeIn = keyframes`
-  from { opacity: 0; }
-  to { opacity: 1; }
-`;
-
-const pulse = keyframes`
-  0% { transform: scale(1); }
-  50% { transform: scale(1.05); }
-  100% { transform: scale(1); }
-`;
-
-const spin = keyframes`
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-`;
-
-// Стили
-const Container = styled.div`
-  position: relative;
-  min-height: 100vh;
-  background: var(--gradient-primary);
-  overflow-x: hidden;
-`;
-
-const BackgroundGradient = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background:
-    radial-gradient(
-      circle at 20% 30%,
-      var(--orange-accent) 0%,
-      transparent 40%
-    ),
-    radial-gradient(circle at 80% 70%, var(--link-color) 0%, transparent 40%),
-    radial-gradient(
-      circle at 50% 50%,
-      rgba(255, 255, 255, 0.1) 0%,
-      transparent 60%
-    );
-  opacity: 0.4;
-  animation: ${pulse} 6s ease-in-out infinite;
-`;
-
-const FloatingElements = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  pointer-events: none;
-  overflow: hidden;
-`;
-
-const FloatingElement = styled.div<{ delay: number; size: number }>`
-  position: absolute;
-  width: ${(props) => props.size}px;
-  height: ${(props) => props.size}px;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 50%;
-  animation: ${float} 4s ease-in-out infinite;
-  animation-delay: ${(props) => props.delay}s;
-
-  &:nth-child(1) {
-    top: 10%;
-    left: 5%;
-  }
-  &:nth-child(2) {
-    top: 20%;
-    right: 10%;
-  }
-  &:nth-child(3) {
-    top: 60%;
-    left: 15%;
-  }
-  &:nth-child(4) {
-    top: 70%;
-    right: 5%;
-  }
-  &:nth-child(5) {
-    top: 40%;
-    left: 25%;
-  }
-  &:nth-child(6) {
-    top: 80%;
-    right: 20%;
-  }
-  &:nth-child(7) {
-    top: 30%;
-    left: 35%;
-  }
-  &:nth-child(8) {
-    top: 90%;
-    right: 35%;
-  }
-`;
-
-const Content = styled.div`
-  position: relative;
-  z-index: 10;
-  padding: 2rem;
-  max-width: 1400px;
-  margin: 0 auto;
-  animation: ${slideIn} 1s ease-out;
-`;
-
-const Header = styled.div`
-  text-align: center;
-  margin-bottom: 3rem;
-  animation: ${fadeIn} 1s ease-out 0.3s both;
-`;
-
-const Title = styled.h1`
-  font-size: 3rem;
-  font-weight: 800;
-  color: white;
-  margin-bottom: 0.5rem;
-  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-  background: linear-gradient(135deg, #fff, #f0f0f0);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-`;
-
-const Subtitle = styled.p`
-  font-size: 1.2rem;
-  color: rgba(255, 255, 255, 0.8);
-  margin: 0;
-  font-weight: 300;
-`;
-
-const BooksGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 2rem;
-  animation: ${fadeIn} 1s ease-out 0.6s both;
-`;
-
-const LoadingContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 400px;
-  animation: ${fadeIn} 0.5s ease-out;
-`;
 
 const LoadingSpinner = styled.div`
   width: 50px;
@@ -246,36 +94,199 @@ const LoadingSpinner = styled.div`
   border: 4px solid rgba(255, 255, 255, 0.3);
   border-top: 4px solid white;
   border-radius: 50%;
-  animation: ${spin} 1s linear infinite;
+  animation: spin 1s linear infinite;
   margin-bottom: 1rem;
+
+  @keyframes spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+`;
+
+const PageContainer = styled.div`
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 1.5rem;
+`;
+
+const Header = styled.div`
+  text-align: center;
+  margin-bottom: 2rem;
+`;
+
+const Title = styled.h1`
+  font-size: 2rem;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 0.3rem;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+`;
+
+const Subtitle = styled.p`
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0;
+`;
+
+const StatusTabs = styled.div`
+  display: flex;
+  justify-content: center;
+  gap: 0.8rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+`;
+
+const StatusTab = styled.button<{ active: boolean }>`
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.7rem 1.2rem;
+  border-radius: 12px;
+  border: none;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+
+  background: ${({ active }) =>
+    active
+      ? 'linear-gradient(135deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.15) 100%)'
+      : 'rgba(255, 255, 255, 0.1)'};
+  color: white;
+  backdrop-filter: blur(10px);
+  border: 1px solid
+    ${({ active }) =>
+      active ? 'rgba(255, 255, 255, 0.4)' : 'rgba(255, 255, 255, 0.1)'};
+  box-shadow: ${({ active }) =>
+    active
+      ? '0 8px 25px rgba(255, 255, 255, 0.2), 0 0 0 1px rgba(255, 255, 255, 0.1)'
+      : '0 2px 8px rgba(0, 0, 0, 0.1)'};
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.2),
+      transparent
+    );
+    transition: left 0.5s;
+    ${({ active }) => active && 'left: 100%;'}
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: ${({ active }) =>
+      active
+        ? 'linear-gradient(135deg, rgba(255, 138, 76, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%)'
+        : 'transparent'};
+    opacity: ${({ active }) => (active ? 1 : 0)};
+    transition: opacity 0.3s ease;
+  }
+
+  &:hover {
+    transform: translateY(-2px);
+    background: ${({ active }) =>
+      active
+        ? 'linear-gradient(135deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.2) 100%)'
+        : 'rgba(255, 255, 255, 0.2)'};
+    box-shadow: ${({ active }) =>
+      active
+        ? '0 12px 35px rgba(255, 255, 255, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.2)'
+        : '0 6px 20px rgba(0, 0, 0, 0.2)'};
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+    &:hover {
+      transform: none;
+    }
+    &::before {
+      display: none;
+    }
+  }
+`;
+
+const TabIcon = styled.span`
+  font-size: 1rem;
+  position: relative;
+  z-index: 1;
+  transition: transform 0.3s ease;
+
+  ${StatusTab}:hover & {
+    transform: scale(1.1);
+  }
+
+  ${StatusTab}[data-active="true"] & {
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%,
+    100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.1);
+    }
+  }
+`;
+
+const Content = styled.div`
+  max-width: 1400px;
+  margin: 0 auto;
+`;
+
+const BooksGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1.5rem;
+
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  }
+
+  @media (min-width: 1024px) {
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  }
+
+  @media (min-width: 1400px) {
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  }
+`;
+
+const LoadingState = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
 `;
 
 const LoadingText = styled.p`
   color: rgba(255, 255, 255, 0.8);
   font-size: 1.1rem;
   margin: 0;
-`;
-
-const ErrorContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 400px;
-  animation: ${fadeIn} 0.5s ease-out;
-`;
-
-const ErrorIcon = styled.div`
-  font-size: 4rem;
-  margin-bottom: 1rem;
-  animation: ${pulse} 2s ease-in-out infinite;
-`;
-
-const ErrorText = styled.p`
-  color: rgba(255, 255, 255, 0.8);
-  font-size: 1.2rem;
-  margin: 0;
-  text-align: center;
 `;
 
 const EmptyState = styled.div`
@@ -285,13 +296,11 @@ const EmptyState = styled.div`
   justify-content: center;
   min-height: 400px;
   text-align: center;
-  animation: ${fadeIn} 0.5s ease-out;
 `;
 
 const EmptyIcon = styled.div`
-  font-size: 5rem;
-  margin-bottom: 1.5rem;
-  animation: ${pulse} 3s ease-in-out infinite;
+  font-size: 4rem;
+  margin-bottom: 1rem;
 `;
 
 const EmptyTitle = styled.h2`
