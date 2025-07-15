@@ -2,7 +2,7 @@ import {
   BookCover,
   BookSearchFormat,
   useChangeMyBooksMutation,
-  useGetMyBooksQuery,
+  useGetAllMyBooksQuery,
 } from 'entities/book';
 import { Card, Col } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
@@ -17,12 +17,16 @@ type BookCardProps = {
 export const BookShelfCard = ({ book }: BookCardProps) => {
   const navigate = useNavigate();
   const { user } = useAppSelector((state) => state.user);
-  const { data: myBooks } = useGetMyBooksQuery({
+  const { data: allMyBooks } = useGetAllMyBooksQuery({
     userId: user?.id as string,
-    bookStatus: 'will_read',
     from: 'mybooks',
-    select: 'book_id',
+    select: 'book_id, book_status',
   });
+
+  // Проверяем, есть ли книга в библиотеке пользователя
+  const isInMyBooks = allMyBooks?.some(
+    (myBook) => myBook.book_id === book.cover_edition_key
+  );
 
   const [changeMyBooks] = useChangeMyBooksMutation();
   const handleBookClick = (book: BookSearchFormat) => {
@@ -84,7 +88,7 @@ export const BookShelfCard = ({ book }: BookCardProps) => {
               {handleBookAuthor(book.author_name[0])}
             </Card.Text>
           )}
-          {myBooks?.some((item) => item.book_id === book.cover_edition_key) ? (
+          {isInMyBooks ? (
             <Star
               className='card__star card__star--filled'
               onClick={() => handleRemoveFromMyBooks(book)}

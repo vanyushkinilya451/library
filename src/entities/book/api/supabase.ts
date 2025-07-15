@@ -8,6 +8,12 @@ type MyBooksQuery = {
   bookStatus: 'will_read' | 'reading' | 'read' | 'favorite';
 };
 
+type GetAllMyBooksQuery = {
+  from: string;
+  select: string;
+  userId: string;
+};
+
 type MyBooksMutation = {
   from: string;
   userId: string;
@@ -31,6 +37,24 @@ export const supabaseApi = createApi({
           .select(select)
           .eq('user_id', userId)
           .eq('book_status', bookStatus);
+        if (error) return { error: error.message };
+        if (!data) return { data: [] };
+        return {
+          data: data as unknown as { book_id: string; book_status: string }[],
+        };
+      },
+      providesTags: ['MyBooks'],
+    }),
+
+    getAllMyBooks: builder.query<
+      { book_id: string; book_status: string }[],
+      GetAllMyBooksQuery
+    >({
+      queryFn: async ({ userId, from, select }) => {
+        const { data, error } = await supabase
+          .from(from)
+          .select(select)
+          .eq('user_id', userId);
         if (error) return { error: error.message };
         if (!data) return { data: [] };
         return {
@@ -116,4 +140,8 @@ export const supabaseApi = createApi({
   }),
 });
 
-export const { useGetMyBooksQuery, useChangeMyBooksMutation } = supabaseApi;
+export const {
+  useGetMyBooksQuery,
+  useGetAllMyBooksQuery,
+  useChangeMyBooksMutation,
+} = supabaseApi;

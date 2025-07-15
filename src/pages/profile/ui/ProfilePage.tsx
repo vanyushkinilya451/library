@@ -1,6 +1,7 @@
 import { User } from '@supabase/supabase-js';
+import { useGetAllMyBooksQuery } from 'entities/book';
 import { getUserProfile } from 'entities/user/model/UserSlice';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import { UnknownPerson } from 'shared/assets';
@@ -24,6 +25,27 @@ export const ProfilePage = () => {
   const { isModalOpen, openModal, closeModal } = useModal();
   const { isLoading } = useAppSelector((state) => state.user);
   const [isLoadingResetPassword, setIsLoadingResetPassword] = useState(false);
+
+  const { data: allMyBooks, isLoading: isLoadingMyBooks } =
+    useGetAllMyBooksQuery({
+      userId: user?.id as string,
+      from: 'mybooks',
+      select: 'book_id, book_status',
+    });
+
+  // Группируем книги по статусам
+  const bookStats = useMemo(() => {
+    if (!allMyBooks) return { read: 0, reading: 0, will_read: 0, favorite: 0 };
+
+    return allMyBooks.reduce(
+      (acc, book) => {
+        acc[book.book_status as keyof typeof acc]++;
+        return acc;
+      },
+      { read: 0, reading: 0, will_read: 0, favorite: 0 }
+    );
+  }, [allMyBooks]);
+
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -116,15 +138,42 @@ export const ProfilePage = () => {
 
           <StatsSection>
             <StatCard>
-              <StatNumber>12</StatNumber>
+              <StatNumber>
+                {isLoadingMyBooks ? (
+                  <SkeletonLoader
+                    width='40px'
+                    height='24px'
+                  />
+                ) : (
+                  bookStats.read
+                )}
+              </StatNumber>
               <StatLabel>Прочитано книг</StatLabel>
             </StatCard>
             <StatCard>
-              <StatNumber>5</StatNumber>
+              <StatNumber>
+                {isLoadingMyBooks ? (
+                  <SkeletonLoader
+                    width='40px'
+                    height='24px'
+                  />
+                ) : (
+                  bookStats.reading
+                )}
+              </StatNumber>
               <StatLabel>В процессе</StatLabel>
             </StatCard>
             <StatCard>
-              <StatNumber>8</StatNumber>
+              <StatNumber>
+                {isLoadingMyBooks ? (
+                  <SkeletonLoader
+                    width='40px'
+                    height='24px'
+                  />
+                ) : (
+                  bookStats.favorite
+                )}
+              </StatNumber>
               <StatLabel>В избранном</StatLabel>
             </StatCard>
           </StatsSection>

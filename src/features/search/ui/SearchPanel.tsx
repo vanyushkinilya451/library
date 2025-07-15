@@ -9,10 +9,13 @@ export const SearchPanel = () => {
     handleSearchValue,
     search,
     filteredBooks: books,
+    authors,
   } = useSearch({
     debouncedDelay: 500,
   });
   const { isModalOpen, openModal, closeModal } = useModal();
+
+  console.log(authors);
 
   return (
     <Container>
@@ -24,7 +27,12 @@ export const SearchPanel = () => {
         onFocus={openModal}
         onBlur={closeModal}
       />
-      {books && isModalOpen && <SearchResults books={books} />}
+      {(books || authors) && isModalOpen && (
+        <SearchResults
+          books={books || []}
+          authors={authors || []}
+        />
+      )}
     </Container>
   );
 };

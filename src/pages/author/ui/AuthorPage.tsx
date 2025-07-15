@@ -8,14 +8,24 @@ export const AuthorPage = () => {
     id: authorId as string,
   });
 
+  const formateKey = () => {
+    const lastSlashIndex = author?.key.lastIndexOf('/');
+    if (lastSlashIndex) {
+      return author?.key.slice(lastSlashIndex + 1);
+    }
+    return author?.key;
+  }
+
+  console.log(author?.key.lastIndexOf('/'))
+  console.log(author?.key.slice(9))
+
   return (
     author && (
       <Container>
         {author.photos ? (
           <Cover>
             <AuthorImage
-              cover_id={author.photos[0]}
-              cover_i={author.photos[0]}
+              id={formateKey()!}
               coverSize='L'
               skeletonHeight='450px'
               objectFit='cover'

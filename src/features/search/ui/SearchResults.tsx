@@ -1,20 +1,29 @@
-import { BookSearchFormat } from 'entities/book';
+import { Author, AuthorImage } from 'entities/author';
+import {
+  BookCover as BookCoverComponent,
+  BookSearchFormat,
+} from 'entities/book';
 import { useNavigate } from 'react-router-dom';
 import { Fragment } from 'react/jsx-runtime';
-import { CONSTANTS } from 'shared/lib';
 import styled from 'styled-components';
 
 type SearchResutlsProps = {
   books: BookSearchFormat[];
+  authors: Author[];
 };
 
-export const SearchResults = ({ books }: SearchResutlsProps) => {
+export const SearchResults = ({ books, authors }: SearchResutlsProps) => {
   const navigate = useNavigate();
 
-  const handleBookClick = (book: BookSearchFormat) => {
-    navigate(`/book/${book.cover_i || book.cover_id}`, { state: { book } });
+  const handleBookClick = (id: string) => {
+    navigate(`/book/${id}`);
   };
 
+  const handleAuthorClick = (id: string) => {
+    navigate(`/author/${id}`);
+  };
+
+  console.log(authors);
   return (
     <ResultsContainer>
       {books.length ? (
@@ -27,7 +36,7 @@ export const SearchResults = ({ books }: SearchResutlsProps) => {
                     <BookPropsList>
                       <ChooseBookButton
                         onMouseDown={() => {
-                          handleBookClick(book);
+                          handleBookClick(book.cover_edition_key);
                         }}
                       >
                         <BookDescription>
@@ -35,11 +44,13 @@ export const SearchResults = ({ books }: SearchResutlsProps) => {
                           <BookAuthor>{book.author_name}</BookAuthor>
                         </BookDescription>
                         {book.cover_i ? (
-                          <BookCoverWrapper>
-                            <BookCover
-                              src={`${CONSTANTS.OL_COVER}${book.cover_i}-M.jpg`}
+                          <Cover>
+                            <BookCoverComponent
+                              cover_i={book.cover_i}
+                              size='M'
+                              skeletonHeight='65px'
                             />
-                          </BookCoverWrapper>
+                          </Cover>
                         ) : (
                           ''
                         )}
@@ -51,14 +62,55 @@ export const SearchResults = ({ books }: SearchResutlsProps) => {
               );
             })}
           </BookList>
-          <LookMoreButton>Посмотреть все результаты</LookMoreButton>
         </Fragment>
-      ) : (
+      ) : null}
+      {authors.length ? (
+        <Fragment>
+          <AuthorList>
+            {authors.map((author) => {
+              return (
+                <Fragment key={author.key}>
+                  <BookItem>
+                    <BookPropsList>
+                      <ChooseBookButton
+                        onMouseDown={() => {
+                          handleAuthorClick(author.key)
+                        }}>
+                        <BookDescription>
+                          <BookTitle>{author.name}</BookTitle>
+                          <BookAuthor>{author.personal_name}</BookAuthor>
+                        </BookDescription>
+                        <Cover>
+                          <AuthorImage
+                            id={author.key}
+                            coverSize='S'
+                            skeletonHeight='65px'
+                            objectFit='cover'
+                          />
+                        </Cover>
+                      </ChooseBookButton>
+                    </BookPropsList>
+                  </BookItem>
+                  <Underline />
+                </Fragment>
+              );
+            })}
+          </AuthorList>
+        </Fragment>
+      ) : null}
+      {!books.length && !authors.length ? (
         <NoBooksFound>Ничего не найдено</NoBooksFound>
-      )}
+      ) : null}
     </ResultsContainer>
   );
 };
+
+const AuthorList = styled.ul`
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+`;
 
 const BookDescription = styled.div`
   margin-right: 12px;
@@ -66,18 +118,12 @@ const BookDescription = styled.div`
   flex: 1;
 `;
 
-const BookCoverWrapper = styled.div`
+const Cover = styled.div`
   width: 45px;
   height: 65px;
   border-radius: 4px;
   overflow: hidden;
   box-shadow: var(--shadow-xs);
-`;
-
-const BookCover = styled.img`
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
 `;
 
 const Underline = styled.hr`
@@ -163,28 +209,10 @@ const ChooseBookButton = styled.button`
   transition: background-color 0.2s ease;
 
   &:hover {
-    background-color: var(--accent-blue);
-    opacity: 0.05;
+    background-color: var(--accent-blue-light);
   }
 
   &:active {
-    background-color: var(--accent-blue);
-    opacity: 0.1;
-  }
-`;
-
-const LookMoreButton = styled(ChooseBookButton)`
-  border: none;
-  text-align: center;
-  justify-content: center;
-  font-weight: 500;
-  color: var(--accent-blue);
-  border-top: 1px solid var(--black);
-  opacity: 0.08;
-
-  &:hover {
-    background-color: var(--accent-blue);
-    opacity: 0.08;
-    color: var(--accent-blue-dark);
+    background-color: var(--accent-blue-light);
   }
 `;

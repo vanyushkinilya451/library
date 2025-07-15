@@ -1,5 +1,5 @@
-import { useGetMyBooksQuery } from 'entities/book';
-import { useState } from 'react';
+import { useGetAllMyBooksQuery } from 'entities/book';
+import { useMemo, useState } from 'react';
 import { useAppSelector } from 'shared/lib';
 import styled from 'styled-components';
 import { BookCard } from './BookCard';
@@ -9,12 +9,18 @@ export const MyBooks = () => {
     'will_read' | 'reading' | 'read' | 'favorite'
   >('will_read');
   const { user } = useAppSelector((state) => state.user);
-  const { data: myBooks, isLoading } = useGetMyBooksQuery({
+
+  const { data: allMyBooks, isLoading } = useGetAllMyBooksQuery({
     userId: user?.id as string,
-    bookStatus: status,
     from: 'mybooks',
     select: 'book_id, book_status',
   });
+
+  // Фильтруем книги по выбранному статусу
+  const filteredBooks = useMemo(() => {
+    if (!allMyBooks) return [];
+    return allMyBooks.filter((book) => book.book_status === status);
+  }, [allMyBooks, status]);
 
   return (
     <PageContainer>
@@ -64,9 +70,9 @@ export const MyBooks = () => {
             <LoadingSpinner />
             <LoadingText>Загружаем ваши книги...</LoadingText>
           </LoadingState>
-        ) : myBooks && myBooks.length > 0 ? (
+        ) : filteredBooks && filteredBooks.length > 0 ? (
           <BooksGrid>
-            {myBooks.map((book) => (
+            {filteredBooks.map((book) => (
               <BookCard
                 key={book.book_id}
                 bookId={book.book_id}

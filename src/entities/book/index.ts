@@ -7,6 +7,7 @@ export {
 export {
   supabaseApi,
   useChangeMyBooksMutation,
+  useGetAllMyBooksQuery,
   useGetMyBooksQuery,
 } from './api/supabase';
 export { BookSearchFormat, BookWorkFormat } from './lib/types';
