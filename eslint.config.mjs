@@ -1,63 +1,55 @@
-// Основные импорты плагинов и конфигураций
-import js from "@eslint/js"; // Базовый линтер для JavaScript
-import pluginReact from "eslint-plugin-react"; // Плагин для React
-import { defineConfig } from "eslint/config"; // Функция для определения конфигурации
-import globals from "globals"; // Глобальные переменные
-import tseslint from "typescript-eslint"; // Линтер для TypeScript
+import js from '@eslint/js';
+import pluginReact from 'eslint-plugin-react';
+import pluginReactHooks from 'eslint-plugin-react-hooks';
+import { defineConfig } from 'eslint/config';
+import globals from 'globals';
+import tseslint from 'typescript-eslint';
 
 export default defineConfig([
-  // Игнорируем сгенерированные файлы в dist
   {
-    ignores: ["dist/**/*"],
+    ignores: [
+      'dist/**/*',
+      'node_modules',
+      'steiger.config.ts',
+      'webpack.config.js',
+    ],
   },
-
-  // Базовые правила для всех JS/TS файлов
   {
-    files: ["**/*.{js,mjs,cjs,ts,mts,cts,jsx,tsx}"],
-    plugins: { js },
-    extends: ["js/recommended"],
-  },
-
-  // Настройки React
-  {
+    files: ['**/*.{js,ts,jsx,tsx}'],
+    languageOptions: {
+      parser: tseslint.parser,
+      parserOptions: {
+        project: './tsconfig.json',
+      },
+      globals: {
+        ...globals.browser,
+        ...globals.node,
+        React: 'readonly',
+      },
+    },
+    plugins: {
+      js,
+      '@typescript-eslint': tseslint.plugin,
+      react: pluginReact,
+      'react-hooks': pluginReactHooks,
+    },
     settings: {
       react: {
-        version: "detect", // Автоматически определяет версию React
+        version: 'detect',
       },
     },
-  },
-
-  // Глобальные переменные для JS/TS файлов
-  {
-    files: ["**/*.{js,mjs,cjs,ts,mts,cts,jsx,tsx}"],
-    languageOptions: {
-      globals: {
-        ...globals.browser, // Браузерные глобалы (window, document и т.д.)
-        ...globals.node, // Node.js глобалы (__dirname, require и т.д.)
-      },
-    },
-  },
-
-  // Рекомендуемые правила TypeScript
-  tseslint.configs.recommended,
-
-  // Специальные правила для React компонентов
-  {
-    files: ["**/*.{jsx,tsx}"],
-    plugins: {
-      react: pluginReact,
-    },
     rules: {
-      "react/react-in-jsx-scope": "off",
-    },
-  },
-
-  // Специальные правила для webpack конфига
-  {
-    files: ["webpack.config.js"],
-    rules: {
-      "@typescript-eslint/no-require-imports": "off", // Разрешаем require()
-      "@typescript-eslint/no-var-requires": "off", // Разрешаем var require
+      ...js.configs.recommended.rules,
+      ...tseslint.configs.recommended.rules,
+      ...tseslint.configs.recommendedTypeChecked.rules,
+      ...pluginReact.configs.recommended.rules,
+      'react/react-in-jsx-scope': 'off',
+      'react-hooks/rules-of-hooks': 'error',
+      'react-hooks/exhaustive-deps': 'warn',
+      '@typescript-eslint/no-explicit-any': 'error',
+      '@typescript-eslint/consistent-type-imports': 'error',
+      'no-debugger': 'error',
+      'react/no-unescaped-entities': 'off',
     },
   },
 ]);

@@ -32,16 +32,16 @@ export const ResetPasswordForm = () => {
         Мы отправим вам ссылку для сброса пароля на вашу почту
       </FormDescription>
       <FormInput
-        type='email'
+        type="email"
         onChange={handleChange}
-        name='email'
-        placeholder='Почта'
+        name="email"
+        placeholder="Почта"
         value={email}
       />
 
       <FormFooter></FormFooter>
       <SubmitButton
-        type='submit'
+        type="submit"
         disabled={isLoading}
       >
         {isLoading ? 'Загрузка...' : 'Сбросить пароль'}

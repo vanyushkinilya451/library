@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { Session, User } from '@supabase/supabase-js';
+import type { Session, User } from '@supabase/supabase-js';
 import { supabase } from 'shared/lib';
 
 export type UserProfile = {
@@ -43,7 +43,7 @@ export const registerUser = createAsyncThunk(
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
-  }
+  },
 );
 
 export const loginUser = createAsyncThunk(
@@ -63,7 +63,7 @@ export const loginUser = createAsyncThunk(
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
-  }
+  },
 );
 
 export const logoutUser = createAsyncThunk('auth/logoutUser', async () => {
@@ -92,7 +92,7 @@ export const getUserAndSession = createAsyncThunk(
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
-  }
+  },
 );
 
 export const getUserProfile = createAsyncThunk(
@@ -111,7 +111,7 @@ export const getUserProfile = createAsyncThunk(
     } catch (error) {
       return thunkApi.rejectWithValue(error);
     }
-  }
+  },
 );
 
 export const userSlice = createSlice({

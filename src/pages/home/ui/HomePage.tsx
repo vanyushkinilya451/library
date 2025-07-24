@@ -10,7 +10,7 @@ export const HomePage = () => {
   return (
     <Container
       fluid
-      className='section'
+      className="section"
     >
       {homepageConfig.slice(0, categoriesLimit).map((shelf) => (
         <Shelf

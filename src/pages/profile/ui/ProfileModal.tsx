@@ -1,9 +1,9 @@
 import { getUserProfile } from 'entities/user/model/UserSlice';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { UnknownPerson } from 'shared/assets';
 import { supabase, useAppDispatch, useAppSelector } from 'shared/lib';
 import styled from 'styled-components';
-import { UserProfile } from '../lib/types';
+import type { UserProfile } from '../lib/types';
 
 export const ProfileModal = ({ closeModal }: { closeModal: () => void }) => {
   const user = useAppSelector((state) => state.user.user);
@@ -37,7 +37,7 @@ export const ProfileModal = ({ closeModal }: { closeModal: () => void }) => {
         {
           onConflict: 'user_id',
           ignoreDuplicates: false,
-        }
+        },
       );
 
       if (error) {
@@ -72,9 +72,9 @@ export const ProfileModal = ({ closeModal }: { closeModal: () => void }) => {
               <FormField>
                 <FormLabel>Фамилия</FormLabel>
                 <FormInput
-                  type='text'
-                  placeholder='Введите фамилию'
-                  name='lastname'
+                  type="text"
+                  placeholder="Введите фамилию"
+                  name="lastname"
                   value={userAttributes.lastname}
                   onChange={handleChange}
                 />
@@ -83,9 +83,9 @@ export const ProfileModal = ({ closeModal }: { closeModal: () => void }) => {
               <FormField>
                 <FormLabel>Имя</FormLabel>
                 <FormInput
-                  type='text'
-                  placeholder='Введите имя'
-                  name='firstname'
+                  type="text"
+                  placeholder="Введите имя"
+                  name="firstname"
                   value={userAttributes.firstname}
                   onChange={handleChange}
                 />
@@ -94,9 +94,9 @@ export const ProfileModal = ({ closeModal }: { closeModal: () => void }) => {
               <FormField>
                 <FormLabel>Отчество</FormLabel>
                 <FormInput
-                  type='text'
-                  placeholder='Введите отчество'
-                  name='patronymic'
+                  type="text"
+                  placeholder="Введите отчество"
+                  name="patronymic"
                   value={userAttributes.patronymic}
                   onChange={handleChange}
                 />
@@ -105,8 +105,8 @@ export const ProfileModal = ({ closeModal }: { closeModal: () => void }) => {
               <FormField>
                 <FormLabel>Дата рождения</FormLabel>
                 <FormInput
-                  type='date'
-                  name='birthdate'
+                  type="date"
+                  name="birthdate"
                   value={userAttributes.birthdate}
                   onChange={handleChange}
                 />
@@ -118,28 +118,28 @@ export const ProfileModal = ({ closeModal }: { closeModal: () => void }) => {
               <RadioGroup>
                 <RadioOption>
                   <RadioInput
-                    type='radio'
-                    name='gender'
-                    value='male'
-                    id='male'
+                    type="radio"
+                    name="gender"
+                    value="male"
+                    id="male"
                     checked={userAttributes.gender === 'male'}
                     onChange={handleChange}
                   />
-                  <RadioLabel htmlFor='male'>
+                  <RadioLabel htmlFor="male">
                     <RadioCircle />
                     Мужской
                   </RadioLabel>
                 </RadioOption>
                 <RadioOption>
                   <RadioInput
-                    type='radio'
-                    name='gender'
-                    value='female'
-                    id='female'
+                    type="radio"
+                    name="gender"
+                    value="female"
+                    id="female"
                     checked={userAttributes.gender === 'female'}
                     onChange={handleChange}
                   />
-                  <RadioLabel htmlFor='female'>
+                  <RadioLabel htmlFor="female">
                     <RadioCircle />
                     Женский
                   </RadioLabel>
@@ -153,7 +153,7 @@ export const ProfileModal = ({ closeModal }: { closeModal: () => void }) => {
             <PhotoContainer>
               <ProfilePhoto
                 src={UnknownPerson}
-                alt='Profile'
+                alt="Profile"
               />
               <PhotoOverlay>
                 <UploadIcon>📷</UploadIcon>

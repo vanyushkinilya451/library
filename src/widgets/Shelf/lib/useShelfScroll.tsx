@@ -12,7 +12,7 @@ export const useShelfScroll = (isLoading: boolean) => {
       setIsScrolled(bookshelf.current.scrollLeft > 0);
       setIsScrollEnd(
         bookshelf.current.scrollLeft >
-          bookshelf.current.scrollWidth - bookshelf.current.clientWidth - 1
+          bookshelf.current.scrollWidth - bookshelf.current.clientWidth - 1,
       );
     };
 

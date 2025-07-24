@@ -21,7 +21,7 @@ export const SearchPanel = () => {
     <Container>
       <SearchIcon />
       <SearchBar
-        placeholder='Поиск книг...'
+        placeholder="Поиск книг..."
         value={search}
         onChange={handleSearchValue}
         onFocus={openModal}

@@ -7,7 +7,7 @@ export const BookPage = () => {
   const { bookId } = useParams();
   const { data: book } = useGetBookByIdQuery(bookId as string);
   const { data: additionalInfo } = useGetBookAdditionalInfoQuery(
-    bookId as string
+    bookId as string,
   );
 
   return (
@@ -18,15 +18,15 @@ export const BookPage = () => {
           <BookCover
             cover_id={book.covers[0]}
             cover_i={book.covers[0]}
-            size='L'
-            skeletonHeight='450px'
+            size="L"
+            skeletonHeight="450px"
           />
         </Cover>
         <BookInformation>
           {book.subjects && (
             <Tags>
               {book.subjects.map((subject) => (
-                <Tag>{subject}</Tag>
+                <Tag key={subject}>{subject}</Tag>
               ))}
             </Tags>
           )}
@@ -36,7 +36,7 @@ export const BookPage = () => {
             {additionalInfo?.author_name && (
               <div>
                 {additionalInfo?.author_name.map((author, index) => (
-                  <div>
+                  <div key={author}>
                     {additionalInfo?.author_name.length === 1
                       ? 'Автор:'
                       : 'Авторы:'}
@@ -49,7 +49,7 @@ export const BookPage = () => {
             {book.series && (
               <div>
                 {book.series.map((series, index) => (
-                  <div>
+                  <div key={series}>
                     Серия: <TextHighlight>{series}</TextHighlight>
                     {index !== book.series.length - 1 && ', '}
                   </div>
@@ -64,7 +64,7 @@ export const BookPage = () => {
               <div>
                 Издательство:{' '}
                 {book.publishers.map((publisher, index) => (
-                  <TextHighlight>
+                  <TextHighlight key={publisher}>
                     {publisher}
                     {index !== book.publishers.length - 1 && ', '}
                   </TextHighlight>
@@ -82,7 +82,7 @@ export const BookPage = () => {
                 Языки:{' '}
                 {additionalInfo?.language.map((language, index) => {
                   return (
-                    <TextHighlight>
+                    <TextHighlight key={language}>
                       {language}
                       {index !== additionalInfo?.language.length - 1 && ', '}
                     </TextHighlight>

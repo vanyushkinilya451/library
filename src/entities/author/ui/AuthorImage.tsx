@@ -102,7 +102,7 @@ export const AuthorImage = ({
         onClick={onClick}
         className={className}
         src={coverUrl}
-        alt='cover'
+        alt="cover"
         style={{
           display: isLoading ? 'none' : 'block',
           width: '100%',

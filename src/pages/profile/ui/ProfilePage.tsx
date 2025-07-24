@@ -1,4 +1,4 @@
-import { User } from '@supabase/supabase-js';
+import type { User } from '@supabase/supabase-js';
 import { useGetAllMyBooksQuery } from 'entities/book';
 import { getUserProfile } from 'entities/user/model/UserSlice';
 import { useEffect, useMemo, useState } from 'react';
@@ -14,13 +14,13 @@ import {
 } from 'shared/lib';
 import { FullScreenLoader, SkeletonLoader } from 'shared/ui';
 import styled from 'styled-components';
-import { UserProfile } from '../../../entities/user/model/UserSlice';
+import type { UserProfile } from '../../../entities/user/model/UserSlice';
 import { ProfileModal } from './ProfileModal';
 
 export const ProfilePage = () => {
   const { user }: { user: User | null } = useAppSelector((state) => state.user);
   const { profile }: { profile: UserProfile | null } = useAppSelector(
-    (state) => state.user
+    (state) => state.user,
   );
   const { isModalOpen, openModal, closeModal } = useModal();
   const { isLoading } = useAppSelector((state) => state.user);
@@ -42,7 +42,7 @@ export const ProfilePage = () => {
         acc[book.book_status as keyof typeof acc]++;
         return acc;
       },
-      { read: 0, reading: 0, will_read: 0, favorite: 0 }
+      { read: 0, reading: 0, will_read: 0, favorite: 0 },
     );
   }, [allMyBooks]);
 
@@ -56,7 +56,7 @@ export const ProfilePage = () => {
       }
     }
     getProfile();
-  }, [user]);
+  }, [user, dispatch]);
 
   const handleChangePassword = async () => {
     setIsLoadingResetPassword(true);
@@ -78,8 +78,8 @@ export const ProfilePage = () => {
     <Container>
       {isLoadingResetPassword && (
         <FullScreenLoader
-          text='Сброс пароля...'
-          subText='Пожалуйста, подождите...'
+          text="Сброс пароля..."
+          subText="Пожалуйста, подождите..."
         />
       )}
       <Toaster />
@@ -91,12 +91,12 @@ export const ProfilePage = () => {
                 {user?.user_metadata?.avatar_url ? (
                   <AvatarImage
                     src={user.user_metadata.avatar_url}
-                    alt='Avatar'
+                    alt="Avatar"
                   />
                 ) : (
                   <AvatarImage
                     src={UnknownPerson}
-                    alt='Default Avatar'
+                    alt="Default Avatar"
                   />
                 )}
               </Avatar>
@@ -106,8 +106,8 @@ export const ProfilePage = () => {
               <UserName>
                 {isLoading ? (
                   <SkeletonLoader
-                    width='300px'
-                    height='40px'
+                    width="300px"
+                    height="40px"
                   />
                 ) : profile ? (
                   `${profile.lastname} ${profile.firstname} ${profile.patronymic}`
@@ -120,8 +120,8 @@ export const ProfilePage = () => {
               <UserEmail>
                 {isLoading ? (
                   <SkeletonLoader
-                    width='300px'
-                    height='40px'
+                    width="300px"
+                    height="40px"
                   />
                 ) : user ? (
                   user.email
@@ -141,8 +141,8 @@ export const ProfilePage = () => {
               <StatNumber>
                 {isLoadingMyBooks ? (
                   <SkeletonLoader
-                    width='40px'
-                    height='24px'
+                    width="40px"
+                    height="24px"
                   />
                 ) : (
                   bookStats.read
@@ -154,8 +154,8 @@ export const ProfilePage = () => {
               <StatNumber>
                 {isLoadingMyBooks ? (
                   <SkeletonLoader
-                    width='40px'
-                    height='24px'
+                    width="40px"
+                    height="24px"
                   />
                 ) : (
                   bookStats.reading
@@ -167,8 +167,8 @@ export const ProfilePage = () => {
               <StatNumber>
                 {isLoadingMyBooks ? (
                   <SkeletonLoader
-                    width='40px'
-                    height='24px'
+                    width="40px"
+                    height="24px"
                   />
                 ) : (
                   bookStats.favorite
@@ -180,9 +180,9 @@ export const ProfilePage = () => {
 
           {isLoading ? (
             <SkeletonLoader
-              width='100%'
-              height='300px'
-              margin='20px 0'
+              width="100%"
+              height="300px"
+              margin="20px 0"
             />
           ) : (
             <DetailsSection>

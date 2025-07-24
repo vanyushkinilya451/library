@@ -1,12 +1,20 @@
 import styled from 'styled-components';
 
+type SkeletonProps = {
+  width?: string;
+  height?: string;
+  margin?: string;
+  padding?: string;
+  background?: string;
+};
+
 export const SkeletonLoader = ({
   width = '100%',
   height = '100%',
   margin = '0',
   padding = '0',
   background = 'linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%)',
-}) => {
+}: SkeletonProps) => {
   return (
     <Skeleton
       style={{

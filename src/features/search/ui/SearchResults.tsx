@@ -1,7 +1,9 @@
-import { Author, AuthorImage } from 'entities/author';
+import type { Author} from 'entities/author';
+import { AuthorImage } from 'entities/author';
+import type {
+  BookSearchFormat} from 'entities/book';
 import {
-  BookCover as BookCoverComponent,
-  BookSearchFormat,
+  BookCover as BookCoverComponent
 } from 'entities/book';
 import { useNavigate } from 'react-router-dom';
 import { Fragment } from 'react/jsx-runtime';
@@ -47,8 +49,8 @@ export const SearchResults = ({ books, authors }: SearchResutlsProps) => {
                           <Cover>
                             <BookCoverComponent
                               cover_i={book.cover_i}
-                              size='M'
-                              skeletonHeight='65px'
+                              size="M"
+                              skeletonHeight="65px"
                             />
                           </Cover>
                         ) : (
@@ -74,8 +76,9 @@ export const SearchResults = ({ books, authors }: SearchResutlsProps) => {
                     <BookPropsList>
                       <ChooseBookButton
                         onMouseDown={() => {
-                          handleAuthorClick(author.key)
-                        }}>
+                          handleAuthorClick(author.key);
+                        }}
+                      >
                         <BookDescription>
                           <BookTitle>{author.name}</BookTitle>
                           <BookAuthor>{author.personal_name}</BookAuthor>
@@ -83,9 +86,9 @@ export const SearchResults = ({ books, authors }: SearchResutlsProps) => {
                         <Cover>
                           <AuthorImage
                             id={author.key}
-                            coverSize='S'
-                            skeletonHeight='65px'
-                            objectFit='cover'
+                            coverSize="S"
+                            skeletonHeight="65px"
+                            objectFit="cover"
                           />
                         </Cover>
                       </ChooseBookButton>

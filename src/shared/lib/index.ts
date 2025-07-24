@@ -1,3 +1,4 @@
+export { breakpoints, fontSizes } from './constants/adaptive';
 export { CONSTANTS } from './constants/constants';
 export { supabase } from './constants/supabase';
 export { formatDate } from './helpers/formatDate';

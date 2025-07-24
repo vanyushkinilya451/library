@@ -21,14 +21,14 @@ export const Shelf = ({ shelfTitle, api }: ShelfProps) => {
   } = useShelfScroll(isLoading);
 
   return (
-    <article className='shelf'>
-      <h1 className='shelf__title'>{shelfTitle}</h1>
+    <article className="shelf">
+      <h1 className="shelf__title">{shelfTitle}</h1>
       {isLoading ? (
         <FakeShelfLoader />
       ) : (
         <Row
           ref={bookshelf}
-          className='shelf__container'
+          className="shelf__container"
         >
           {books?.map(
             (book) =>
@@ -37,22 +37,22 @@ export const Shelf = ({ shelfTitle, api }: ShelfProps) => {
                   book={book}
                   key={book.key}
                 />
-              )
+              ),
           )}
           {isScrolled && (
             <button
-              className='shelf__nav shelf__nav--left'
+              className="shelf__nav shelf__nav--left"
               onClick={handleScrollLeft}
             >
-              <Arrow className='scroll__icon' />
+              <Arrow className="scroll__icon" />
             </button>
           )}
           {!isScrollEnd && (
             <button
-              className='shelf__nav shelf__nav--right'
+              className="shelf__nav shelf__nav--right"
               onClick={handleScrollRight}
             >
-              <Arrow className='scroll__icon' />
+              <Arrow className="scroll__icon" />
             </button>
           )}
         </Row>

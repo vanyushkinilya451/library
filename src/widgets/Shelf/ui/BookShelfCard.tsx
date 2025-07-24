@@ -1,6 +1,7 @@
+import type {
+  BookSearchFormat} from 'entities/book';
 import {
   BookCover,
-  BookSearchFormat,
   useChangeMyBooksMutation,
   useGetAllMyBooksQuery,
 } from 'entities/book';
@@ -25,7 +26,7 @@ export const BookShelfCard = ({ book }: BookCardProps) => {
 
   // Проверяем, есть ли книга в библиотеке пользователя
   const isInMyBooks = allMyBooks?.some(
-    (myBook) => myBook.book_id === book.cover_edition_key
+    (myBook) => myBook.book_id === book.cover_edition_key,
   );
 
   const [changeMyBooks] = useChangeMyBooksMutation();
@@ -64,25 +65,25 @@ export const BookShelfCard = ({ book }: BookCardProps) => {
   return (
     <Col
       key={book.key}
-      className='shelf__item'
+      className="shelf__item"
     >
-      <Card className='card'>
+      <Card className="card">
         <BookCover
-          className='card__cover'
+          className="card__cover"
           cover_id={book.cover_id}
           cover_i={book.cover_i}
           onClick={() => handleBookClick(book)}
         />
-        <Card.Body className='card__description'>
+        <Card.Body className="card__description">
           <Card.Title
-            className='card__title'
+            className="card__title"
             onClick={() => handleBookClick(book)}
           >
             {handleBookTitle(book.title)}
           </Card.Title>
           {book.author_name && (
             <Card.Text
-              className='card__author'
+              className="card__author"
               onClick={() => handleAuthorClick(book.author_key[0])}
             >
               {handleBookAuthor(book.author_name[0])}
@@ -90,12 +91,12 @@ export const BookShelfCard = ({ book }: BookCardProps) => {
           )}
           {isInMyBooks ? (
             <Star
-              className='card__star card__star--filled'
+              className="card__star card__star--filled"
               onClick={() => handleRemoveFromMyBooks(book)}
             />
           ) : (
             <Star
-              className='card__star'
+              className="card__star"
               onClick={() => handleAddToMyBooks(book)}
             />
           )}

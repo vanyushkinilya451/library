@@ -44,26 +44,26 @@ export const ChangePasswordForm = () => {
       <FormSubtitle>Введите вашу почту и новый пароль</FormSubtitle>
 
       <FormInput
-        type='email'
+        type="email"
         onChange={handleChange}
-        name='email'
-        placeholder='Почта'
+        name="email"
+        placeholder="Почта"
         value={credentials.email}
       />
 
       <FormInput
         type={showPassword ? 'text' : 'password'}
         onChange={handleChange}
-        name='password'
-        placeholder='Новый пароль'
+        name="password"
+        placeholder="Новый пароль"
         value={credentials.password}
       />
 
       <FormInput
         type={showPassword ? 'text' : 'password'}
         onChange={handleChange}
-        name='passwordConfirm'
-        placeholder='Повторите пароль'
+        name="passwordConfirm"
+        placeholder="Повторите пароль"
         value={credentials.passwordConfirm}
       />
 
@@ -71,7 +71,7 @@ export const ChangePasswordForm = () => {
         <FormCheckboxWrapper>
           <FormLabel>
             <input
-              type='checkbox'
+              type="checkbox"
               onChange={() => setShowPassword(!showPassword)}
             />
             Показать пароль
@@ -79,7 +79,7 @@ export const ChangePasswordForm = () => {
         </FormCheckboxWrapper>
       </FormFooter>
       <SubmitButton
-        type='submit'
+        type="submit"
         disabled={isLoading}
       >
         {isLoading ? 'Загрузка...' : 'Изменить пароль'}

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import { Link } from 'react-router-dom';
+import { breakpoints, fontSizes } from 'shared/lib';
 import styled from 'styled-components';
 import { useRegister } from '../api/useRegister';
 
@@ -32,24 +33,24 @@ export const RegisterForm = () => {
     <AuthForm onSubmit={(e) => handleSubmit(e)}>
       <Toaster />
       <FormTitle>Добро пожаловать</FormTitle>
-      <FormSubtitle>Станьте частью большого сообщества YNOU</FormSubtitle>
+      <FormSubtitle>Станьте частью большого сообщества</FormSubtitle>
       <FormDescription>
         Создайте аккаунт и получите доступ к функциям приложения
       </FormDescription>
 
       <FormInput
-        type='email'
+        type="email"
         onChange={handleChange}
-        name='email'
-        placeholder='Почта'
+        name="email"
+        placeholder="Почта"
         value={credentials.email}
       />
 
       <FormInput
         type={showPassword ? 'text' : 'password'}
         onChange={handleChange}
-        name='password'
-        placeholder='Пароль'
+        name="password"
+        placeholder="Пароль"
         value={credentials.password}
       />
 
@@ -57,7 +58,7 @@ export const RegisterForm = () => {
         <FormCheckboxWrapper>
           <FormLabel>
             <input
-              type='checkbox'
+              type="checkbox"
               onChange={() => setShowPassword(!showPassword)}
             />
             Показать пароль
@@ -66,7 +67,7 @@ export const RegisterForm = () => {
         <AccentLink to={'#'}>Забыли пароль?</AccentLink>
       </FormFooter>
       <SubmitButton
-        type='submit'
+        type="submit"
         disabled={isLoading}
       >
         {isLoading ? 'Загрузка...' : 'Зарегистрироваться'}
@@ -86,46 +87,60 @@ const AuthForm = styled.form`
 `;
 
 const FormTitle = styled.h1`
+  font-size: ${fontSizes.xxl};
   color: var(--auth-primary-text);
-  font-size: 3.3rem;
   font-weight: 900;
   line-height: 46px;
   margin: 0;
   text-align: center;
   user-select: none;
+
+  @media (max-width: ${breakpoints.sm}) {
+    font-size: ${fontSizes.xl};
+  }
 `;
 
 const FormSubtitle = styled.h2`
+  font-size: ${fontSizes.md};
   color: var(--auth-secondary-text);
   user-select: none;
-  font-size: 1.1rem;
   font-weight: 400;
   line-height: 19px;
   text-align: center;
-  margin: 0;
   margin: 30px 0 5px 0;
+
+  @media (max-width: ${breakpoints.sm}) {
+    font-size: ${fontSizes.sm};
+  }
 `;
 
 const FormDescription = styled.h3`
+  font-size: ${fontSizes.md};
   color: var(--auth-secondary-text);
   margin: 0;
   font-style: italic;
-
   font-weight: 400;
-  font-size: 1rem;
   text-align: center;
   user-select: none;
+
+  @media (max-width: ${breakpoints.sm}) {
+    font-size: ${fontSizes.sm};
+  }
 `;
 
 const FormInput = styled.input`
+  font-size: ${fontSizes.sm};
   color: black;
-
   font-weight: 400;
   padding: 17px 12px;
   border: 1px solid var(--auth-border);
   border-radius: 8px;
   width: 100%;
   margin-top: 18px;
+
+  @media (max-width: ${breakpoints.sm}) {
+    font-size: ${fontSizes.xs};
+  }
 
   &::placeholder {
     color: var(--auth-secondary-text);
@@ -150,25 +165,39 @@ const FormCheckboxWrapper = styled.div`
 `;
 
 const FormLabel = styled.label`
+  font-size: ${fontSizes.sm};
   color: var(--auth-secondary-text);
   user-select: none;
   display: flex;
   align-items: center;
   gap: 5px;
+
+  @media (max-width: ${breakpoints.sm}) {
+    font-size: ${fontSizes.xs};
+  }
 `;
 
 const AccentLink = styled(Link)`
+  font-size: ${fontSizes.sm};
   color: var(--auth-accent);
+
+  @media (max-width: ${breakpoints.sm}) {
+    font-size: ${fontSizes.xs};
+  }
 `;
 
 const SubmitButton = styled.button`
+  font-size: ${fontSizes.sm};
   border-radius: 8px;
   background: var(--auth-dark-blue);
   color: var(--auth-light-text);
   width: 100%;
   padding: 10px 0;
-
   margin-top: 22px;
+
+  @media (max-width: ${breakpoints.sm}) {
+    font-size: ${fontSizes.xs};
+  }
 
   &:hover {
     opacity: 0.9;
@@ -181,7 +210,7 @@ const SubmitButton = styled.button`
 `;
 
 const RegisterPrompt = styled.span`
+  font-size: ${fontSizes.sm};
   color: var(--auth-primary-text);
-
   margin-top: 11px;
 `;

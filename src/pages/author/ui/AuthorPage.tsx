@@ -1,4 +1,5 @@
-import { Author, AuthorImage, useAuthor } from 'entities/author';
+import type { Author } from 'entities/author';
+import { AuthorImage, useAuthor } from 'entities/author';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 
@@ -14,10 +15,10 @@ export const AuthorPage = () => {
       return author?.key.slice(lastSlashIndex + 1);
     }
     return author?.key;
-  }
+  };
 
-  console.log(author?.key.lastIndexOf('/'))
-  console.log(author?.key.slice(9))
+  console.log(author?.key.lastIndexOf('/'));
+  console.log(author?.key.slice(9));
 
   return (
     author && (
@@ -26,9 +27,9 @@ export const AuthorPage = () => {
           <Cover>
             <AuthorImage
               id={formateKey()!}
-              coverSize='L'
-              skeletonHeight='450px'
-              objectFit='cover'
+              coverSize="L"
+              skeletonHeight="450px"
+              objectFit="cover"
             />
           </Cover>
         ) : (
@@ -43,7 +44,7 @@ export const AuthorPage = () => {
                   ? 'Псевдоним:'
                   : 'Псевдонимы: '}
                 {author.alternate_names.map((name, index) => (
-                  <TextHighlight>
+                  <TextHighlight key={name}>
                     {name}
                     {index !== author.alternate_names.length - 1 && ', '}
                   </TextHighlight>

@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { CONSTANTS } from 'shared/lib';
-import {
+import type {
   BookSearchFormat,
   BookWorkFormat,
   SearchApiResponse,

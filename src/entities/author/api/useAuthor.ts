@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { CONSTANTS } from 'shared/lib';
-import { Author } from '../lib/types';
+import type { Author } from '../lib/types';
 
 export const useAuthor = ({ id }: { id: string }) => {
   const [author, setAuthor] = useState<Author | null>(null);

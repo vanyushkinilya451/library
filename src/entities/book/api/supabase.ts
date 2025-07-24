@@ -110,7 +110,7 @@ export const supabaseApi = createApi({
       invalidatesTags: ['MyBooks'],
       onQueryStarted: async (
         { userId, bookStatus, method, ...patch },
-        { dispatch, queryFulfilled }
+        { dispatch, queryFulfilled },
       ) => {
         const patchResult = dispatch(
           supabaseApi.util.updateQueryData(
@@ -121,14 +121,14 @@ export const supabaseApi = createApi({
                 draft.push({ book_id: patch.bookId, book_status: bookStatus });
               } else if (method === 'delete') {
                 const index = draft.findIndex(
-                  (item) => item.book_id === patch.bookId
+                  (item) => item.book_id === patch.bookId,
                 );
                 if (index > -1) {
                   draft.splice(index, 1);
                 }
               }
-            }
-          )
+            },
+          ),
         );
         try {
           await queryFulfilled;

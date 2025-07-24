@@ -1,5 +1,5 @@
-import { Author } from 'entities/author';
-import { BookSearchFormat } from 'entities/book';
+import type { Author } from 'entities/author';
+import type { BookSearchFormat } from 'entities/book';
 import { useEffect, useState } from 'react';
 import { CONSTANTS, useDebounce } from 'shared/lib';
 
@@ -18,10 +18,10 @@ export const useSearch = ({ debouncedDelay = 500 }: useSearchProps) => {
     async function fetchBooks() {
       try {
         const responseBooks = await fetch(
-          `${CONSTANTS.OL_SEARCH_BOOKS}?q=${processedSearch}&limit=${CONSTANTS.SEARCH_LIMIT}`
+          `${CONSTANTS.OL_SEARCH_BOOKS}?q=${processedSearch}&limit=${CONSTANTS.SEARCH_LIMIT}`,
         );
         const responseAuthors = await fetch(
-          `${CONSTANTS.OL_SEARCH_AUTHORS}?q=${processedSearch}&limit=${CONSTANTS.SEARCH_LIMIT}`
+          `${CONSTANTS.OL_SEARCH_AUTHORS}?q=${processedSearch}&limit=${CONSTANTS.SEARCH_LIMIT}`,
         );
         if (!responseBooks.ok) {
           console.error('Ошибки поиска книг', responseBooks.text());

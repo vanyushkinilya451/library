@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import { Link } from 'react-router-dom';
+import { breakpoints, fontSizes } from 'shared/lib';
 import styled from 'styled-components';
 import { useLogin } from '../api/useLogin';
 
@@ -10,12 +11,16 @@ export const LoginForm = () => {
   const { login, error, passwordErrors, isLoading } = useLogin();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setCredentials({ ...credentials, [e.target.name]: e.target.value });
+    setCredentials((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     login(credentials);
+  };
+
+  const handleShowPassword = () => {
+    setShowPassword((prev) => !prev);
   };
 
   useEffect(() => {
@@ -38,18 +43,18 @@ export const LoginForm = () => {
       </FormDescription>
 
       <FormInput
-        type='email'
+        type="email"
         onChange={handleChange}
-        placeholder='Почта'
-        name='email'
+        placeholder="Почта"
+        name="email"
         value={credentials.email}
       />
 
       <FormInput
         type={showPassword ? 'text' : 'password'}
         onChange={handleChange}
-        placeholder='Пароль'
-        name='password'
+        placeholder="Пароль"
+        name="password"
         value={credentials.password}
       />
 
@@ -57,8 +62,8 @@ export const LoginForm = () => {
         <FormCheckboxWrapper>
           <FormLabel>
             <input
-              type='checkbox'
-              onChange={() => setShowPassword(!showPassword)}
+              type="checkbox"
+              onChange={handleShowPassword}
             />
             Показать пароль
           </FormLabel>
@@ -67,7 +72,7 @@ export const LoginForm = () => {
       </FormFooter>
 
       <SubmitButton
-        type='submit'
+        type="submit"
         disabled={isLoading}
       >
         {isLoading ? 'Загрузка...' : 'Войти'}
@@ -91,45 +96,61 @@ const AuthForm = styled.form`
 `;
 
 const FormTitle = styled.h1`
+  font-size: ${fontSizes.xxl};
   color: var(--auth-primary-text);
-  font-size: 3.3rem;
   font-weight: 900;
   line-height: 46px;
   margin: 0;
   text-align: center;
   user-select: none;
+  white-space: nowrap;
+
+  @media (max-width: ${breakpoints.sm}) {
+    font-size: ${fontSizes.xl};
+  }
 `;
 
 const FormSubtitle = styled.h2`
+  font-size: ${fontSizes.md};
   color: var(--auth-secondary-text);
   user-select: none;
-  font-size: 1.1rem;
   font-weight: 400;
   line-height: 19px;
   text-align: center;
-  margin: 0;
   margin: 30px 0 5px 0;
+
+  @media (max-width: ${breakpoints.sm}) {
+    font-size: ${fontSizes.sm};
+  }
 `;
 
 const FormDescription = styled.h3`
+  font-size: ${fontSizes.md};
   color: var(--auth-secondary-text);
   margin: 0;
   font-style: italic;
-  font-size: 1rem;
   font-weight: 400;
   text-align: center;
   user-select: none;
+
+  @media (max-width: ${breakpoints.sm}) {
+    font-size: ${fontSizes.sm};
+  }
 `;
 
 const FormInput = styled.input`
+  font-size: ${fontSizes.sm};
   color: black;
-
   font-weight: 400;
   padding: 17px 12px;
   border: 1px solid var(--auth-border);
   border-radius: 8px;
   width: 100%;
   margin-top: 18px;
+
+  @media (max-width: ${breakpoints.sm}) {
+    font-size: ${fontSizes.xs};
+  }
 
   &::placeholder {
     color: var(--auth-secondary-text);
@@ -154,25 +175,39 @@ const FormCheckboxWrapper = styled.div`
 `;
 
 const FormLabel = styled.label`
+  font-size: ${fontSizes.sm};
   color: var(--auth-secondary-text);
   user-select: none;
   display: flex;
   align-items: center;
   gap: 5px;
+
+  @media (max-width: ${breakpoints.sm}) {
+    font-size: ${fontSizes.xs};
+  }
 `;
 
 const AccentLink = styled(Link)`
+  font-size: ${fontSizes.sm};
   color: var(--auth-accent);
+
+  @media (max-width: ${breakpoints.sm}) {
+    font-size: ${fontSizes.xs};
+  }
 `;
 
 const SubmitButton = styled.button`
+  font-size: ${fontSizes.sm};
   border-radius: 8px;
   background: var(--auth-dark-blue);
   color: var(--auth-light-text);
   width: 100%;
   padding: 10px 0;
-
   margin-top: 22px;
+
+  @media (max-width: ${breakpoints.sm}) {
+    font-size: ${fontSizes.xs};
+  }
 
   &:hover {
     opacity: 0.9;
@@ -185,7 +220,7 @@ const SubmitButton = styled.button`
 `;
 
 const RegisterPrompt = styled.span`
+  font-size: ${fontSizes.sm};
   color: var(--auth-primary-text);
-
   margin-top: 11px;
 `;

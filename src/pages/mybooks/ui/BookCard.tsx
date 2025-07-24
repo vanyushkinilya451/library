@@ -1,6 +1,7 @@
+import type {
+  BookSearchFormat} from 'entities/book';
 import {
   BookCover,
-  BookSearchFormat,
   useChangeMyBooksMutation,
   useGetBookAdditionalInfoQuery,
 } from 'entities/book';
@@ -49,7 +50,7 @@ export const BookCard = ({
         method: newStatus === 'remove' ? 'delete' : 'update',
       }).unwrap();
       setCurrentStatus(
-        newStatus as 'will_read' | 'reading' | 'read' | 'favorite'
+        newStatus as 'will_read' | 'reading' | 'read' | 'favorite',
       );
     } catch (error) {
       console.error('Failed to update book status:', error);
@@ -60,28 +61,28 @@ export const BookCard = ({
     return (
       <Card>
         <CoverContainer>
-          <SkeletonLoader height='200px' />
+          <SkeletonLoader height="200px" />
         </CoverContainer>
         <CardContent>
           <SkeletonLoader
-            height='1rem'
-            margin='0 0 0.4rem 0'
+            height="1rem"
+            margin="0 0 0.4rem 0"
           />
           <SkeletonLoader
-            height='0.9rem'
-            margin='0 0 0.8rem 0'
-            width='60%'
+            height="0.9rem"
+            margin="0 0 0.8rem 0"
+            width="60%"
           />
           <SkeletonLoader
-            height='1.5rem'
-            margin='0 0 1rem 0'
-            width='40%'
+            height="1.5rem"
+            margin="0 0 1rem 0"
+            width="40%"
           />
           <BookActions>
-            <SkeletonLoader height='32px' />
+            <SkeletonLoader height="32px" />
             <SkeletonLoader
-              height='32px'
-              width='32px'
+              height="32px"
+              width="32px"
             />
           </BookActions>
         </CardContent>
@@ -117,11 +118,11 @@ export const BookCard = ({
                 value={currentStatus}
                 onChange={(e) => handleStatusChange(e.target.value)}
               >
-                <option value='will_read'>📚 Буду читать</option>
-                <option value='reading'>📖 Читаю</option>
-                <option value='read'>✅ Прочитано</option>
-                <option value='favorite'>💖 Избранное</option>
-                <option value='remove'>🗑️ Удалить</option>
+                <option value="will_read">📚 Буду читать</option>
+                <option value="reading">📖 Читаю</option>
+                <option value="read">✅ Прочитано</option>
+                <option value="favorite">💖 Избранное</option>
+                <option value="remove">🗑️ Удалить</option>
               </StatusSelect>
             </BookActions>
           </CardContent>

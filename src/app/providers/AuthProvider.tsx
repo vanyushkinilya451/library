@@ -6,6 +6,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(getUserAndSession());
-  }, []);
+  }, [dispatch]);
   return <>{children}</>;
 };

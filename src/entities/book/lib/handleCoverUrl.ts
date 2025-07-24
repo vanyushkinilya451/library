@@ -5,10 +5,7 @@ type handleCoverUrlProps = {
   size: 'S' | 'M' | 'L';
 };
 
-export const handleCoverUrlProps = ({
-  id,
-  size = 'S',
-}: handleCoverUrlProps) => {
+export const handleCoverUrl = ({ id, size = 'S' }: handleCoverUrlProps) => {
   const coverUrl = `${CONSTANTS.OL_COVER}${id}-${size}.jpg`;
   return coverUrl;
 };

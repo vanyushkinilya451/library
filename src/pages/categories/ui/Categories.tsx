@@ -10,7 +10,7 @@ export const Categories = () => {
   return (
     <Container
       fluid
-      className='section'
+      className="section"
     >
       {shelvesConfig.slice(0, categoriesLimit).map((shelf) => (
         <Shelf

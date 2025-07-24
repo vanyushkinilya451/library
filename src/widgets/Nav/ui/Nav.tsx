@@ -1,4 +1,4 @@
-import { User } from '@supabase/supabase-js';
+import type { User } from '@supabase/supabase-js';
 import { logoutUser } from 'entities/user';
 import { SearchPanel } from 'features/search';
 import NavContainer from 'react-bootstrap/Nav';
@@ -20,23 +20,23 @@ export const Nav = () => {
   };
   return (
     <Navbar
-      bg='dark'
-      className='px-20'
+      bg="dark"
+      className="px-20"
     >
-      <Navbar.Brand className='ms-4'>
-        <BookstackSvg className='nav__icon' />
+      <Navbar.Brand className="ms-4">
+        <BookstackSvg className="nav__icon" />
       </Navbar.Brand>
 
       <NavContainer>
         <NavLink
           to={'/'}
-          className='nav__link'
+          className="nav__link"
         >
           Главная
         </NavLink>
         <NavLink
           to={'/categories'}
-          className='nav__link'
+          className="nav__link"
         >
           Категории
         </NavLink>
@@ -47,22 +47,22 @@ export const Nav = () => {
       <NavContainer>
         {isLoading ? (
           <SkeletonLoader
-            width='200px'
-            height='30px'
-            background='var(--gradient-skeleton-dark)'
-            margin='0 20px'
+            width="200px"
+            height="30px"
+            background="var(--gradient-skeleton-dark)"
+            margin="0 20px"
           />
         ) : !user && !isLoading ? (
           <>
             <NavLink
               to={'/auth/login'}
-              className='nav__link'
+              className="nav__link"
             >
               Войти
             </NavLink>
             <NavLink
               to={'/auth/register'}
-              className='nav__link'
+              className="nav__link"
             >
               Зарегистрироваться
             </NavLink>
@@ -71,19 +71,19 @@ export const Nav = () => {
           <>
             <NavLink
               to={`/profile/${user?.id}`}
-              className='nav__link'
+              className="nav__link"
             >
               Профиль
             </NavLink>
             <NavLink
               to={'/mybooks'}
-              className='nav__link'
+              className="nav__link"
             >
               Мои книги
             </NavLink>
             <a
               onClick={() => handleLogout()}
-              className='nav__link'
+              className="nav__link"
             >
               Выйти
             </a>
