@@ -1,20 +1,21 @@
+import { SessionInitializer } from 'app/providers/SessionInitializer';
 import { Outlet } from 'react-router-dom';
 import styled from 'styled-components';
 import { Nav } from 'widgets/Nav';
-import { AuthProvider } from '../providers/AuthProvider';
 
 export const MainLayout = () => {
   return (
-    <AuthProvider>
+    <SessionInitializer>
       <Nav />
       <Container>
         <Outlet />
       </Container>
-    </AuthProvider>
+    </SessionInitializer>
   );
 };
 
 const Container = styled.div`
   max-width: 1400px;
   margin: 0 auto;
+  padding: 0 5%;
 `;

@@ -46,8 +46,6 @@ const FormContainer = styled.div`
   align-items: center;
   justify-content: center;
   background-color: white;
-  min-width: auto;
-  overflow: scroll;
 
   @media (max-width: ${breakpoints.lg}) {
     width: 100%;

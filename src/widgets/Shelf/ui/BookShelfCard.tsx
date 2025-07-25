@@ -1,5 +1,4 @@
-import type {
-  BookSearchFormat} from 'entities/book';
+import type { BookSearchFormat } from 'entities/book';
 import {
   BookCover,
   useChangeMyBooksMutation,
@@ -17,7 +16,7 @@ type BookCardProps = {
 
 export const BookShelfCard = ({ book }: BookCardProps) => {
   const navigate = useNavigate();
-  const { user } = useAppSelector((state) => state.user);
+  const { user, isLoading } = useAppSelector((state) => state.user);
   const { data: allMyBooks } = useGetAllMyBooksQuery({
     userId: user?.id as string,
     from: 'mybooks',
@@ -89,17 +88,18 @@ export const BookShelfCard = ({ book }: BookCardProps) => {
               {handleBookAuthor(book.author_name[0])}
             </Card.Text>
           )}
+
           {isInMyBooks ? (
             <Star
               className="card__star card__star--filled"
               onClick={() => handleRemoveFromMyBooks(book)}
             />
-          ) : (
+          ) : user && !isLoading ? (
             <Star
               className="card__star"
               onClick={() => handleAddToMyBooks(book)}
             />
-          )}
+          ) : null}
         </Card.Body>
       </Card>
     </Col>

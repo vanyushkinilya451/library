@@ -1,10 +1,7 @@
-import type { Author} from 'entities/author';
+import type { Author } from 'entities/author';
 import { AuthorImage } from 'entities/author';
-import type {
-  BookSearchFormat} from 'entities/book';
-import {
-  BookCover as BookCoverComponent
-} from 'entities/book';
+import type { BookSearchFormat } from 'entities/book';
+import { BookCover as BookCoverComponent } from 'entities/book';
 import { useNavigate } from 'react-router-dom';
 import { Fragment } from 'react/jsx-runtime';
 import styled from 'styled-components';

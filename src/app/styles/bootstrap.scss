@@ -1,40 +1,12 @@
 @import './App.module.css';
 
-.nav {
-  border-bottom: 1px solid var(--black);
-  box-shadow: var(--shadow-nav);
-  opacity: 0.1;
-
-  &__link {
-    color: white;
-    white-space: nowrap;
-    margin: 0 10px;
-    font-weight: 500;
-    font-size: 0.9rem;
-
-    &:hover {
-      color: var(--orange-accent);
-    }
-
-    &.active {
-      color: var(
-        --orange-accent
-      ) !important; /* Яркий цвет для активной ссылки */
-    }
-  }
-
-  &__icon {
-    height: 30px;
-    width: 30px;
-  }
-}
-
 .section {
   transition: all 0.2s;
   scroll-behavior: smooth;
 }
 .shelf {
   position: relative;
+  z-index: 500;
 
   &__title {
     margin: 0;
@@ -97,6 +69,7 @@
   top: 50%;
   transform: translate(-50%, -50%);
   opacity: 0.9;
+  z-index: -1;
 
   &:hover {
     opacity: 1;

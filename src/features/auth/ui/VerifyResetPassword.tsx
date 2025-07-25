@@ -1,7 +1,8 @@
 import { useNavigate } from 'react-router-dom';
+import { breakpoints } from 'shared/lib';
 import styled, { keyframes } from 'styled-components';
 
-export const VerifyResetPasswordForm = () => {
+export const VerifyResetPassword = () => {
   const navigate = useNavigate();
 
   const handleGoHome = () => {
@@ -53,7 +54,6 @@ export const VerifyResetPasswordForm = () => {
   );
 };
 
-// Анимации
 const float = keyframes`
   0%, 100% { transform: translateY(0px) rotate(0deg); }
   50% { transform: translateY(-15px) rotate(3deg); }
@@ -87,7 +87,6 @@ const fadeIn = keyframes`
   to { opacity: 1; }
 `;
 
-// Стили
 const Container = styled.div`
   position: relative;
   height: 100vh;
@@ -198,6 +197,10 @@ const Content = styled.div`
 const EmailIcon = styled.div`
   margin-bottom: 30px;
   animation: ${bounce} 2s ease-in-out infinite;
+
+  @media (max-width: ${breakpoints.md}) or (max-height: ${breakpoints.md}) {
+    display: none;
+  }
 `;
 
 const IconContainer = styled.div`
@@ -220,6 +223,10 @@ const Title = styled.h1`
   color: white;
   margin: 0 0 20px 0;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+
+  @media (max-width: ${breakpoints.md}) or (max-height: ${breakpoints.md}) {
+    margin-bottom: 5px;
+  }
 `;
 
 const Description = styled.p`
@@ -230,6 +237,10 @@ const Description = styled.p`
   max-width: 500px;
   margin-left: auto;
   margin-right: auto;
+
+  @media (max-width: ${breakpoints.md}) or (max-height: ${breakpoints.md}) {
+    margin-bottom: 10px;
+  }
 `;
 
 const InfoBox = styled.div`
@@ -244,6 +255,11 @@ const InfoBox = styled.div`
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.2);
   animation: ${fadeIn} 1.5s ease-out;
+
+  @media (max-width: ${breakpoints.md}) or (max-height: ${breakpoints.md}) {
+    margin-bottom: 25px;
+    padding: 10px;
+  }
 `;
 
 const InfoIcon = styled.span`

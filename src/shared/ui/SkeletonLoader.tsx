@@ -1,12 +1,6 @@
 import styled from 'styled-components';
 
-type SkeletonProps = {
-  width?: string;
-  height?: string;
-  margin?: string;
-  padding?: string;
-  background?: string;
-};
+type SkeletonProps = React.CSSProperties;
 
 export const SkeletonLoader = ({
   width = '100%',

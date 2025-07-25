@@ -1,5 +1,5 @@
 import { SearchSvg } from 'shared/assets';
-import { useModal } from 'shared/lib';
+import { breakpoints, fontSizes, useModal } from 'shared/lib';
 import styled from 'styled-components';
 import { useSearch } from './../api/useSearch';
 import { SearchResults } from './SearchResults';
@@ -52,9 +52,18 @@ const SearchIcon = styled(SearchSvg)`
 
 const Container = styled.div`
   position: relative;
-  width: 400px;
+  width: 40%;
   margin: 0 auto;
   height: 36px;
+
+  @media (max-width: ${breakpoints.md}) {
+    font-size: ${fontSizes.sm};
+    margin: 0 10px;
+  }
+
+  @media (max-width: ${breakpoints.sm}) {
+    width: 100%;
+  }
 `;
 
 const SearchBar = styled.input`
@@ -63,7 +72,7 @@ const SearchBar = styled.input`
   height: 100%;
   border: 1px solid var(--black);
   border-radius: 8px;
-  font-size: 0.9rem;
+  font-size: ${fontSizes.md};
   padding: 8px 12px 8px 40px;
   outline: none;
   background: var(--white);

@@ -1,11 +1,12 @@
-export { breakpoints, fontSizes } from './constants/adaptive';
 export { CONSTANTS } from './constants/constants';
+export { breakpoints, fontSizes } from './constants/cssVariables';
 export { supabase } from './constants/supabase';
 export { formatDate } from './helpers/formatDate';
 export { getApi } from './helpers/getApi';
 export { validatePassword } from './helpers/validatePassword';
 export { useAppDispatch } from './hooks/useAppDispatch';
 export { useAppSelector } from './hooks/useAppSelector';
+export { useClickOutside } from './hooks/useClickOutside';
 export { useDebounce } from './hooks/useDebounce';
 export { useEnfOfPage } from './hooks/useEnfOfPage';
 export { useModal } from './hooks/useModal';

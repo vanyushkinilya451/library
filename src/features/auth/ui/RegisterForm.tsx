@@ -1,9 +1,19 @@
 import { useEffect, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
-import { Link } from 'react-router-dom';
-import { breakpoints, fontSizes } from 'shared/lib';
-import styled from 'styled-components';
 import { useRegister } from '../api/useRegister';
+import { FormLabel } from 'react-bootstrap';
+import {
+  AuthForm,
+  FormTitle,
+  FormSubtitle,
+  FormDescription,
+  FormInput,
+  FormFooter,
+  FormCheckboxWrapper,
+  AccentLink,
+  SubmitButton,
+  RegisterPrompt,
+} from './AuthFormStyles';
 
 export const RegisterForm = () => {
   const [credentials, setCredentials] = useState({ email: '', password: '' });
@@ -17,6 +27,10 @@ export const RegisterForm = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     register(credentials);
+  };
+
+  const handleShowPassword = () => {
+    setShowPassword(!showPassword);
   };
 
   useEffect(() => {
@@ -59,12 +73,12 @@ export const RegisterForm = () => {
           <FormLabel>
             <input
               type="checkbox"
-              onChange={() => setShowPassword(!showPassword)}
+              onChange={handleShowPassword}
             />
             Показать пароль
           </FormLabel>
         </FormCheckboxWrapper>
-        <AccentLink to={'#'}>Забыли пароль?</AccentLink>
+        <AccentLink to={'/auth/reset-password'}>Забыли пароль?</AccentLink>
       </FormFooter>
       <SubmitButton
         type="submit"
@@ -78,139 +92,3 @@ export const RegisterForm = () => {
     </AuthForm>
   );
 };
-const AuthForm = styled.form`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  margin: 0 20px;
-`;
-
-const FormTitle = styled.h1`
-  font-size: ${fontSizes.xxl};
-  color: var(--auth-primary-text);
-  font-weight: 900;
-  line-height: 46px;
-  margin: 0;
-  text-align: center;
-  user-select: none;
-
-  @media (max-width: ${breakpoints.sm}) {
-    font-size: ${fontSizes.xl};
-  }
-`;
-
-const FormSubtitle = styled.h2`
-  font-size: ${fontSizes.md};
-  color: var(--auth-secondary-text);
-  user-select: none;
-  font-weight: 400;
-  line-height: 19px;
-  text-align: center;
-  margin: 30px 0 5px 0;
-
-  @media (max-width: ${breakpoints.sm}) {
-    font-size: ${fontSizes.sm};
-  }
-`;
-
-const FormDescription = styled.h3`
-  font-size: ${fontSizes.md};
-  color: var(--auth-secondary-text);
-  margin: 0;
-  font-style: italic;
-  font-weight: 400;
-  text-align: center;
-  user-select: none;
-
-  @media (max-width: ${breakpoints.sm}) {
-    font-size: ${fontSizes.sm};
-  }
-`;
-
-const FormInput = styled.input`
-  font-size: ${fontSizes.sm};
-  color: black;
-  font-weight: 400;
-  padding: 17px 12px;
-  border: 1px solid var(--auth-border);
-  border-radius: 8px;
-  width: 100%;
-  margin-top: 18px;
-
-  @media (max-width: ${breakpoints.sm}) {
-    font-size: ${fontSizes.xs};
-  }
-
-  &::placeholder {
-    color: var(--auth-secondary-text);
-    font-style: italic;
-  }
-
-  &:focus {
-    outline: 2px solid var(--auth-secondary-text);
-  }
-`;
-
-const FormFooter = styled.div`
-  display: flex;
-  width: 100%;
-  margin-top: 16px;
-  justify-content: space-between;
-`;
-
-const FormCheckboxWrapper = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
-const FormLabel = styled.label`
-  font-size: ${fontSizes.sm};
-  color: var(--auth-secondary-text);
-  user-select: none;
-  display: flex;
-  align-items: center;
-  gap: 5px;
-
-  @media (max-width: ${breakpoints.sm}) {
-    font-size: ${fontSizes.xs};
-  }
-`;
-
-const AccentLink = styled(Link)`
-  font-size: ${fontSizes.sm};
-  color: var(--auth-accent);
-
-  @media (max-width: ${breakpoints.sm}) {
-    font-size: ${fontSizes.xs};
-  }
-`;
-
-const SubmitButton = styled.button`
-  font-size: ${fontSizes.sm};
-  border-radius: 8px;
-  background: var(--auth-dark-blue);
-  color: var(--auth-light-text);
-  width: 100%;
-  padding: 10px 0;
-  margin-top: 22px;
-
-  @media (max-width: ${breakpoints.sm}) {
-    font-size: ${fontSizes.xs};
-  }
-
-  &:hover {
-    opacity: 0.9;
-  }
-
-  &:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
-`;
-
-const RegisterPrompt = styled.span`
-  font-size: ${fontSizes.sm};
-  color: var(--auth-primary-text);
-  margin-top: 11px;
-`;

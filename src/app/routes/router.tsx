@@ -3,8 +3,8 @@ import {
   ChangePasswordForm,
   LoginForm,
   RegisterForm,
-  VerifyEmailForm,
-  VerifyResetPasswordForm,
+  VerifyEmail,
+  VerifyResetPassword,
 } from 'features/auth';
 import { ResetPasswordForm } from 'features/auth/ui/ResetPasswordForm';
 import { AuthorPage } from 'pages/author';
@@ -65,11 +65,11 @@ export const router = createBrowserRouter([
       },
       {
         path: 'verify-email',
-        Component: VerifyEmailForm,
+        Component: VerifyEmail,
       },
       {
         path: 'verify-reset-password',
-        Component: VerifyResetPasswordForm,
+        Component: VerifyResetPassword,
       },
       {
         path: 'reset-password',
