@@ -1,5 +1,4 @@
 export { CONSTANTS } from './constants/constants';
-export { breakpoints, fontSizes } from './constants/cssVariables';
 export { supabase } from './constants/supabase';
 export { formatDate } from './helpers/formatDate';
 export { getApi } from './helpers/getApi';

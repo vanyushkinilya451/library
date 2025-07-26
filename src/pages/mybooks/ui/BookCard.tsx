@@ -1,13 +1,12 @@
-import type {
-  BookSearchFormat} from 'entities/book';
+import type { BookSearchFormat } from 'entities/book';
 import {
   BookCover,
   useChangeMyBooksMutation,
   useGetBookAdditionalInfoQuery,
 } from 'entities/book';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAppSelector } from 'shared/lib';
+import { theme.breakpoints, useAppSelector } from 'shared/lib';
 import { SkeletonLoader } from 'shared/ui';
 import styled from 'styled-components';
 import {
@@ -49,13 +48,16 @@ export const BookCard = ({
         bookStatus: newStatus as 'will_read' | 'reading' | 'read' | 'favorite',
         method: newStatus === 'remove' ? 'delete' : 'update',
       }).unwrap();
-      setCurrentStatus(
-        newStatus as 'will_read' | 'reading' | 'read' | 'favorite',
-      );
     } catch (error) {
       console.error('Failed to update book status:', error);
     }
   };
+
+  useEffect(() => {
+    setCurrentStatus(
+      bookStatus as 'will_read' | 'reading' | 'read' | 'favorite',
+    );
+  }, [bookStatus]);
 
   if (isLoading) {
     return (
@@ -65,18 +67,19 @@ export const BookCard = ({
         </CoverContainer>
         <CardContent>
           <SkeletonLoader
-            height="1rem"
-            margin="0 0 0.4rem 0"
+            height="20px"
+            width="100%"
+            margin="0 0 5px 0"
           />
           <SkeletonLoader
-            height="0.9rem"
-            margin="0 0 0.8rem 0"
-            width="60%"
+            height="20px"
+            width="100%"
+            margin="0 0 5px 0"
           />
           <SkeletonLoader
-            height="1.5rem"
-            margin="0 0 1rem 0"
-            width="40%"
+            height="20px"
+            width="100%"
+            margin="0 0 5px 0"
           />
           <BookActions>
             <SkeletonLoader height="32px" />
@@ -114,16 +117,29 @@ export const BookCard = ({
             )}
 
             <BookActions>
-              <StatusSelect
-                value={currentStatus}
-                onChange={(e) => handleStatusChange(e.target.value)}
-              >
-                <option value="will_read">📚 Буду читать</option>
-                <option value="reading">📖 Читаю</option>
-                <option value="read">✅ Прочитано</option>
-                <option value="favorite">💖 Избранное</option>
-                <option value="remove">🗑️ Удалить</option>
-              </StatusSelect>
+              {currentStatus !== 'will_read' && (
+                <StatusButton onClick={() => handleStatusChange('will_read')}>
+                  📚
+                </StatusButton>
+              )}
+              {currentStatus !== 'reading' && (
+                <StatusButton onClick={() => handleStatusChange('reading')}>
+                  📖
+                </StatusButton>
+              )}
+              {currentStatus !== 'read' && (
+                <StatusButton onClick={() => handleStatusChange('read')}>
+                  ✅
+                </StatusButton>
+              )}
+              {currentStatus !== 'favorite' && (
+                <StatusButton onClick={() => handleStatusChange('favorite')}>
+                  💖
+                </StatusButton>
+              )}
+              <StatusButton onClick={() => handleStatusChange('remove')}>
+                🗑️
+              </StatusButton>
             </BookActions>
           </CardContent>
         </Card>
@@ -131,6 +147,33 @@ export const BookCard = ({
     </>
   );
 };
+
+const StatusButton = styled.button<{ $active?: boolean }>`
+  all: unset;
+  cursor: pointer;
+  font-size: 1rem;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background-color: ${({ $active }) =>
+    $active ? 'var(--orange-accent)' : '#f0f0f0'};
+  color: ${({ $active }) => ($active ? '#fff' : '#333')};
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.25s ease;
+
+  &:hover {
+    transform: scale(1.1);
+    background-color: var(--orange-accent);
+    color: #fff;
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+`;
 
 const Card = styled.div`
   background: rgba(255, 255, 255, 0.95);
@@ -144,6 +187,22 @@ const Card = styled.div`
   overflow: hidden;
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
   cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  @media (max-width: ${theme.breakpoints.md}) {
+    padding-inline: 0.7rem;
+  }
+
+  @media (max-width: ${theme.breakpoints.sm}) {
+    padding-inline: 0.7rem;
+  }
+
+  @media (max-width: ${theme.breakpoints.xs}) {
+    padding-inline: 0.7rem;
+  }
 `;
 
 const CoverContainer = styled.div`
@@ -155,9 +214,8 @@ const CoverContainer = styled.div`
 `;
 
 const StyledBookCover = styled(BookCover)`
-  width: 100%;
+  width: 130px;
   height: 200px;
-  object-fit: cover;
   transition: transform 0.3s ease;
   cursor: pointer;
 
@@ -165,8 +223,6 @@ const StyledBookCover = styled(BookCover)`
     transform: scale(1.05);
   }
 `;
-
-const CardContent = styled.div``;
 
 const BookTitle = styled.h3`
   font-size: 1rem;
@@ -202,41 +258,17 @@ const AuthorName = styled.p`
   }
 `;
 
+const CardContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  width: 100%;
+`;
+
 const BookActions = styled.div`
   display: flex;
   gap: 0.5rem;
-`;
-
-const StatusSelect = styled.select`
-  flex: 1;
-  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-  background: #f8f9fa;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  padding: 0.4rem 0.8rem;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  color: rgba(0, 0, 0, 0.8);
-  font-size: 0.75rem;
-  font-weight: 500;
-  appearance: none;
-
-  &:focus {
-    outline: none;
-    border-color: var(--orange-accent);
-    box-shadow: 0 0 0 2px rgba(255, 138, 76, 0.2);
-  }
-
-  option {
-    background: white;
-    color: rgba(0, 0, 0, 0.8);
-    padding: 0.5rem;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    transition: none;
-    &:hover {
-      transform: none;
-    }
-  }
+  margin-top: auto;
+  justify-content: center;
+  align-items: center;
 `;

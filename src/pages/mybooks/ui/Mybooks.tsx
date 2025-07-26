@@ -1,6 +1,6 @@
 import { useGetAllMyBooksQuery } from 'entities/book';
 import { useMemo, useState } from 'react';
-import { useAppSelector } from 'shared/lib';
+import { theme.breakpoints, theme.fontSizes, useAppSelector } from 'shared/lib';
 import styled from 'styled-components';
 import { BookCard } from './BookCard';
 
@@ -16,7 +16,6 @@ export const MyBooks = () => {
     select: 'book_id, book_status',
   });
 
-  // Фильтруем книги по выбранному статусу
   const filteredBooks = useMemo(() => {
     if (!allMyBooks) return [];
     return allMyBooks.filter((book) => book.book_status === status);
@@ -24,11 +23,6 @@ export const MyBooks = () => {
 
   return (
     <PageContainer>
-      <Header>
-        <Title>Моя библиотека</Title>
-        <Subtitle>Управляйте своими книгами</Subtitle>
-      </Header>
-
       <StatusTabs>
         <StatusTab
           active={status === 'will_read'}
@@ -117,25 +111,10 @@ const PageContainer = styled.div`
   min-height: 100vh;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   padding: 1.5rem;
-`;
 
-const Header = styled.div`
-  text-align: center;
-  margin-bottom: 2rem;
-`;
-
-const Title = styled.h1`
-  font-size: 2rem;
-  font-weight: 700;
-  color: white;
-  margin-bottom: 0.3rem;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-`;
-
-const Subtitle = styled.p`
-  font-size: 1rem;
-  color: rgba(255, 255, 255, 0.8);
-  margin: 0;
+  @media (max-width: ${theme.breakpoints.xs}) {
+    padding-inline: 7px;
+  }
 `;
 
 const StatusTabs = styled.div`
@@ -144,6 +123,16 @@ const StatusTabs = styled.div`
   gap: 0.8rem;
   margin-bottom: 2rem;
   flex-wrap: wrap;
+
+  @media (max-width: ${theme.breakpoints.md}) {
+    gap: 0.5rem;
+  }
+
+  @media (max-width: ${theme.breakpoints.sm}) {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+  }
 `;
 
 const StatusTab = styled.button<{ active: boolean }>`
@@ -159,6 +148,12 @@ const StatusTab = styled.button<{ active: boolean }>`
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   overflow: hidden;
+  text-align: center;
+
+  @media (max-width: ${theme.breakpoints.xs}) {
+    font-size: ${theme.fontSizes.sm};
+    padding: 0.5rem 0.9rem;
+  }
 
   background: ${({ active }) =>
     active
@@ -265,19 +260,11 @@ const Content = styled.div`
 
 const BooksGrid = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 1rem;
 
-  @media (min-width: 768px) {
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  }
-
-  @media (min-width: 1024px) {
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  }
-
-  @media (min-width: 1400px) {
-    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  @media (max-width: ${theme.breakpoints.xs}) {
+    gap: 6px;
   }
 `;
 

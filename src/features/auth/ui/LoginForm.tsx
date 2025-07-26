@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { FormLabel } from 'react-bootstrap';
 import toast, { Toaster } from 'react-hot-toast';
 import { useLogin } from '../api/useLogin';
 import {
@@ -9,6 +8,7 @@ import {
   FormDescription,
   FormFooter,
   FormInput,
+  FormLabel,
   FormSubtitle,
   FormTitle,
   RegisterPrompt,

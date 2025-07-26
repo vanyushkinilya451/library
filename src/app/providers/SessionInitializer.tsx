@@ -1,12 +1,12 @@
 import { getUserAndSession } from 'entities/user';
-import { useEffect } from 'react';
+import { useEffect, type FC, type ReactNode } from 'react';
 import { useAppDispatch } from 'shared/lib';
 
-export const SessionInitializer = ({
-  children,
-}: {
-  children: React.ReactNode;
-}) => {
+type Props = {
+  children: ReactNode;
+};
+
+export const SessionInitializer: FC<Props> = ({ children }) => {
   const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(getUserAndSession());

@@ -4,10 +4,10 @@ import { getUserProfile } from 'entities/user/model/UserSlice';
 import { useEffect, useMemo, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
-import { UnknownPerson } from 'shared/assets';
 import {
   formatDate,
   supabase,
+  theme,
   useAppDispatch,
   useAppSelector,
   useModal,
@@ -86,22 +86,6 @@ export const ProfilePage = () => {
       <Content>
         <ProfileCard>
           <AvatarSection>
-            <AvatarContainer>
-              <Avatar>
-                {user?.user_metadata?.avatar_url ? (
-                  <AvatarImage
-                    src={user.user_metadata.avatar_url}
-                    alt="Avatar"
-                  />
-                ) : (
-                  <AvatarImage
-                    src={UnknownPerson}
-                    alt="Default Avatar"
-                  />
-                )}
-              </Avatar>
-              <AvatarRing />
-            </AvatarContainer>
             <UserInfo>
               <UserName>
                 {isLoading ? (
@@ -141,8 +125,8 @@ export const ProfilePage = () => {
               <StatNumber>
                 {isLoadingMyBooks ? (
                   <SkeletonLoader
-                    width="40px"
-                    height="24px"
+                    width="30px"
+                    height="30px"
                   />
                 ) : (
                   bookStats.read
@@ -154,8 +138,8 @@ export const ProfilePage = () => {
               <StatNumber>
                 {isLoadingMyBooks ? (
                   <SkeletonLoader
-                    width="40px"
-                    height="24px"
+                    width="30px"
+                    height="30px"
                   />
                 ) : (
                   bookStats.reading
@@ -167,8 +151,8 @@ export const ProfilePage = () => {
               <StatNumber>
                 {isLoadingMyBooks ? (
                   <SkeletonLoader
-                    width="40px"
-                    height="24px"
+                    width="30px"
+                    height="30px"
                   />
                 ) : (
                   bookStats.favorite
@@ -286,45 +270,12 @@ const AvatarSection = styled.div`
   border-bottom: 2px solid var(--border-color);
 `;
 
-const AvatarContainer = styled.div`
-  position: relative;
-`;
-
-const Avatar = styled.div`
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-  background: var(--gradient-coral-teal);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: var(--shadow-md);
-`;
-
-const AvatarImage = styled.img`
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  object-fit: cover;
-`;
-
-const AvatarRing = styled.div`
-  position: absolute;
-  top: -8px;
-  left: -8px;
-  right: -8px;
-  bottom: -8px;
-  border: 3px solid var(--primary-color);
-  border-radius: 50%;
-  opacity: 0.3;
-`;
-
 const UserInfo = styled.div`
   flex: 1;
 `;
 
 const UserName = styled.h1`
-  font-size: 2.5rem;
+  font-size: ${({ theme }) => theme.fontSizes.xl};
   font-weight: 700;
   color: var(--text-primary);
   margin: 0 0 10px 0;
@@ -332,21 +283,33 @@ const UserName = styled.h1`
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    font-size: ${theme.fontSizes.lg};
+  }
 `;
 
 const UserEmail = styled.div`
-  font-size: 1.1rem;
+  font-size: ${theme.fontSizes.md};
   color: var(--text-secondary);
   margin: 0 0 15px 0;
+
+  @media (max-width: ${theme.breakpoints.md}) {
+    font-size: ${theme.fontSizes.sm};
+  }
 `;
 
 const UserStatus = styled.div`
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 0.9rem;
+  font-size: ${theme.fontSizes.md};
   color: var(--success-color);
   font-weight: 500;
+
+  @media (max-width: ${theme.breakpoints.md}) {
+    font-size: ${theme.fontSizes.sm};
+  }
 `;
 
 const StatusDot = styled.div`
@@ -358,34 +321,56 @@ const StatusDot = styled.div`
 
 const StatsSection = styled.div`
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  grid-template-rows: 1fr;
   gap: 20px;
   margin-bottom: 30px;
+
+  @media (max-width: ${theme.breakpoints.sm}) {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    gap: 10px;
+  }
 `;
 
 const StatCard = styled.div`
   background: var(--gradient-gray);
   padding: 25px;
   border-radius: 15px;
-  text-align: center;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   transition: transform 0.3s ease;
 
-  &:hover {
-    transform: translateY(-5px);
+  @media (max-width: ${theme.breakpoints.md}) {
+    padding: 15px;
   }
 `;
 
 const StatNumber = styled.div`
-  font-size: 2.5rem;
+  font-size: ${theme.fontSizes.xl};
   font-weight: 700;
   color: var(--primary-color);
   margin-bottom: 8px;
+
+  @media (max-width: ${theme.breakpoints.md}) {
+    font-size: ${theme.fontSizes.lg};
+  }
 `;
 
 const StatLabel = styled.div`
-  font-size: 0.9rem;
+  font-size: ${theme.fontSizes.md};
   color: var(--text-secondary);
   font-weight: 500;
+
+  @media (max-width: ${theme.breakpoints.md}) {
+    font-size: ${theme.fontSizes.sm};
+  }
 `;
 
 const DetailsSection = styled.div`
@@ -393,18 +378,36 @@ const DetailsSection = styled.div`
 `;
 
 const SectionTitle = styled.h2`
-  font-size: 1.5rem;
+  font-size: ${theme.fontSizes.lg};
   font-weight: 600;
   color: var(--text-primary);
   margin: 0 0 25px 0;
   padding-bottom: 10px;
   border-bottom: 2px solid var(--border-color);
+
+  @media (max-width: ${theme.breakpoints.md}) {
+    font-size: ${theme.fontSizes.md};
+  }
 `;
 
 const DetailsGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 20px;
+
+  @media (max-width: ${theme.breakpoints.sm}) {
+    grid-template-columns: 1fr 1fr;
+    width: 100%;
+  }
+
+  @media (max-width: ${theme.breakpoints.sm}) {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    gap: 10px;
+  }
 `;
 
 const DetailItem = styled.div`
@@ -412,21 +415,33 @@ const DetailItem = styled.div`
   background: var(--background-secondary);
   border-radius: 10px;
   border-left: 4px solid var(--primary-color);
+
+  @media (max-width: ${theme.breakpoints.sm}) {
+    width: 100%;
+  }
 `;
 
 const DetailLabel = styled.div`
-  font-size: 0.8rem;
+  font-size: ${theme.fontSizes.md};
   color: var(--text-muted);
   font-weight: 500;
   margin-bottom: 5px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+
+  @media (max-width: ${theme.breakpoints.md}) {
+    font-size: ${theme.fontSizes.sm};
+  }
 `;
 
 const DetailValue = styled.div`
-  font-size: 1rem;
+  font-size: ${theme.fontSizes.md};
   color: var(--text-primary);
   font-weight: 500;
+
+  @media (max-width: ${theme.breakpoints.md}) {
+    font-size: ${theme.fontSizes.sm};
+  }
 `;
 
 const StatusBadge = styled.span`

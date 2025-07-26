@@ -1,5 +1,15 @@
 import styled, { keyframes } from 'styled-components';
 
+export const DotLoader = () => {
+  return (
+    <DotContainer>
+      <Dot delay={0} />
+      <Dot delay={0.16} />
+      <Dot delay={0.32} />
+    </DotContainer>
+  );
+};
+
 const bounce = keyframes`
   0%, 80%, 100% {
     transform: translateY(0);
@@ -25,13 +35,3 @@ const Dot = styled.div<{ delay: number }>`
   animation: ${bounce} 1.4s ease-in-out infinite;
   animation-delay: ${(props) => props.delay}s;
 `;
-
-export const DotLoader = () => {
-  return (
-    <DotContainer>
-      <Dot delay={0} />
-      <Dot delay={0.16} />
-      <Dot delay={0.32} />
-    </DotContainer>
-  );
-};

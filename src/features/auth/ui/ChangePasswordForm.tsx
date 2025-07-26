@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { FormLabel } from 'react-bootstrap';
 import toast, { Toaster } from 'react-hot-toast';
 import { useChangePassword } from '../api/useChangePassword';
 import {
@@ -8,6 +7,7 @@ import {
   FormCheckboxWrapper,
   FormFooter,
   FormInput,
+  FormLabel,
   FormSubtitle,
   FormTitle,
   RegisterPrompt,

@@ -1,7 +1,11 @@
 import { getUserProfile } from 'entities/user/model/UserSlice';
-import React, { useState } from 'react';
-import { UnknownPerson } from 'shared/assets';
-import { supabase, useAppDispatch, useAppSelector } from 'shared/lib';
+import React, { useRef, useState } from 'react';
+import {
+  supabase,
+  useAppDispatch,
+  useAppSelector,
+  useClickOutside,
+} from 'shared/lib';
 import styled from 'styled-components';
 import type { UserProfile } from '../lib/types';
 
@@ -9,6 +13,8 @@ export const ProfileModal = ({ closeModal }: { closeModal: () => void }) => {
   const user = useAppSelector((state) => state.user.user);
   const { profile } = useAppSelector((state) => state.user);
   const [isLoading, setIsLoading] = useState(false);
+  const modalRef = useRef(null);
+  useClickOutside([modalRef], closeModal);
   const dispatch = useAppDispatch();
   const [userAttributes, setUserAttributes] = useState<UserProfile>({
     firstname: profile?.firstname || '',
@@ -56,10 +62,13 @@ export const ProfileModal = ({ closeModal }: { closeModal: () => void }) => {
 
   return (
     <ModalOverlay>
-      <ModalContent onClick={(e) => e.stopPropagation()}>
+      <ModalContent
+        ref={modalRef}
+        onClick={(e) => e.stopPropagation()}
+      >
         <ModalHeader>
           <ModalTitle>
-            {profile ? 'Редактировать профиль' : 'Заполнить профиль'}
+            {profile ? 'Редактирование профиля' : 'Заполнения профиля'}
           </ModalTitle>
           <CloseButton onClick={closeModal}>
             <CloseIcon>×</CloseIcon>
@@ -147,20 +156,6 @@ export const ProfileModal = ({ closeModal }: { closeModal: () => void }) => {
               </RadioGroup>
             </FormField>
           </FormSection>
-
-          <PhotoSection>
-            <PhotoTitle>Фото профиля</PhotoTitle>
-            <PhotoContainer>
-              <ProfilePhoto
-                src={UnknownPerson}
-                alt="Profile"
-              />
-              <PhotoOverlay>
-                <UploadIcon>📷</UploadIcon>
-                <UploadText>Изменить фото</UploadText>
-              </PhotoOverlay>
-            </PhotoContainer>
-          </PhotoSection>
         </ModalBody>
 
         <ModalFooter>
@@ -176,14 +171,9 @@ export const ProfileModal = ({ closeModal }: { closeModal: () => void }) => {
     </ModalOverlay>
   );
 };
-
-// Стили
 const ModalOverlay = styled.div`
   position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  inset: 0;
   background: rgba(0, 0, 0, 0.6);
   backdrop-filter: blur(8px);
   display: flex;
@@ -209,10 +199,14 @@ const ModalHeader = styled.div`
   align-items: center;
   padding: 30px 30px 20px;
   border-bottom: 1px solid var(--border-color);
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+    padding: 10px 30px;
+  }
 `;
 
 const ModalTitle = styled.h2`
-  font-size: 1.8rem;
+  font-size: ${({ theme }) => theme.fontSizes.lg};
   font-weight: 700;
   color: var(--text-primary);
   margin: 0;
@@ -220,6 +214,10 @@ const ModalTitle = styled.h2`
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+    font-size: ${({ theme }) => theme.fontSizes.md};
+  }
 `;
 
 const CloseButton = styled.button`
@@ -239,9 +237,13 @@ const CloseButton = styled.button`
 `;
 
 const CloseIcon = styled.span`
-  font-size: 1.5rem;
+  font-size: ${({ theme }) => theme.fontSizes.lg};
   color: var(--text-secondary);
   font-weight: 300;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+    font-size: ${({ theme }) => theme.fontSizes.md};
+  }
 `;
 
 const ModalBody = styled.div`
@@ -251,7 +253,7 @@ const ModalBody = styled.div`
   gap: 40px;
   align-items: start;
 
-  @media (max-width: 768px) {
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     grid-template-columns: 1fr;
     gap: 30px;
   }
@@ -267,29 +269,46 @@ const FormGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 20px;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+    grid-template-columns: 1fr;
+    gap: 13px;
+  }
 `;
 
 const FormField = styled.div`
   display: flex;
   flex-direction: column;
   gap: 8px;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+    gap: 5px;
+  }
 `;
 
 const FormLabel = styled.label`
-  font-size: 0.9rem;
+  font-size: ${({ theme }) => theme.fontSizes.md};
   font-weight: 600;
   color: var(--text-primary);
   text-transform: uppercase;
   letter-spacing: 0.5px;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+    font-size: ${({ theme }) => theme.fontSizes.sm};
+  }
 `;
 
 const FormInput = styled.input`
   padding: 12px 16px;
   border: 2px solid var(--border-color);
   border-radius: 12px;
-  font-size: 1rem;
+  font-size: ${({ theme }) => theme.fontSizes.md};
   transition: all 0.3s ease;
   background: white;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+    font-size: ${({ theme }) => theme.fontSizes.sm};
+  }
 
   &:focus {
     outline: none;
@@ -322,9 +341,13 @@ const RadioLabel = styled.label`
   align-items: center;
   gap: 10px;
   cursor: pointer;
-  font-size: 1rem;
+  font-size: ${({ theme }) => theme.fontSizes.md};
   color: var(--text-primary);
   transition: color 0.3s ease;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+    font-size: ${({ theme }) => theme.fontSizes.sm};
+  }
 
   &:hover {
     color: var(--primary-color);
@@ -357,70 +380,6 @@ const RadioCircle = styled.div`
   }
 `;
 
-const PhotoSection = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 20px;
-`;
-
-const PhotoTitle = styled.h3`
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: var(--text-primary);
-  margin: 0;
-`;
-
-const PhotoContainer = styled.div`
-  position: relative;
-  cursor: pointer;
-  transition: transform 0.3s ease;
-
-  &:hover {
-    transform: scale(1.05);
-  }
-`;
-
-const ProfilePhoto = styled.img`
-  width: 120px;
-  height: 120px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 4px solid var(--primary-color);
-  box-shadow: 0 8px 25px rgba(139, 92, 246, 0.3);
-`;
-
-const PhotoOverlay = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(139, 92, 246, 0.8);
-  border-radius: 50%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  color: white;
-
-  ${PhotoContainer}:hover & {
-    opacity: 1;
-  }
-`;
-
-const UploadIcon = styled.span`
-  font-size: 1.5rem;
-  margin-bottom: 5px;
-`;
-
-const UploadText = styled.span`
-  font-size: 0.8rem;
-  font-weight: 500;
-`;
-
 const ModalFooter = styled.div`
   display: flex;
   justify-content: flex-end;
@@ -429,6 +388,10 @@ const ModalFooter = styled.div`
   border-top: 1px solid var(--border-color);
   background: var(--background-secondary);
   border-radius: 0 0 20px 20px;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+    justify-content: center;
+  }
 `;
 
 const CancelButton = styled.button`
@@ -437,10 +400,14 @@ const CancelButton = styled.button`
   background: white;
   color: var(--text-primary);
   border-radius: 12px;
-  font-size: 1rem;
+  font-size: ${({ theme }) => theme.fontSizes.md};
   font-weight: 500;
   cursor: pointer;
   transition: all 0.3s ease;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+    font-size: ${({ theme }) => theme.fontSizes.sm};
+  }
 
   &:hover {
     border-color: var(--text-secondary);
@@ -454,13 +421,17 @@ const SaveButton = styled.button`
   background: var(--gradient-primary);
   color: white;
   border-radius: 12px;
-  font-size: 1rem;
+  font-size: ${({ theme }) => theme.fontSizes.md};
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
   display: flex;
   align-items: center;
   gap: 8px;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+    font-size: ${({ theme }) => theme.fontSizes.sm};
+  }
 
   &:hover:not(:disabled) {
     transform: translateY(-2px);

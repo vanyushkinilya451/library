@@ -1,10 +1,12 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { openlibraryApi, supabaseApi } from 'entities/book';
+import { themeReducer } from 'entities/theme';
 import { userReducer } from 'entities/user';
 
 export const store = configureStore({
   reducer: {
     user: userReducer,
+    theme: themeReducer,
     [openlibraryApi.reducerPath]: openlibraryApi.reducer,
     [supabaseApi.reducerPath]: supabaseApi.reducer,
   },

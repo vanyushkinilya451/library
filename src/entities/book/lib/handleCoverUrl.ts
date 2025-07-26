@@ -6,6 +6,6 @@ type handleCoverUrlProps = {
 };
 
 export const handleCoverUrl = ({ id, size = 'S' }: handleCoverUrlProps) => {
-  const coverUrl = `${CONSTANTS.OL_COVER}${id}-${size}.jpg`;
+  const coverUrl = `${CONSTANTS.URLS.COVER}${id}-${size}.jpg`;
   return coverUrl;
 };

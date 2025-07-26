@@ -7,7 +7,7 @@ import type {
 } from '../lib/types';
 export const openlibraryApi = createApi({
   reducerPath: 'openlibrary',
-  baseQuery: fetchBaseQuery({ baseUrl: `${CONSTANTS.OPEN_LIBRARY_URL}` }),
+  baseQuery: fetchBaseQuery({ baseUrl: `${CONSTANTS.URLS.BASE_URL}` }),
   endpoints: (build) => ({
     getBookById: build.query<BookWorkFormat, string>({
       query: (id) => `/books/${id}.json`,
@@ -17,7 +17,7 @@ export const openlibraryApi = createApi({
       transformResponse: (response: SearchApiResponse) => response.docs[0],
     }),
     getBooksByCategory: build.query<BookSearchFormat[], string>({
-      query: (api) => `${api}&limit=${CONSTANTS.SHELF_LIMIT}`,
+      query: (api) => `${api}&limit=${CONSTANTS.LIMITS.SHELF_LIMIT}`,
       transformResponse: (response: SearchApiResponse) => response.docs,
     }),
   }),

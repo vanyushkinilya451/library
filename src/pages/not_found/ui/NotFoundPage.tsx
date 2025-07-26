@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import styled, { keyframes } from 'styled-components';
 
-export const NotFound404 = () => {
+export const NotFoundPage = () => {
   const navigate = useNavigate();
 
   const handleGoHome = () => {
@@ -59,7 +59,6 @@ export const NotFound404 = () => {
   );
 };
 
-// Анимации
 const float = keyframes`
   0%, 100% { transform: translateY(0px) rotate(0deg); }
   50% { transform: translateY(-20px) rotate(5deg); }
@@ -93,7 +92,6 @@ const fadeIn = keyframes`
   to { opacity: 1; }
 `;
 
-// Стили
 const Container = styled.div`
   position: relative;
   width: 100vw;

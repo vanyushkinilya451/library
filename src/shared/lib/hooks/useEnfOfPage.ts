@@ -3,7 +3,7 @@ import { CONSTANTS } from 'shared/lib';
 
 export const useEnfOfPage = () => {
   const [categoriesLimit, setCategoriesLimit] = useState<number>(
-    CONSTANTS.CATEGORIES_LIMIT,
+    CONSTANTS.LIMITS.CATEGORIES_LIMIT,
   );
 
   useEffect(() => {

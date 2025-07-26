@@ -1,21 +1,15 @@
 import { SessionInitializer } from 'app/providers/SessionInitializer';
 import { Outlet } from 'react-router-dom';
-import styled from 'styled-components';
 import { Nav } from 'widgets/Nav';
+import { ContentContainer } from './styles';
 
 export const MainLayout = () => {
   return (
     <SessionInitializer>
       <Nav />
-      <Container>
+      <ContentContainer>
         <Outlet />
-      </Container>
+      </ContentContainer>
     </SessionInitializer>
   );
 };
-
-const Container = styled.div`
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 0 5%;
-`;

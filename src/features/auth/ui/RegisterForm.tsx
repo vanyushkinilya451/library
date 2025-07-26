@@ -1,18 +1,18 @@
 import { useEffect, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
 import { useRegister } from '../api/useRegister';
-import { FormLabel } from 'react-bootstrap';
 import {
-  AuthForm,
-  FormTitle,
-  FormSubtitle,
-  FormDescription,
-  FormInput,
-  FormFooter,
-  FormCheckboxWrapper,
   AccentLink,
-  SubmitButton,
+  AuthForm,
+  FormCheckboxWrapper,
+  FormDescription,
+  FormFooter,
+  FormInput,
+  FormLabel,
+  FormSubtitle,
+  FormTitle,
   RegisterPrompt,
+  SubmitButton,
 } from './AuthFormStyles';
 
 export const RegisterForm = () => {

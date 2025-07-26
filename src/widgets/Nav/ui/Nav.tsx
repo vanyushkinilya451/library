@@ -5,8 +5,6 @@ import { useRef } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { BookstackSvg } from 'shared/assets';
 import {
-  breakpoints,
-  fontSizes,
   useAppDispatch,
   useAppSelector,
   useClickOutside,
@@ -87,7 +85,10 @@ export const Nav = () => {
       </DropdownButton>
 
       {isModalOpen && (
-        <Dropdown ref={dropdownRef}>
+        <Dropdown
+          ref={dropdownRef}
+          onClick={closeModal}
+        >
           {isLoading ? (
             <SkeletonLoader
               width="200px"
@@ -97,6 +98,8 @@ export const Nav = () => {
             />
           ) : !user && !isLoading ? (
             <>
+              <DropdownLink to="/">Главная</DropdownLink>
+              <DropdownLink to="/categories">Категории</DropdownLink>
               <DropdownLink to="/auth/login">Войти</DropdownLink>
               <DropdownLink to="/auth/register">
                 Зарегистрироваться
@@ -117,10 +120,9 @@ export const Nav = () => {
 
 const Dropdown = styled.div`
   position: absolute;
-  top: 70px;
-  right: 1rem;
-  width: 80%;
-  max-width: 300px;
+  top: 60px;
+  right: 20px;
+  width: min-content;
   display: none;
   flex-direction: column;
   background-color: #ffffff;
@@ -129,14 +131,15 @@ const Dropdown = styled.div`
   padding: 0.5rem 0;
   z-index: 1001;
 
-  @media (max-width: ${breakpoints.sm}) {
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
     display: flex;
   }
 `;
 
 const DropdownLink = styled(NavLink)`
   color: #212529;
-  padding: 0.75rem 1rem;
+  padding: 0.75rem 3rem;
+  white-space: nowrap;
   text-decoration: none;
   font-weight: 500;
   font-size: 0.95rem;
@@ -156,7 +159,24 @@ const DropdownLink = styled(NavLink)`
 `;
 
 const DropdownLogout = styled.a`
-  color: black;
+  color: #212529;
+  padding: 0.75rem 3rem;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.95rem;
+  transition:
+    background-color 0.2s ease,
+    padding-left 0.2s ease;
+
+  &:hover {
+    background-color: #f8f9fa;
+    padding-left: 1.25rem;
+  }
+
+  &.active {
+    background-color: #ffe8cc;
+    color: #d9480f;
+  }
 `;
 
 const DropdownButton = styled.button`
@@ -173,7 +193,7 @@ const DropdownButton = styled.button`
   cursor: pointer;
   margin-right: 1.5rem;
 
-  @media (max-width: ${breakpoints.sm}) {
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
     display: flex;
   }
 `;
@@ -192,23 +212,23 @@ const BurgerLine = styled.span<{
     isDropdown &&
     line === 'first' &&
     `
-        transform: translateY(8px) rotate(45deg);
-      `}
+      transform: translateY(8px) rotate(45deg);
+    `}
 
   ${({ isDropdown, line }) =>
     isDropdown &&
     line === 'second' &&
     `
-        opacity: 0;
-        transform: scaleX(0);
-      `}
+      opacity: 0;
+      transform: scaleX(0);
+    `}
 
   ${({ isDropdown, line }) =>
     isDropdown &&
     line === 'third' &&
     `
-        transform: translateY(-8px) rotate(-45deg);
-      `}
+      transform: translateY(-8px) rotate(-45deg);
+    `}
 `;
 
 const Navbar = styled.nav`
@@ -223,7 +243,7 @@ const Navbar = styled.nav`
   align-items: center;
   padding: 10px 0;
 
-  @media (max-width: ${breakpoints.sm}) {
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
     justify-content: left;
   }
 `;
@@ -237,17 +257,17 @@ const BookstackIcon = styled(BookstackSvg)`
   height: 30px;
   margin-right: 5px;
 
-  @media (max-width: ${breakpoints.lg}) {
+  @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
     width: 25px;
     height: 25px;
   }
 `;
 
-const LinksContainer = styled.div<{ right?: boolean }>`
+const LinksContainer = styled.div`
   display: flex;
   align-items: center;
 
-  @media (max-width: ${breakpoints.sm}) {
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
     display: none;
   }
 `;
@@ -257,11 +277,11 @@ const Navlink = styled(NavLink)`
   white-space: nowrap;
   margin: 0 10px;
   font-weight: 500;
-  font-size: ${fontSizes.md};
+  font-size: ${({ theme }) => theme.fontSizes.md};
   text-decoration: none;
 
-  @media (max-width: ${breakpoints.lg}) {
-    font-size: ${fontSizes.sm};
+  @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
+    font-size: ${({ theme }) => theme.fontSizes.sm};
     margin: 0 5px;
   }
 
@@ -279,12 +299,12 @@ const Logout = styled.a`
   white-space: nowrap;
   margin: 0 10px;
   font-weight: 500;
-  font-size: ${fontSizes.md};
+  font-size: ${({ theme }) => theme.fontSizes.md};
   cursor: pointer;
   text-decoration: none;
 
-  @media (max-width: ${breakpoints.lg}) {
-    font-size: ${fontSizes.sm};
+  @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
+    font-size: ${({ theme }) => theme.fontSizes.sm};
   }
 
   &:hover {

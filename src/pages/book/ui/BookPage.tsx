@@ -1,6 +1,7 @@
 import { BookCover, useGetBookByIdQuery } from 'entities/book';
 import { useGetBookAdditionalInfoQuery } from 'entities/book/api/openlibrary';
 import { useParams } from 'react-router-dom';
+import { theme.breakpoints, theme.fontSizes } from 'shared/lib';
 import styled from 'styled-components';
 
 export const BookPage = () => {
@@ -14,15 +15,15 @@ export const BookPage = () => {
     book &&
     additionalInfo && (
       <Container>
-        <Cover>
-          <BookCover
-            cover_id={book.covers[0]}
-            cover_i={book.covers[0]}
-            size="L"
-            skeletonHeight="450px"
-          />
-        </Cover>
         <BookInformation>
+          <Cover>
+            <BookCover
+              cover_id={book.covers[0]}
+              cover_i={book.covers[0]}
+              size="L"
+              skeletonHeight="100%"
+            />
+          </Cover>
           {book.subjects && (
             <Tags>
               {book.subjects.map((subject) => (
@@ -37,9 +38,11 @@ export const BookPage = () => {
               <div>
                 {additionalInfo?.author_name.map((author, index) => (
                   <div key={author}>
-                    {additionalInfo?.author_name.length === 1
-                      ? 'Автор:'
-                      : 'Авторы:'}
+                    {additionalInfo?.author_name.length === 1 ? (
+                      <Bold>Автор: </Bold>
+                    ) : (
+                      <Bold>Авторы: </Bold>
+                    )}
                     <TextHighlight>{author}</TextHighlight>
                     {index !== additionalInfo?.author_name.length - 1 && ', '}
                   </div>
@@ -50,19 +53,20 @@ export const BookPage = () => {
               <div>
                 {book.series.map((series, index) => (
                   <div key={series}>
-                    Серия: <TextHighlight>{series}</TextHighlight>
+                    <Bold>Серия: </Bold>
+                    <TextHighlight>{series}</TextHighlight>
                     {index !== book.series.length - 1 && ', '}
                   </div>
                 ))}
               </div>
             )}
             <div>
-              Дата публикации:{' '}
+              <Bold>Дата публикации: </Bold>
               <TextHighlight>{book.publish_date}</TextHighlight>
             </div>
             {book.publishers && (
               <div>
-                Издательство:{' '}
+                <Bold>Издательство: </Bold>
                 {book.publishers.map((publisher, index) => (
                   <TextHighlight key={publisher}>
                     {publisher}
@@ -73,13 +77,13 @@ export const BookPage = () => {
             )}
             {book.number_of_pages && (
               <div>
-                Количество страниц:{' '}
+                <Bold>Количество страниц: </Bold>
                 <TextHighlight>{book.number_of_pages}</TextHighlight>
               </div>
             )}
             {additionalInfo?.language && (
               <div>
-                Языки:{' '}
+                <Bold>Языки: </Bold>
                 {additionalInfo?.language.map((language, index) => {
                   return (
                     <TextHighlight key={language}>
@@ -94,7 +98,7 @@ export const BookPage = () => {
           <Description>
             {book.description && (
               <>
-                <Bold>О книге:</Bold>
+                <Bold>О книге: </Bold>
                 {book.description.value}
               </>
             )}
@@ -106,56 +110,97 @@ export const BookPage = () => {
 };
 
 const Container = styled.div`
-  margin: 30px 20%;
-  display: flex;
-  align-items: flex-start;
-  gap: 30px;
+  margin: 30px 15%;
+
+  @media (max-width: ${theme.breakpoints.md}) {
+    margin: 30px 10%;
+  }
+
+  @media (max-width: ${theme.breakpoints.sm}) {
+    margin: 30px 5%;
+  }
 `;
 
 const Title = styled.h1`
-  font-size: 2rem;
-  font-weight: 700;
+  font-size: ${theme.fontSizes.lg};
+  font-weight: 900;
+
+  @media (max-width: ${theme.breakpoints.sm}) {
+    font-size: ${theme.fontSizes.md};
+  }
 `;
 
 const SubTitle = styled.h2`
-  font-size: 1.2rem;
+  font-size: ${theme.fontSizes.md};
   font-weight: 300;
   font-style: italic;
+
+  @media (max-width: ${theme.breakpoints.sm}) {
+    font-size: ${theme.fontSizes.sm};
+  }
 `;
 
 const Cover = styled.div`
-  min-width: 300px;
-  min-height: 450px;
+  float: right;
   width: 300px;
   height: 450px;
+  margin-left: 30px;
+  margin-bottom: 10px;
   box-shadow: var(--shadow-card);
+
+  @media (max-width: ${theme.breakpoints.lg}) {
+    width: 250px;
+    height: 375px;
+  }
+
+  @media (max-width: ${theme.breakpoints.md}) {
+    width: 210px;
+    height: 312px;
+  }
+
+  @media (max-width: ${theme.breakpoints.sm}) {
+    width: 175px;
+    height: 260px;
+  }
+
+  @media (max-width: ${theme.breakpoints.xs}) {
+    width: 145px;
+    height: 216px;
+  }
 `;
 
-const BookInformation = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
+const BookInformation = styled.div``;
 
-const BookProperties = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
-`;
+const BookProperties = styled.div``;
 
 const Description = styled.p`
   margin-top: 15px;
-  display: flex;
-  flex-direction: column;
-  gap: 3px;
-  width: 800px;
+  text-align: justify;
+  width: 100%;
+
+  font-size: ${theme.fontSizes.md};
+
+  @media (max-width: ${theme.breakpoints.sm}) {
+    font-size: ${theme.fontSizes.sm};
+  }
 `;
 
 const TextHighlight = styled.span`
   color: var(--link-color);
+  font-size: ${theme.fontSizes.md};
+
+  @media (max-width: ${theme.breakpoints.sm}) {
+    font-size: ${theme.fontSizes.sm};
+  }
 `;
 
 const Bold = styled.span`
-  font-weight: 700;
+  font-weight: 600;
+  font-size: ${theme.fontSizes.md};
+
+  @media (max-width: ${theme.breakpoints.sm}) {
+    font-size: ${theme.fontSizes.sm};
+  }
 `;
 
 const Tags = styled.div`
@@ -169,6 +214,10 @@ const Tag = styled.span`
   background-color: var(--orange-accent);
   padding: 5px 10px;
   border-radius: 5px;
-  font-size: 14px;
+  font-size: ${theme.fontSizes.md};
   font-weight: 500;
+
+  @media (max-width: ${theme.breakpoints.sm}) {
+    font-size: ${theme.fontSizes.sm};
+  }
 `;

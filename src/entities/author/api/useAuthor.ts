@@ -7,7 +7,7 @@ export const useAuthor = ({ id }: { id: string }) => {
 
   useEffect(() => {
     const fetchAuthor = async () => {
-      const response = await fetch(`${CONSTANTS.OL_AUTHOR}/${id}.json`);
+      const response = await fetch(`${CONSTANTS.URLS.AUTHOR}/${id}.json`);
       const data = await response.json();
       setAuthor(data);
     };

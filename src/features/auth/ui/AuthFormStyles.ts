@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { breakpoints, fontSizes } from 'shared/lib';
+import { theme.breakpoints, theme.fontSizes } from 'shared/lib';
 import styled from 'styled-components';
 
 export const AuthForm = styled.form`
@@ -11,7 +11,7 @@ export const AuthForm = styled.form`
 `;
 
 export const FormTitle = styled.h1`
-  font-size: ${fontSizes.xxl};
+  font-size: ${theme.fontSizes.xxl};
   color: var(--auth-primary-text);
   font-weight: 900;
   line-height: 46px;
@@ -20,13 +20,13 @@ export const FormTitle = styled.h1`
   user-select: none;
   white-space: nowrap;
 
-  @media (max-width: ${breakpoints.sm}) or (max-height: ${breakpoints.sm}) {
-    font-size: ${fontSizes.xl};
+  @media (max-width: ${theme.breakpoints.sm}) or (max-height: ${theme.breakpoints.sm}) {
+    font-size: ${theme.fontSizes.xl};
   }
 `;
 
 export const FormSubtitle = styled.h2`
-  font-size: ${fontSizes.md};
+  font-size: ${theme.fontSizes.md};
   color: var(--auth-secondary-text);
   user-select: none;
   font-weight: 400;
@@ -34,14 +34,14 @@ export const FormSubtitle = styled.h2`
   text-align: center;
   margin: 30px 0 5px 0;
 
-  @media (max-width: ${breakpoints.sm}) or (max-height: ${breakpoints.sm}) {
-    font-size: ${fontSizes.sm};
+  @media (max-width: ${theme.breakpoints.sm}) or (max-height: ${theme.breakpoints.sm}) {
+    font-size: ${theme.fontSizes.sm};
     margin: 5px 0 5px 0;
   }
 `;
 
 export const FormDescription = styled.h3`
-  font-size: ${fontSizes.md};
+  font-size: ${theme.fontSizes.md};
   color: var(--auth-secondary-text);
   margin: 0;
   font-style: italic;
@@ -49,13 +49,13 @@ export const FormDescription = styled.h3`
   text-align: center;
   user-select: none;
 
-  @media (max-width: ${breakpoints.sm}) or (max-height: ${breakpoints.sm}) {
-    font-size: ${fontSizes.sm};
+  @media (max-width: ${theme.breakpoints.sm}) or (max-height: ${theme.breakpoints.sm}) {
+    font-size: ${theme.fontSizes.sm};
   }
 `;
 
 export const FormInput = styled.input`
-  font-size: ${fontSizes.sm};
+  font-size: ${theme.fontSizes.sm};
   color: black;
   font-weight: 400;
   padding: 17px 12px;
@@ -64,8 +64,8 @@ export const FormInput = styled.input`
   width: 100%;
   margin-top: 18px;
 
-  @media (max-width: ${breakpoints.sm}) or (max-height: ${breakpoints.sm}) {
-    font-size: ${fontSizes.xs};
+  @media (max-width: ${theme.breakpoints.sm}) or (max-height: ${theme.breakpoints.sm}) {
+    font-size: ${theme.fontSizes.xs};
     margin-top: 5px;
     padding: 10px 10px;
   }
@@ -86,8 +86,8 @@ export const FormFooter = styled.div`
   margin-top: 16px;
   justify-content: space-between;
 
-  @media (max-width: ${breakpoints.sm}) or (max-height: ${breakpoints.sm}) {
-    font-size: ${fontSizes.xs};
+  @media (max-width: ${theme.breakpoints.sm}) or (max-height: ${theme.breakpoints.sm}) {
+    font-size: ${theme.fontSizes.xs};
     margin-top: 5px;
   }
 `;
@@ -98,29 +98,28 @@ export const FormCheckboxWrapper = styled.div`
 `;
 
 export const FormLabel = styled.label`
-  font-size: ${fontSizes.sm};
   color: var(--auth-secondary-text);
   user-select: none;
   display: flex;
   align-items: center;
   gap: 5px;
 
-  @media (max-width: ${breakpoints.sm}) or (max-height: ${breakpoints.sm}) {
-    font-size: ${fontSizes.xs};
+  @media (max-width: ${theme.breakpoints.sm}) or (max-height: ${theme.breakpoints.sm}) {
+    font-size: ${theme.fontSizes.xs};
   }
 `;
 
 export const AccentLink = styled(Link)`
-  font-size: ${fontSizes.sm};
+  font-size: ${theme.fontSizes.sm};
   color: var(--auth-accent);
 
-  @media (max-width: ${breakpoints.sm}) or (max-height: ${breakpoints.sm}) {
-    font-size: ${fontSizes.xs};
+  @media (max-width: ${theme.breakpoints.sm}) or (max-height: ${theme.breakpoints.sm}) {
+    font-size: ${theme.fontSizes.xs};
   }
 `;
 
 export const SubmitButton = styled.button`
-  font-size: ${fontSizes.sm};
+  font-size: ${theme.fontSizes.sm};
   border-radius: 8px;
   background: var(--auth-dark-blue);
   color: var(--auth-light-text);
@@ -128,8 +127,8 @@ export const SubmitButton = styled.button`
   padding: 10px 0;
   margin-top: 22px;
 
-  @media (max-width: ${breakpoints.sm}) or (max-height: ${breakpoints.sm}) {
-    font-size: ${fontSizes.xs};
+  @media (max-width: ${theme.breakpoints.sm}) or (max-height: ${theme.breakpoints.sm}) {
+    font-size: ${theme.fontSizes.xs};
   }
 
   &:hover {
@@ -143,11 +142,11 @@ export const SubmitButton = styled.button`
 `;
 
 export const RegisterPrompt = styled.span`
-  font-size: ${fontSizes.sm};
+  font-size: ${theme.fontSizes.sm};
   color: var(--auth-primary-text);
   margin-top: 11px;
 
-  @media (max-width: ${breakpoints.sm}) or (max-height: ${breakpoints.sm}) {
-    font-size: ${fontSizes.xs};
+  @media (max-width: ${theme.breakpoints.sm}) or (max-height: ${theme.breakpoints.sm}) {
+    font-size: ${theme.fontSizes.xs};
   }
 `;

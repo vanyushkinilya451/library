@@ -29,7 +29,7 @@ export const useShelfScroll = (isLoading: boolean) => {
     if (!bookshelf.current) return;
 
     bookshelf.current.scrollBy({
-      left: CONSTANTS.SCROLL_DISTANCE,
+      left: CONSTANTS.LIMITS.SCROLL_DISTANCE,
       behavior: 'smooth',
     });
   };
@@ -38,7 +38,7 @@ export const useShelfScroll = (isLoading: boolean) => {
     if (!bookshelf.current) return;
 
     bookshelf.current.scrollBy({
-      left: -CONSTANTS.SCROLL_DISTANCE,
+      left: -CONSTANTS.LIMITS.SCROLL_DISTANCE,
       behavior: 'smooth',
     });
   };

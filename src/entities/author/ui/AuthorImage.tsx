@@ -22,7 +22,7 @@ export const AuthorImage = ({
   const [isLoading, setIsLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
   const imgRef = useRef<HTMLImageElement>(null);
-  const coverUrl = `${CONSTANTS.OL_AUTHOR_IMAGE}${id}-${coverSize}.jpg`;
+  const coverUrl = `${CONSTANTS.URLS.AUTHOR_IMAGE}${id}-${coverSize}.jpg`;
 
   const handleImageLoad = () => {
     setIsLoading(false);

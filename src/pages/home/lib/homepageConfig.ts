@@ -4,7 +4,7 @@ import { getApi } from 'shared/lib/helpers/getApi';
 export const homepageConfig = [
   {
     title: 'Новые книги 2025',
-    api: `${CONSTANTS.OL_SEARCH_BOOKS}?q=first_publish_year:2025`,
+    api: `${CONSTANTS.URLS.SEARCH_BOOKS}?q=first_publish_year:2025`,
   },
   {
     title: 'Популярное фэнтези',

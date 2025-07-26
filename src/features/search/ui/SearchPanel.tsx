@@ -1,7 +1,7 @@
 import { SearchSvg } from 'shared/assets';
-import { breakpoints, fontSizes, useModal } from 'shared/lib';
+import { theme.breakpoints, theme.fontSizes, useModal } from 'shared/lib';
 import styled from 'styled-components';
-import { useSearch } from './../api/useSearch';
+import { useSearch } from '../api/useSearch';
 import { SearchResults } from './SearchResults';
 
 export const SearchPanel = () => {
@@ -56,12 +56,12 @@ const Container = styled.div`
   margin: 0 auto;
   height: 36px;
 
-  @media (max-width: ${breakpoints.md}) {
-    font-size: ${fontSizes.sm};
+  @media (max-width: ${theme.breakpoints.md}) {
+    font-size: ${theme.fontSizes.sm};
     margin: 0 10px;
   }
 
-  @media (max-width: ${breakpoints.sm}) {
+  @media (max-width: ${theme.breakpoints.sm}) {
     width: 100%;
   }
 `;
@@ -72,7 +72,7 @@ const SearchBar = styled.input`
   height: 100%;
   border: 1px solid var(--black);
   border-radius: 8px;
-  font-size: ${fontSizes.md};
+  font-size: ${theme.fontSizes.md};
   padding: 8px 12px 8px 40px;
   outline: none;
   background: var(--white);
