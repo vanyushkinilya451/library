@@ -1,7 +1,6 @@
 import { BookCover, useGetBookByIdQuery } from 'entities/book';
 import { useGetBookAdditionalInfoQuery } from 'entities/book/api/openlibrary';
 import { useParams } from 'react-router-dom';
-import { theme.breakpoints, theme.fontSizes } from 'shared/lib';
 import styled from 'styled-components';
 
 export const BookPage = () => {
@@ -112,31 +111,31 @@ export const BookPage = () => {
 const Container = styled.div`
   margin: 30px 15%;
 
-  @media (max-width: ${theme.breakpoints.md}) {
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     margin: 30px 10%;
   }
 
-  @media (max-width: ${theme.breakpoints.sm}) {
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
     margin: 30px 5%;
   }
 `;
 
 const Title = styled.h1`
-  font-size: ${theme.fontSizes.lg};
+  font-size: ${({ theme }) => theme.fontSizes.lg};
   font-weight: 900;
 
-  @media (max-width: ${theme.breakpoints.sm}) {
-    font-size: ${theme.fontSizes.md};
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+    font-size: ${({ theme }) => theme.fontSizes.md};
   }
 `;
 
 const SubTitle = styled.h2`
-  font-size: ${theme.fontSizes.md};
+  font-size: ${({ theme }) => theme.fontSizes.md};
   font-weight: 300;
   font-style: italic;
 
-  @media (max-width: ${theme.breakpoints.sm}) {
-    font-size: ${theme.fontSizes.sm};
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+    font-size: ${({ theme }) => theme.fontSizes.sm};
   }
 `;
 
@@ -148,22 +147,22 @@ const Cover = styled.div`
   margin-bottom: 10px;
   box-shadow: var(--shadow-card);
 
-  @media (max-width: ${theme.breakpoints.lg}) {
+  @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
     width: 250px;
     height: 375px;
   }
 
-  @media (max-width: ${theme.breakpoints.md}) {
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     width: 210px;
     height: 312px;
   }
 
-  @media (max-width: ${theme.breakpoints.sm}) {
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
     width: 175px;
     height: 260px;
   }
 
-  @media (max-width: ${theme.breakpoints.xs}) {
+  @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
     width: 145px;
     height: 216px;
   }
@@ -178,28 +177,28 @@ const Description = styled.p`
   text-align: justify;
   width: 100%;
 
-  font-size: ${theme.fontSizes.md};
+  font-size: ${({ theme }) => theme.fontSizes.md};
 
-  @media (max-width: ${theme.breakpoints.sm}) {
-    font-size: ${theme.fontSizes.sm};
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+    font-size: ${({ theme }) => theme.fontSizes.sm};
   }
 `;
 
 const TextHighlight = styled.span`
   color: var(--link-color);
-  font-size: ${theme.fontSizes.md};
+  font-size: ${({ theme }) => theme.fontSizes.md};
 
-  @media (max-width: ${theme.breakpoints.sm}) {
-    font-size: ${theme.fontSizes.sm};
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+    font-size: ${({ theme }) => theme.fontSizes.sm};
   }
 `;
 
 const Bold = styled.span`
   font-weight: 600;
-  font-size: ${theme.fontSizes.md};
+  font-size: ${({ theme }) => theme.fontSizes.md};
 
-  @media (max-width: ${theme.breakpoints.sm}) {
-    font-size: ${theme.fontSizes.sm};
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+    font-size: ${({ theme }) => theme.fontSizes.sm};
   }
 `;
 
@@ -214,10 +213,10 @@ const Tag = styled.span`
   background-color: var(--orange-accent);
   padding: 5px 10px;
   border-radius: 5px;
-  font-size: ${theme.fontSizes.md};
+  font-size: ${({ theme }) => theme.fontSizes.md};
   font-weight: 500;
 
-  @media (max-width: ${theme.breakpoints.sm}) {
-    font-size: ${theme.fontSizes.sm};
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+    font-size: ${({ theme }) => theme.fontSizes.sm};
   }
 `;

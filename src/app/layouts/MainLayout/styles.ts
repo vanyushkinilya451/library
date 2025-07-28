@@ -1,4 +1,3 @@
-import { theme } from 'shared/lib';
 import styled from 'styled-components';
 
 export const ContentContainer = styled.div`
@@ -6,7 +5,7 @@ export const ContentContainer = styled.div`
   margin: 0 auto;
   padding: 0 5%;
 
-  @media (max-width: ${theme.breakpoints.lg}) {
+  @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
     padding-left: ${({ theme }) => theme.spacing.md};
   }
 `;

@@ -18,14 +18,7 @@ declare module 'styled-components' {
       sm: string;
       xs: string;
     };
-    colors: {
-      primary: string;
-      secondary: string;
-      accent: string;
-      muted: string;
-      white: string;
-      black: string;
-    };
+    colors: unknown;
     spacing: {
       xs: string;
       sm: string;

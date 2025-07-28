@@ -6,7 +6,7 @@ import {
 } from 'entities/book';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { theme.breakpoints, useAppSelector } from 'shared/lib';
+import { useAppSelector } from 'shared/lib';
 import { SkeletonLoader } from 'shared/ui';
 import styled from 'styled-components';
 import {
@@ -192,15 +192,15 @@ const Card = styled.div`
   justify-content: center;
   align-items: center;
 
-  @media (max-width: ${theme.breakpoints.md}) {
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     padding-inline: 0.7rem;
   }
 
-  @media (max-width: ${theme.breakpoints.sm}) {
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
     padding-inline: 0.7rem;
   }
 
-  @media (max-width: ${theme.breakpoints.xs}) {
+  @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
     padding-inline: 0.7rem;
   }
 `;

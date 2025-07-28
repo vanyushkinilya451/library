@@ -1,14 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { CONSTANTS } from 'shared/lib';
 
-type Theme = (typeof CONSTANTS.THEMES)[keyof typeof CONSTANTS.THEMES];
+type Theme = 'light' | 'dark';
 
 const storedTheme = localStorage.getItem('theme');
 
 const initialState: Theme =
-  storedTheme && storedTheme in CONSTANTS.THEMES ? storedTheme : 'light';
+  storedTheme === 'light' || storedTheme === 'dark' ? storedTheme : 'light';
 
-export const userSlice = createSlice({
+export const themeSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
@@ -17,3 +16,5 @@ export const userSlice = createSlice({
     },
   },
 });
+
+export const themeReducer = themeSlice.reducer;

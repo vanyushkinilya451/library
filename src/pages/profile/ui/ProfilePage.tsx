@@ -7,7 +7,6 @@ import { useNavigate } from 'react-router-dom';
 import {
   formatDate,
   supabase,
-  theme,
   useAppDispatch,
   useAppSelector,
   useModal,
@@ -285,17 +284,17 @@ const UserName = styled.h1`
   background-clip: text;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
-    font-size: ${theme.fontSizes.lg};
+    font-size: ${({ theme }) => theme.fontSizes.lg};
   }
 `;
 
 const UserEmail = styled.div`
-  font-size: ${theme.fontSizes.md};
+  font-size: ${({ theme }) => theme.fontSizes.md};
   color: var(--text-secondary);
   margin: 0 0 15px 0;
 
-  @media (max-width: ${theme.breakpoints.md}) {
-    font-size: ${theme.fontSizes.sm};
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    font-size: ${({ theme }) => theme.fontSizes.sm};
   }
 `;
 
@@ -303,12 +302,12 @@ const UserStatus = styled.div`
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: ${theme.fontSizes.md};
+  font-size: ${({ theme }) => theme.fontSizes.md};
   color: var(--success-color);
   font-weight: 500;
 
-  @media (max-width: ${theme.breakpoints.md}) {
-    font-size: ${theme.fontSizes.sm};
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    font-size: ${({ theme }) => theme.fontSizes.sm};
   }
 `;
 
@@ -326,7 +325,7 @@ const StatsSection = styled.div`
   gap: 20px;
   margin-bottom: 30px;
 
-  @media (max-width: ${theme.breakpoints.sm}) {
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -347,29 +346,29 @@ const StatCard = styled.div`
   align-items: center;
   transition: transform 0.3s ease;
 
-  @media (max-width: ${theme.breakpoints.md}) {
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     padding: 15px;
   }
 `;
 
 const StatNumber = styled.div`
-  font-size: ${theme.fontSizes.xl};
+  font-size: ${({ theme }) => theme.fontSizes.xl};
   font-weight: 700;
   color: var(--primary-color);
   margin-bottom: 8px;
 
-  @media (max-width: ${theme.breakpoints.md}) {
-    font-size: ${theme.fontSizes.lg};
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    font-size: ${({ theme }) => theme.fontSizes.lg};
   }
 `;
 
 const StatLabel = styled.div`
-  font-size: ${theme.fontSizes.md};
+  font-size: ${({ theme }) => theme.fontSizes.md};
   color: var(--text-secondary);
   font-weight: 500;
 
-  @media (max-width: ${theme.breakpoints.md}) {
-    font-size: ${theme.fontSizes.sm};
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    font-size: ${({ theme }) => theme.fontSizes.sm};
   }
 `;
 
@@ -378,15 +377,15 @@ const DetailsSection = styled.div`
 `;
 
 const SectionTitle = styled.h2`
-  font-size: ${theme.fontSizes.lg};
+  font-size: ${({ theme }) => theme.fontSizes.lg};
   font-weight: 600;
   color: var(--text-primary);
   margin: 0 0 25px 0;
   padding-bottom: 10px;
   border-bottom: 2px solid var(--border-color);
 
-  @media (max-width: ${theme.breakpoints.md}) {
-    font-size: ${theme.fontSizes.md};
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    font-size: ${({ theme }) => theme.fontSizes.md};
   }
 `;
 
@@ -395,12 +394,12 @@ const DetailsGrid = styled.div`
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 20px;
 
-  @media (max-width: ${theme.breakpoints.sm}) {
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
     grid-template-columns: 1fr 1fr;
     width: 100%;
   }
 
-  @media (max-width: ${theme.breakpoints.sm}) {
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -416,31 +415,31 @@ const DetailItem = styled.div`
   border-radius: 10px;
   border-left: 4px solid var(--primary-color);
 
-  @media (max-width: ${theme.breakpoints.sm}) {
+  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
     width: 100%;
   }
 `;
 
 const DetailLabel = styled.div`
-  font-size: ${theme.fontSizes.md};
+  font-size: ${({ theme }) => theme.fontSizes.md};
   color: var(--text-muted);
   font-weight: 500;
   margin-bottom: 5px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 
-  @media (max-width: ${theme.breakpoints.md}) {
-    font-size: ${theme.fontSizes.sm};
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    font-size: ${({ theme }) => theme.fontSizes.sm};
   }
 `;
 
 const DetailValue = styled.div`
-  font-size: ${theme.fontSizes.md};
+  font-size: ${({ theme }) => theme.fontSizes.md};
   color: var(--text-primary);
   font-weight: 500;
 
-  @media (max-width: ${theme.breakpoints.md}) {
-    font-size: ${theme.fontSizes.sm};
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+    font-size: ${({ theme }) => theme.fontSizes.sm};
   }
 `;
 

@@ -1,6 +1,6 @@
 import { useGetAllMyBooksQuery } from 'entities/book';
 import { useMemo, useState } from 'react';
-import { theme.breakpoints, theme.fontSizes, useAppSelector } from 'shared/lib';
+import { useAppSelector } from 'shared/lib';
 import styled from 'styled-components';
 import { BookCard } from './BookCard';
 
@@ -112,7 +112,7 @@ const PageContainer = styled.div`
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   padding: 1.5rem;
 
-  @media (max-width: ${theme.breakpoints.xs}) {
+  @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
     padding-inline: 7px;
   }
 `;
@@ -124,11 +124,11 @@ const StatusTabs = styled.div`
   margin-bottom: 2rem;
   flex-wrap: wrap;
 
-  @media (max-width: ${theme.breakpoints.md}) {
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     gap: 0.5rem;
   }
 
-  @media (max-width: ${theme.breakpoints.sm}) {
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 1fr 1fr;
@@ -150,8 +150,8 @@ const StatusTab = styled.button<{ active: boolean }>`
   overflow: hidden;
   text-align: center;
 
-  @media (max-width: ${theme.breakpoints.xs}) {
-    font-size: ${theme.fontSizes.sm};
+  @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
+    font-size: ${({ theme }) => theme.fontSizes.sm};
     padding: 0.5rem 0.9rem;
   }
 
@@ -263,7 +263,7 @@ const BooksGrid = styled.div`
   grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   gap: 1rem;
 
-  @media (max-width: ${theme.breakpoints.xs}) {
+  @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
     gap: 6px;
   }
 `;

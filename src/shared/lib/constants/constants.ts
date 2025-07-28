@@ -27,9 +27,4 @@ export const CONSTANTS = {
     AUTHOR_IMAGE: 'https://covers.openlibrary.org/a/olid/',
     SUBJECTS: 'https://openlibrary.org/subjects.json?limit=1000&offset=0',
   } as const,
-
-  THEMES: {
-    LIGHT: 'light',
-    DARK: 'dark',
-  } as const,
 };

@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { theme.breakpoints } from 'shared/lib';
+
 import styled, { keyframes } from 'styled-components';
 
 export const VerifyResetPassword = () => {
@@ -198,7 +198,8 @@ const EmailIcon = styled.div`
   margin-bottom: 30px;
   animation: ${bounce} 2s ease-in-out infinite;
 
-  @media (max-width: ${theme.breakpoints.md}) or (max-height: ${theme.breakpoints.md}) {
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}),
+    (max-height: ${({ theme }) => theme.breakpoints.md}) {
     display: none;
   }
 `;
@@ -224,7 +225,8 @@ const Title = styled.h1`
   margin: 0 0 20px 0;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 
-  @media (max-width: ${theme.breakpoints.md}) or (max-height: ${theme.breakpoints.md}) {
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}),
+    (max-height: ${({ theme }) => theme.breakpoints.md}) {
     margin-bottom: 5px;
   }
 `;
@@ -238,7 +240,8 @@ const Description = styled.p`
   margin-left: auto;
   margin-right: auto;
 
-  @media (max-width: ${theme.breakpoints.md}) or (max-height: ${theme.breakpoints.md}) {
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}),
+    (max-height: ${({ theme }) => theme.breakpoints.md}) {
     margin-bottom: 10px;
   }
 `;
@@ -256,7 +259,8 @@ const InfoBox = styled.div`
   border: 1px solid rgba(255, 255, 255, 0.2);
   animation: ${fadeIn} 1.5s ease-out;
 
-  @media (max-width: ${theme.breakpoints.md}) or (max-height: ${theme.breakpoints.md}) {
+  @media (max-width: ${({ theme }) => theme.breakpoints.md}),
+    (max-height: ${({ theme }) => theme.breakpoints.md}) {
     margin-bottom: 25px;
     padding: 10px;
   }
