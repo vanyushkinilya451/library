@@ -4,10 +4,10 @@ import {
   useChangeMyBooksMutation,
   useGetAllMyBooksQuery,
 } from 'entities/book';
-import { Card, Col } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { Star } from 'shared/assets';
 import { useAppSelector } from 'shared/lib';
+import styled from 'styled-components';
 import { handleBookAuthor, handleBookTitle } from '../lib/sliceTextHelper';
 
 type BookCardProps = {
@@ -23,12 +23,12 @@ export const BookShelfCard = ({ book }: BookCardProps) => {
     select: 'book_id, book_status',
   });
 
-  // Проверяем, есть ли книга в библиотеке пользователя
   const isInMyBooks = allMyBooks?.some(
     (myBook) => myBook.book_id === book.cover_edition_key,
   );
 
   const [changeMyBooks] = useChangeMyBooksMutation();
+
   const handleBookClick = (book: BookSearchFormat) => {
     navigate(`/book/${book.cover_edition_key}`);
   };
@@ -62,46 +62,90 @@ export const BookShelfCard = ({ book }: BookCardProps) => {
   };
 
   return (
-    <Col
-      key={book.key}
-      className="shelf__item"
-    >
-      <Card className="card">
-        <BookCover
-          className="card__cover"
+    <ShelfItem>
+      <StyledCard>
+        <StyledCover
           cover_id={book.cover_id}
           cover_i={book.cover_i}
           onClick={() => handleBookClick(book)}
         />
-        <Card.Body className="card__description">
-          <Card.Title
-            className="card__title"
-            onClick={() => handleBookClick(book)}
-          >
+        <Description>
+          <Title onClick={() => handleBookClick(book)}>
             {handleBookTitle(book.title)}
-          </Card.Title>
+          </Title>
           {book.author_name && (
-            <Card.Text
-              className="card__author"
-              onClick={() => handleAuthorClick(book.author_key[0])}
-            >
+            <Author onClick={() => handleAuthorClick(book.author_key[0])}>
               {handleBookAuthor(book.author_name[0])}
-            </Card.Text>
+            </Author>
           )}
 
           {isInMyBooks ? (
-            <Star
-              className="card__star card__star--filled"
+            <StarIcon
+              filled
               onClick={() => handleRemoveFromMyBooks(book)}
             />
           ) : user && !isLoading ? (
-            <Star
-              className="card__star"
-              onClick={() => handleAddToMyBooks(book)}
-            />
+            <StarIcon onClick={() => handleAddToMyBooks(book)} />
           ) : null}
-        </Card.Body>
-      </Card>
-    </Col>
+        </Description>
+      </StyledCard>
+    </ShelfItem>
   );
 };
+
+const ShelfItem = styled.div`
+  width: 150px;
+  flex: 0 0 auto;
+  padding: 10px 10px 0 10px;
+  scroll-snap-align: center;
+  height: 300px;
+`;
+
+const StyledCard = styled.div`
+  border-style: none;
+  position: relative;
+`;
+
+const StyledCover = styled(BookCover)`
+  width: 100%;
+  height: 180px;
+  cursor: pointer;
+  transition: transform 0.15s linear;
+  box-shadow: var(--shadow-card);
+  border-radius: 5px;
+`;
+
+const Description = styled.div`
+  padding: 10px 10px 0 10px;
+`;
+
+const Title = styled.h5`
+  font-weight: ${({ theme }) => theme.fontWeights.bold};
+  font-size: 0.8rem;
+  cursor: pointer;
+  margin: 0;
+  &:hover {
+    opacity: 0.7;
+  }
+`;
+
+const Author = styled.p`
+  font-size: 0.8rem;
+  margin: 0;
+  cursor: pointer;
+  &:hover {
+    opacity: 0.7;
+  }
+`;
+
+const StarIcon = styled(Star)<{ filled?: boolean }>`
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  path {
+    fill: ${({ filled }) => (filled ? 'var(--orange-accent)' : 'white')};
+  }
+`;

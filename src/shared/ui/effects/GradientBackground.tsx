@@ -37,7 +37,7 @@ const Gradient = styled.div`
   width: 100%;
   height: 100%;
   position: relative;
-  background: var(--gradient-multicolor);
+  background: ${({ theme }) => theme.gradients.multicolor};
   background-size: 400% 400%;
   animation: ${gradientAnimation} 15s ease infinite;
 `;

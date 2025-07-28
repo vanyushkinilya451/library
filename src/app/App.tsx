@@ -1,4 +1,3 @@
-import 'bootstrap/dist/css/bootstrap.min.css';
 import { Provider } from 'react-redux';
 import { RouterProvider } from 'react-router-dom';
 import { ThemeWrapper } from './providers/ThemeWrapper';

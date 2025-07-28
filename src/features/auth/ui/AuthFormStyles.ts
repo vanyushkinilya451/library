@@ -6,14 +6,13 @@ export const AuthForm = styled.form`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin: 0px 20px;
+  margin: 0 ${({ theme }) => theme.spacing.md};
 `;
 
 export const FormTitle = styled.h1`
   font-size: ${({ theme }) => theme.fontSizes.xxl};
-  color: var(--auth-primary-text);
-  font-weight: 900;
-  line-height: 46px;
+  color: ${({ theme }) => theme.colors.textPrimary};
+  font-weight: ${({ theme }) => theme.fontWeights.black};
   margin: 0;
   text-align: center;
   user-select: none;
@@ -27,26 +26,25 @@ export const FormTitle = styled.h1`
 
 export const FormSubtitle = styled.h2`
   font-size: ${({ theme }) => theme.fontSizes.md};
-  color: var(--auth-secondary-text);
+  color: ${({ theme }) => theme.colors.textSecondary};
   user-select: none;
-  font-weight: 400;
-  line-height: 19px;
+  font-weight: ${({ theme }) => theme.fontWeights.normal};
   text-align: center;
   margin: 30px 0 5px 0;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.sm}),
     (max-height: ${({ theme }) => theme.breakpoints.sm}) {
     font-size: ${({ theme }) => theme.fontSizes.sm};
-    margin: 5px 0 5px 0;
+    margin: ${({ theme }) => theme.spacing.sm} 0;
   }
 `;
 
 export const FormDescription = styled.h3`
   font-size: ${({ theme }) => theme.fontSizes.md};
-  color: var(--auth-secondary-text);
+  color: ${({ theme }) => theme.colors.textSecondary};
   margin: 0;
   font-style: italic;
-  font-weight: 400;
+  font-weight: ${({ theme }) => theme.fontWeights.normal};
   text-align: center;
   user-select: none;
 
@@ -58,10 +56,10 @@ export const FormDescription = styled.h3`
 
 export const FormInput = styled.input`
   font-size: ${({ theme }) => theme.fontSizes.sm};
-  color: black;
-  font-weight: 400;
+  color: ${({ theme }) => theme.colors.textPrimary};
+  font-weight: ${({ theme }) => theme.fontWeights.normal};
   padding: 17px 12px;
-  border: 1px solid var(--auth-border);
+  border: 1px solid ${({ theme }) => theme.colors.secondaryLight};
   border-radius: 8px;
   width: 100%;
   margin-top: 18px;
@@ -74,12 +72,12 @@ export const FormInput = styled.input`
   }
 
   &::placeholder {
-    color: var(--auth-secondary-text);
+    color: ${({ theme }) => theme.colors.textSecondary};
     font-style: italic;
   }
 
   &:focus {
-    outline: 2px solid var(--auth-secondary-text);
+    outline: 2px solid ${({ theme }) => theme.colors.textSecondary};
   }
 `;
 
@@ -102,7 +100,8 @@ export const FormCheckboxWrapper = styled.div`
 `;
 
 export const FormLabel = styled.label`
-  color: var(--auth-secondary-text);
+  font-size: ${({ theme }) => theme.fontSizes.sm};
+  color: ${({ theme }) => theme.colors.textSecondary};
   user-select: none;
   display: flex;
   align-items: center;
@@ -116,7 +115,7 @@ export const FormLabel = styled.label`
 
 export const AccentLink = styled(Link)`
   font-size: ${({ theme }) => theme.fontSizes.sm};
-  color: var(--auth-accent);
+  color: ${({ theme }) => theme.colors.accent};
 
   @media (max-width: ${({ theme }) => theme.breakpoints.sm}),
     (max-height: ${({ theme }) => theme.breakpoints.sm}) {
@@ -127,8 +126,8 @@ export const AccentLink = styled(Link)`
 export const SubmitButton = styled.button`
   font-size: ${({ theme }) => theme.fontSizes.sm};
   border-radius: 8px;
-  background: var(--auth-dark-blue);
-  color: var(--auth-light-text);
+  background: ${({ theme }) => theme.colors.primaryDark};
+  color: ${({ theme }) => theme.colors.background};
   width: 100%;
   padding: 10px 0;
   margin-top: 22px;
@@ -150,7 +149,7 @@ export const SubmitButton = styled.button`
 
 export const RegisterPrompt = styled.span`
   font-size: ${({ theme }) => theme.fontSizes.sm};
-  color: var(--auth-primary-text);
+  color: ${({ theme }) => theme.colors.textPrimary};
   margin-top: 11px;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.sm}),

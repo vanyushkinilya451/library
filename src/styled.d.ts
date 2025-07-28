@@ -10,6 +10,40 @@ declare module 'styled-components' {
       xl: string;
       xxl: string;
     };
+    opacity: {
+      disabled: number;
+      muted: number;
+      medium: number;
+      default: number;
+      overlay: number;
+      hover: number;
+    };
+
+    transitions: {
+      base: string;
+      fast: string;
+      slow: string;
+      colors: string;
+      transform: string;
+    };
+    shadows: {
+      nav: string;
+      modal: string;
+      card: string;
+      tooltip: string;
+      hoverLift: string;
+    };
+    fontWeights: {
+      thin: number;
+      extraLight: number;
+      light: number;
+      normal: number;
+      medium: number;
+      semiBold: number;
+      bold: number;
+      extraBold: number;
+      black: number;
+    };
     fontSizes: {
       xxl: string;
       xl: string;
@@ -18,7 +52,34 @@ declare module 'styled-components' {
       sm: string;
       xs: string;
     };
-    colors: unknown;
+    colors: {
+      white: string;
+      primary: string;
+      primaryLight: string;
+      primaryDark: string;
+      secondary: string;
+      secondaryLight: string;
+      secondaryDark: string;
+      accent: string;
+      accentLight: string;
+      accentDark: string;
+      success: string;
+      danger: string;
+      warning: string;
+      info: string;
+      background: string;
+      backgroundSecondary: string;
+      textPrimary: string;
+      textSecondary: string;
+      textMuted: string;
+    };
+    gradients: {
+      primary: string;
+      accent: string;
+      surface: string;
+      blueToAccent: string;
+      multicolor: string;
+    };
     spacing: {
       xs: string;
       sm: string;

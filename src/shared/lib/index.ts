@@ -2,6 +2,7 @@ export { CONSTANTS } from './constants/constants';
 export { supabase } from './constants/supabase';
 export { formatDate } from './helpers/formatDate';
 export { getApi } from './helpers/getApi';
+export { st } from './helpers/styledComponents';
 export { validatePassword } from './helpers/validatePassword';
 export { useAppDispatch } from './hooks/useAppDispatch';
 export { useAppSelector } from './hooks/useAppSelector';

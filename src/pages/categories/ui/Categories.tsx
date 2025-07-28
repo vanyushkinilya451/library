@@ -1,4 +1,3 @@
-import { Container } from 'react-bootstrap';
 import { useEnfOfPage } from 'shared/lib';
 import { DotLoader } from 'shared/ui';
 import { Shelf } from 'widgets/Shelf';
@@ -8,10 +7,7 @@ export const Categories = () => {
   const { categoriesLimit } = useEnfOfPage();
 
   return (
-    <Container
-      fluid
-      className="section"
-    >
+    <section>
       {shelvesConfig.slice(0, categoriesLimit).map((shelf) => (
         <Shelf
           key={shelf.title}
@@ -21,6 +17,6 @@ export const Categories = () => {
       ))}
       {shelvesConfig.length >= categoriesLimit && <DotLoader />}
       {shelvesConfig.length < categoriesLimit && <h6>Категории закончились</h6>}
-    </Container>
+    </section>
   );
 };
