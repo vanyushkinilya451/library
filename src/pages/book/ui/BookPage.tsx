@@ -1,6 +1,10 @@
-import { BookCover, useGetBookByIdQuery } from 'entities/book';
-import { useGetBookAdditionalInfoQuery } from 'entities/book/api/openlibrary';
+import {
+  BookCover,
+  useGetBookAdditionalInfoQuery,
+  useGetBookByIdQuery,
+} from 'entities/book';
 import { useParams } from 'react-router-dom';
+import { st } from 'shared/lib';
 import styled from 'styled-components';
 
 export const BookPage = () => {
@@ -23,13 +27,6 @@ export const BookPage = () => {
               skeletonHeight="100%"
             />
           </Cover>
-          {book.subjects && (
-            <Tags>
-              {book.subjects.map((subject) => (
-                <Tag key={subject}>{subject}</Tag>
-              ))}
-            </Tags>
-          )}
           <BookProperties>
             <Title>{book.title}</Title>
             {book.subtitle && <SubTitle>{book.subtitle}</SubTitle>}
@@ -102,6 +99,13 @@ export const BookPage = () => {
               </>
             )}
           </Description>
+          {book.subjects && (
+            <Tags>
+              {book.subjects.map((subject) => (
+                <Tag key={subject}>{subject}</Tag>
+              ))}
+            </Tags>
+          )}
         </BookInformation>
       </Container>
     )
@@ -111,31 +115,31 @@ export const BookPage = () => {
 const Container = styled.div`
   margin: 30px 15%;
 
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+  @media (max-width: ${st('breakpoints', 'md')}) {
     margin: 30px 10%;
   }
 
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+  @media (max-width: ${st('breakpoints', 'sm')}) {
     margin: 30px 5%;
   }
 `;
 
 const Title = styled.h1`
-  font-size: ${({ theme }) => theme.fontSizes.lg};
+  font-size: ${st('fontSizes', 'lg')};
   font-weight: 900;
 
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
-    font-size: ${({ theme }) => theme.fontSizes.md};
+  @media (max-width: ${st('breakpoints', 'sm')}) {
+    font-size: ${st('fontSizes', 'md')};
   }
 `;
 
 const SubTitle = styled.h2`
-  font-size: ${({ theme }) => theme.fontSizes.md};
+  font-size: ${st('fontSizes', 'md')};
   font-weight: 300;
   font-style: italic;
 
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
-    font-size: ${({ theme }) => theme.fontSizes.sm};
+  @media (max-width: ${st('breakpoints', 'sm')}) {
+    font-size: ${st('fontSizes', 'sm')};
   }
 `;
 
@@ -145,24 +149,25 @@ const Cover = styled.div`
   height: 450px;
   margin-left: 30px;
   margin-bottom: 10px;
-  box-shadow: var(--shadow-card);
+  box-shadow: ${st('shadows', 'card')};
+  border-radius: ${st('borderRadius', 'md')};
 
-  @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
+  @media (max-width: ${st('breakpoints', 'lg')}) {
     width: 250px;
     height: 375px;
   }
 
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+  @media (max-width: ${st('breakpoints', 'md')}) {
     width: 210px;
     height: 312px;
   }
 
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+  @media (max-width: ${st('breakpoints', 'sm')}) {
     width: 175px;
     height: 260px;
   }
 
-  @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
+  @media (max-width: ${st('breakpoints', 'xs')}) {
     width: 145px;
     height: 216px;
   }
@@ -177,28 +182,28 @@ const Description = styled.p`
   text-align: justify;
   width: 100%;
 
-  font-size: ${({ theme }) => theme.fontSizes.md};
+  font-size: ${st('fontSizes', 'md')};
 
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
-    font-size: ${({ theme }) => theme.fontSizes.sm};
+  @media (max-width: ${st('breakpoints', 'sm')}) {
+    font-size: ${st('fontSizes', 'sm')};
   }
 `;
 
 const TextHighlight = styled.span`
-  color: var(--link-color);
-  font-size: ${({ theme }) => theme.fontSizes.md};
+  color: ${st('colors', 'primaryLight')};
+  font-size: ${st('fontSizes', 'md')};
 
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
-    font-size: ${({ theme }) => theme.fontSizes.sm};
+  @media (max-width: ${st('breakpoints', 'sm')}) {
+    font-size: ${st('fontSizes', 'sm')};
   }
 `;
 
 const Bold = styled.span`
   font-weight: 600;
-  font-size: ${({ theme }) => theme.fontSizes.md};
+  font-size: ${st('fontSizes', 'md')};
 
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
-    font-size: ${({ theme }) => theme.fontSizes.sm};
+  @media (max-width: ${st('breakpoints', 'sm')}) {
+    font-size: ${st('fontSizes', 'sm')};
   }
 `;
 
@@ -210,13 +215,13 @@ const Tags = styled.div`
 `;
 
 const Tag = styled.span`
-  background-color: var(--orange-accent);
+  background-color: ${st('colors', 'accent')};
   padding: 5px 10px;
   border-radius: 5px;
-  font-size: ${({ theme }) => theme.fontSizes.md};
+  font-size: ${st('fontSizes', 'md')};
   font-weight: 500;
 
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
-    font-size: ${({ theme }) => theme.fontSizes.sm};
+  @media (max-width: ${st('breakpoints', 'sm')}) {
+    font-size: ${st('fontSizes', 'sm')};
   }
 `;

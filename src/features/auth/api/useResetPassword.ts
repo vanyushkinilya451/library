@@ -1,7 +1,7 @@
+import { ROUTES } from 'app/routes/router';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from 'shared/lib';
-
 export const useResetPassword = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -17,14 +17,14 @@ export const useResetPassword = () => {
     }
 
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: 'http://localhost:8080/auth/change-password',
+      redirectTo: `${process.env.REACT_APP_BASE_URL}/auth/change-password`,
     });
 
     if (error) {
       setError(error.message);
     } else {
       setIsLoading(false);
-      navigate('/auth/verify-reset-password');
+      navigate(ROUTES.LINKS.RESET_PASSWORD);
     }
   };
 

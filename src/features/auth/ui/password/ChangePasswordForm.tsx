@@ -1,6 +1,6 @@
+import { useChangePassword } from 'features/auth/api/useChangePassword';
 import { useEffect, useState } from 'react';
-import toast, { Toaster } from 'react-hot-toast';
-import { useChangePassword } from '../api/useChangePassword';
+import toast from 'react-hot-toast';
 import {
   AccentLink,
   AuthForm,
@@ -12,7 +12,8 @@ import {
   FormTitle,
   RegisterPrompt,
   SubmitButton,
-} from './AuthFormStyles';
+} from '../AuthFormStyles';
+import { ROUTES } from 'app/routes/router';
 
 export const ChangePasswordForm = () => {
   const [credentials, setCredentials] = useState({
@@ -53,7 +54,6 @@ export const ChangePasswordForm = () => {
 
   return (
     <AuthForm onSubmit={(e) => handleSubmit(e)}>
-      <Toaster />
       <FormTitle>Сброс пароля</FormTitle>
       <FormSubtitle>Введите вашу почту и новый пароль</FormSubtitle>
 
@@ -99,7 +99,7 @@ export const ChangePasswordForm = () => {
         {isLoading ? 'Загрузка...' : 'Изменить пароль'}
       </SubmitButton>
       <RegisterPrompt>
-        Вспомнили пароль? <AccentLink to={'/auth/login'}>Войти</AccentLink>
+        Вспомнили пароль? <AccentLink to={ROUTES.LINKS.LOGIN}>Войти</AccentLink>
       </RegisterPrompt>
     </AuthForm>
   );

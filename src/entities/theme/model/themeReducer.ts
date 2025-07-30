@@ -8,13 +8,16 @@ const initialState: Theme =
   storedTheme === 'light' || storedTheme === 'dark' ? storedTheme : 'light';
 
 export const themeSlice = createSlice({
-  name: 'user',
+  name: 'theme',
   initialState,
   reducers: {
     switchTheme: (state) => {
-      state === 'light' ? (state = 'dark') : (state = 'light');
+      const newTheme = state === 'light' ? 'dark' : 'light';
+      localStorage.setItem('theme', newTheme);
+      return newTheme;
     },
   },
 });
 
+export const { switchTheme } = themeSlice.actions;
 export const themeReducer = themeSlice.reducer;

@@ -1,5 +1,4 @@
-import { CONSTANTS } from 'shared/lib';
-import { getApi } from 'shared/lib/helpers/getApi';
+import { CONSTANTS, getApi } from 'shared/lib';
 
 export const homepageConfig = [
   {

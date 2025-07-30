@@ -1,4 +1,5 @@
 import type { User } from '@supabase/supabase-js';
+import { ROUTES } from 'app/routes/router';
 import { logoutUser } from 'entities/user';
 import { useRef } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
@@ -21,7 +22,7 @@ export const Dropdown = ({ isLoading, user }: Props) => {
 
   const handleLogout = () => {
     dispatch(logoutUser());
-    navigate('/auth/login');
+    navigate(ROUTES.LINKS.LOGIN);
   };
 
   return (
@@ -52,22 +53,27 @@ export const Dropdown = ({ isLoading, user }: Props) => {
             <SkeletonLoader
               width="200px"
               height="30px"
-              background="var(--gradient-skeleton-dark)"
               margin="0 20px"
             />
           ) : !user && !isLoading ? (
             <>
-              <DropdownLink to="/">Главная</DropdownLink>
-              <DropdownLink to="/categories">Категории</DropdownLink>
-              <DropdownLink to="/auth/login">Войти</DropdownLink>
-              <DropdownLink to="/auth/register">
+              <DropdownLink to={ROUTES.LINKS.HOME}>Главная</DropdownLink>
+              <DropdownLink to={ROUTES.LINKS.CATEGORIES}>
+                Категории
+              </DropdownLink>
+              <DropdownLink to={ROUTES.LINKS.LOGIN}>Войти</DropdownLink>
+              <DropdownLink to={ROUTES.LINKS.REGISTER}>
                 Зарегистрироваться
               </DropdownLink>
             </>
           ) : (
             <>
-              <DropdownLink to={`/profile/${user?.id}`}>Профиль</DropdownLink>
-              <DropdownLink to="/mybooks">Мои книги</DropdownLink>
+              <DropdownLink to={ROUTES.LINKS.HOME}>Главная</DropdownLink>
+              <DropdownLink to={ROUTES.LINKS.CATEGORIES}>
+                Категории
+              </DropdownLink>
+              <DropdownLink to={ROUTES.LINKS.PROFILE}>Профиль</DropdownLink>
+              <DropdownLink to={ROUTES.LINKS.MYBOOKS}>Мои книги</DropdownLink>
               <DropdownLogout onClick={handleLogout}>Выйти</DropdownLogout>
             </>
           )}
@@ -83,10 +89,11 @@ const DropdownContainer = styled.div`
   right: 20px;
   width: min-content;
   display: none;
-  background-color: white;
-  border-radius: 10px;
+  background-color: ${st('colors', 'background')};
+  border-radius: ${st('borderRadius', 'lg')};
   box-shadow: ${st('shadows', 'modal')};
   z-index: ${st('zIndices', 'modal')};
+  transition: ${st('transitions', 'colors')};
 
   @media (max-width: ${st('breakpoints', 'sm')}) {
     display: flex;
@@ -94,28 +101,29 @@ const DropdownContainer = styled.div`
   }
 
   :first-child {
-    border-top-right-radius: 10px;
-    border-top-left-radius: 10px;
+    border-top-right-radius: ${st('borderRadius', 'lg')};
+    border-top-left-radius: ${st('borderRadius', 'lg')};
   }
 `;
 
 const Link = css`
   color: ${st('colors', 'textPrimary')};
-  padding: 0.75rem 3rem;
+  padding: 0.75rem 2.5rem;
   white-space: nowrap;
   text-decoration: none;
   font-weight: ${st('fontWeights', 'medium')};
   font-size: ${st('fontSizes', 'md')};
-  transition: ${st('transitions', 'base')};
+  transition: ${st('transitions', 'colors')};
   cursor: pointer;
   text-align: left;
 
   &.active {
-    background-color: ${st('colors', 'accentLight')};
+    background-color: ${st('colors', 'primaryLight')};
+    color: ${st('colors', 'textWhite')};
   }
 
   &:hover {
-    background-color: ${st('opacity', 'hover')};
+    background-color: ${st('colors', 'backgroundSecondary')};
   }
 `;
 
@@ -125,24 +133,25 @@ const DropdownLink = styled(NavLink)`
 
 const DropdownLogout = styled.button`
   ${Link}
+  border-style: none;
+  color: ${st('colors', 'danger')};
 `;
 
 const Button = styled.button`
   display: none;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
   width: 32px;
   height: 32px;
-  gap: 6px;
+  gap: 0.4rem;
   padding: 0;
   background: transparent;
   border: none;
   cursor: pointer;
-  margin-right: 1.5rem;
 
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+  @media (max-width: ${st('breakpoints', 'sm')}) {
     display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
   }
 `;
 
@@ -152,17 +161,15 @@ const BurgerLine = styled.span<{
 }>`
   width: 24px;
   height: 2px;
-  background-color: var(--bs-white);
-  border-radius: 1px;
-  transition: all 0.3s ease;
-
+  background-color: ${st('colors', 'textWhite')};
+  border-radius: ${st('borderRadius', 'xs')};
+  transition: ${st('transitions', 'transform')};
   ${({ isDropdown, line }) =>
     isDropdown &&
     line === 'first' &&
     `
       transform: translateY(8px) rotate(45deg);
     `}
-
   ${({ isDropdown, line }) =>
     isDropdown &&
     line === 'second' &&
@@ -170,11 +177,10 @@ const BurgerLine = styled.span<{
       opacity: 0;
       transform: scaleX(0);
     `}
-
-  ${({ isDropdown, line }) =>
+    ${({ isDropdown, line }) =>
     isDropdown &&
     line === 'third' &&
     `
       transform: translateY(-8px) rotate(-45deg);
-    `}
+    `};
 `;

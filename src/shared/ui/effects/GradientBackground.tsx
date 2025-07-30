@@ -1,3 +1,4 @@
+import { st } from 'shared/lib';
 import styled, { keyframes } from 'styled-components';
 
 const gradientAnimation = keyframes`
@@ -23,8 +24,28 @@ const gradientAnimation = keyframes`
   }
 `;
 
+const floatAnimation = keyframes`
+  0%, 100% { 
+    transform: translateY(0px);
+  }
+  50% { 
+    transform: translateY(-20px);
+  }
+`;
+
 export const GradientBackground = () => {
-  return <Gradient></Gradient>;
+  return (
+    <Gradient>
+      <Circle size="large" />
+      <Circle size="medium" />
+      <Circle size="small" />
+      <Circle size="large" />
+      <Circle size="medium" />
+      <Circle size="small" />
+      <Circle size="medium" />
+      <Circle size="small" />
+    </Gradient>
+  );
 };
 
 const Gradient = styled.div`
@@ -37,7 +58,64 @@ const Gradient = styled.div`
   width: 100%;
   height: 100%;
   position: relative;
-  background: ${({ theme }) => theme.gradients.multicolor};
+  background: ${st('gradients', 'background')};
   background-size: 400% 400%;
   animation: ${gradientAnimation} 15s ease infinite;
+`;
+
+const Circle = styled.div<{ size: 'small' | 'medium' | 'large' }>`
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  animation: ${floatAnimation} 4s ease-in-out infinite;
+
+  &:nth-child(1) {
+    width: 80px;
+    height: 80px;
+    top: 15%;
+    left: 8%;
+  }
+  &:nth-child(2) {
+    width: 60px;
+    height: 60px;
+    top: 75%;
+    right: 10%;
+  }
+  &:nth-child(3) {
+    width: 40px;
+    height: 40px;
+    top: 35%;
+    left: 25%;
+  }
+  &:nth-child(4) {
+    width: 80px;
+    height: 80px;
+    top: 85%;
+    left: 70%;
+  }
+  &:nth-child(5) {
+    width: 60px;
+    height: 60px;
+    top: 25%;
+    right: 25%;
+  }
+  &:nth-child(6) {
+    width: 40px;
+    height: 40px;
+    top: 65%;
+    left: 45%;
+  }
+  &:nth-child(7) {
+    width: 60px;
+    height: 60px;
+    top: 5%;
+    left: 50%;
+  }
+  &:nth-child(8) {
+    width: 40px;
+    height: 40px;
+    top: 45%;
+    right: 15%;
+  }
 `;

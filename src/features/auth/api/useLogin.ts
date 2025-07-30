@@ -1,3 +1,4 @@
+import { ROUTES } from 'app/routes/router';
 import { loginUser } from 'entities/user';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -25,7 +26,7 @@ export const useLogin = () => {
 
     const result = await dispatch(loginUser(credentials));
     if (result.meta.requestStatus == 'fulfilled') {
-      navigate('/');
+      navigate(ROUTES.LINKS.HOME);
     }
 
     if (result.meta.requestStatus == 'rejected') {

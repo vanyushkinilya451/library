@@ -1,3 +1,4 @@
+import { st } from 'shared/lib';
 import styled, { keyframes } from 'styled-components';
 
 interface SkeletonLoaderProps {
@@ -5,7 +6,6 @@ interface SkeletonLoaderProps {
   height?: string | number;
   margin?: string;
   padding?: string;
-  background?: string;
 }
 
 const shimmer = keyframes`
@@ -22,7 +22,6 @@ const Skeleton = styled.div<{
   height?: string | number;
   margin?: string;
   padding?: string;
-  background?: string;
 }>`
   width: ${(p) =>
     typeof p.width === 'number' ? `${p.width}px` : p.width || '100%'};
@@ -30,11 +29,9 @@ const Skeleton = styled.div<{
     typeof p.height === 'number' ? `${p.height}px` : p.height || '100%'};
   margin: ${(p) => p.margin || '0'};
   padding: ${(p) => p.padding || '0'};
-  background: ${(p) =>
-    p.background ||
-    'linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%)'};
+  background: ${st('gradients', 'skeleton')};
   background-size: 200% 100%;
-  border-radius: 4px;
+  border-radius: ${st('borderRadius', 'sm')};
   animation: ${shimmer} 1.5s linear infinite;
   z-index: 999;
 `;
@@ -44,7 +41,6 @@ export const SkeletonLoader = ({
   height,
   margin,
   padding,
-  background,
 }: SkeletonLoaderProps) => {
   return (
     <Skeleton
@@ -52,7 +48,6 @@ export const SkeletonLoader = ({
       height={height}
       margin={margin}
       padding={padding}
-      background={background}
     />
   );
 };

@@ -1,13 +1,14 @@
-import { getUserProfile } from 'entities/user/model/UserSlice';
+import type { UserProfile } from 'entities/user';
+import { getUserProfile } from 'entities/user';
 import React, { useRef, useState } from 'react';
 import {
+  st,
   supabase,
   useAppDispatch,
   useAppSelector,
   useClickOutside,
 } from 'shared/lib';
 import styled from 'styled-components';
-import type { UserProfile } from '../lib/types';
 
 export const ProfileModal = ({ closeModal }: { closeModal: () => void }) => {
   const user = useAppSelector((state) => state.user.user);
@@ -179,18 +180,19 @@ const ModalOverlay = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1000;
+  z-index: ${st('zIndices', 'modal')};
   padding: 20px;
 `;
 
 const ModalContent = styled.div`
-  background: white;
-  border-radius: 20px;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  background: ${st('colors', 'background')};
+  border-radius: ${st('borderRadius', 'xl')};
+  box-shadow: ${st('shadows', 'modal')};
   max-width: 600px;
   width: 100%;
   max-height: 90vh;
   overflow-y: auto;
+  transition: ${st('transitions', 'colors')};
 `;
 
 const ModalHeader = styled.div`
@@ -198,25 +200,21 @@ const ModalHeader = styled.div`
   justify-content: space-between;
   align-items: center;
   padding: 30px 30px 20px;
-  border-bottom: 1px solid var(--border-color);
+  border-bottom: 1px solid ${st('colors', 'secondary')};
 
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+  @media (max-width: ${st('breakpoints', 'sm')}) {
     padding: 10px 30px;
   }
 `;
 
 const ModalTitle = styled.h2`
-  font-size: ${({ theme }) => theme.fontSizes.lg};
+  font-size: ${st('fontSizes', 'lg')};
   font-weight: 700;
-  color: var(--text-primary);
+  color: ${st('colors', 'primaryLight')};
   margin: 0;
-  background: var(--gradient-primary);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
 
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
-    font-size: ${({ theme }) => theme.fontSizes.md};
+  @media (max-width: ${st('breakpoints', 'sm')}) {
+    font-size: ${st('fontSizes', 'md')};
   }
 `;
 
@@ -226,7 +224,7 @@ const CloseButton = styled.button`
   cursor: pointer;
   padding: 8px;
   border-radius: 50%;
-  transition: all 0.3s ease;
+  transition: ${st('transitions', 'transform')};
   display: flex;
   align-items: center;
   justify-content: center;
@@ -237,12 +235,12 @@ const CloseButton = styled.button`
 `;
 
 const CloseIcon = styled.span`
-  font-size: ${({ theme }) => theme.fontSizes.lg};
-  color: var(--text-secondary);
+  font-size: ${st('fontSizes', 'lg')};
+  color: ${st('colors', 'textSecondary')};
   font-weight: 300;
 
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
-    font-size: ${({ theme }) => theme.fontSizes.md};
+  @media (max-width: ${st('breakpoints', 'sm')}) {
+    font-size: ${st('fontSizes', 'md')};
   }
 `;
 
@@ -253,7 +251,7 @@ const ModalBody = styled.div`
   gap: 40px;
   align-items: start;
 
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+  @media (max-width: ${st('breakpoints', 'md')}) {
     grid-template-columns: 1fr;
     gap: 30px;
   }
@@ -270,7 +268,7 @@ const FormGrid = styled.div`
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 20px;
 
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+  @media (max-width: ${st('breakpoints', 'sm')}) {
     grid-template-columns: 1fr;
     gap: 13px;
   }
@@ -281,43 +279,44 @@ const FormField = styled.div`
   flex-direction: column;
   gap: 8px;
 
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+  @media (max-width: ${st('breakpoints', 'sm')}) {
     gap: 5px;
   }
 `;
 
 const FormLabel = styled.label`
-  font-size: ${({ theme }) => theme.fontSizes.md};
+  font-size: ${st('fontSizes', 'md')};
   font-weight: 600;
-  color: var(--text-primary);
+  color: ${st('colors', 'textPrimary')};
   text-transform: uppercase;
   letter-spacing: 0.5px;
 
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
-    font-size: ${({ theme }) => theme.fontSizes.sm};
+  @media (max-width: ${st('breakpoints', 'sm')}) {
+    font-size: ${st('fontSizes', 'sm')};
   }
 `;
 
 const FormInput = styled.input`
   padding: 12px 16px;
-  border: 2px solid var(--border-color);
-  border-radius: 12px;
-  font-size: ${({ theme }) => theme.fontSizes.md};
-  transition: all 0.3s ease;
-  background: white;
+  border: 1px solid ${st('colors', 'secondary')};
+  border-radius: ${st('borderRadius', 'md')};
+  font-size: ${st('fontSizes', 'md')};
+  transition: ${st('transitions', 'colors')};
+  background: ${st('colors', 'background')};
+  color: ${st('colors', 'textPrimary')};
 
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
-    font-size: ${({ theme }) => theme.fontSizes.sm};
+  @media (max-width: ${st('breakpoints', 'sm')}) {
+    font-size: ${st('fontSizes', 'sm')};
   }
 
   &:focus {
     outline: none;
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.1);
+    border-color: ${st('colors', 'primary')};
+    box-shadow: 0 0 0 3px rgba(147, 51, 234, 0.1);
   }
 
   &::placeholder {
-    color: var(--text-muted);
+    color: ${st('colors', 'textMuted')};
   }
 `;
 
@@ -341,30 +340,30 @@ const RadioLabel = styled.label`
   align-items: center;
   gap: 10px;
   cursor: pointer;
-  font-size: ${({ theme }) => theme.fontSizes.md};
-  color: var(--text-primary);
-  transition: color 0.3s ease;
+  font-size: ${st('fontSizes', 'md')};
+  color: ${st('colors', 'textPrimary')};
+  transition: ${st('transitions', 'colors')};
 
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
-    font-size: ${({ theme }) => theme.fontSizes.sm};
+  @media (max-width: ${st('breakpoints', 'sm')}) {
+    font-size: ${st('fontSizes', 'sm')};
   }
 
   &:hover {
-    color: var(--primary-color);
+    color: ${st('colors', 'primary')};
   }
 `;
 
 const RadioCircle = styled.div`
   width: 20px;
   height: 20px;
-  border: 2px solid var(--border-color);
+  border: 2px solid ${st('colors', 'secondary')};
   border-radius: 50%;
   position: relative;
-  transition: all 0.3s ease;
+  transition: ${st('transitions', 'colors')};
 
   input[type='radio']:checked + label & {
-    border-color: var(--primary-color);
-    background: var(--primary-color);
+    border-color: ${st('colors', 'primary')};
+    background: ${st('colors', 'primary')};
 
     &::after {
       content: '';
@@ -374,7 +373,7 @@ const RadioCircle = styled.div`
       transform: translate(-50%, -50%);
       width: 8px;
       height: 8px;
-      background: white;
+      background: ${st('colors', 'textWhite')};
       border-radius: 50%;
     }
   }
@@ -385,61 +384,61 @@ const ModalFooter = styled.div`
   justify-content: flex-end;
   gap: 15px;
   padding: 20px 30px;
-  border-top: 1px solid var(--border-color);
-  background: var(--background-secondary);
-  border-radius: 0 0 20px 20px;
+  border-top: 1px solid ${st('colors', 'secondary')};
+  background: ${st('colors', 'backgroundSecondary')};
+  border-radius: 0 0 ${st('borderRadius', 'xl')} ${st('borderRadius', 'xl')};
 
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+  @media (max-width: ${st('breakpoints', 'sm')}) {
     justify-content: center;
   }
 `;
 
 const CancelButton = styled.button`
   padding: 12px 24px;
-  border: 2px solid var(--border-color);
-  background: white;
-  color: var(--text-primary);
-  border-radius: 12px;
-  font-size: ${({ theme }) => theme.fontSizes.md};
+  border: 2px solid ${st('colors', 'secondary')};
+  background: ${st('colors', 'background')};
+  color: ${st('colors', 'textPrimary')};
+  border-radius: ${st('borderRadius', 'md')};
+  font-size: ${st('fontSizes', 'md')};
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: ${st('transitions', 'colors')};
 
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
-    font-size: ${({ theme }) => theme.fontSizes.sm};
+  @media (max-width: ${st('breakpoints', 'sm')}) {
+    font-size: ${st('fontSizes', 'sm')};
   }
 
   &:hover {
-    border-color: var(--text-secondary);
-    background: var(--background-secondary);
+    border-color: ${st('colors', 'textSecondary')};
+    background: ${st('colors', 'backgroundSecondary')};
   }
 `;
 
 const SaveButton = styled.button`
   padding: 12px 24px;
   border: none;
-  background: var(--gradient-primary);
-  color: white;
-  border-radius: 12px;
-  font-size: ${({ theme }) => theme.fontSizes.md};
+  background: ${st('gradients', 'primary')};
+  color: ${st('colors', 'textWhite')};
+  border-radius: ${st('borderRadius', 'md')};
+  font-size: ${st('fontSizes', 'md')};
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: ${st('transitions', 'transform')};
   display: flex;
   align-items: center;
   gap: 8px;
 
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
-    font-size: ${({ theme }) => theme.fontSizes.sm};
+  @media (max-width: ${st('breakpoints', 'sm')}) {
+    font-size: ${st('fontSizes', 'sm')};
   }
 
   &:hover:not(:disabled) {
     transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(139, 92, 246, 0.4);
+    box-shadow: ${st('shadows', 'hoverLift')};
   }
 
   &:disabled {
-    opacity: 0.7;
+    opacity: ${st('opacity', 'disabled')};
     cursor: not-allowed;
   }
 `;

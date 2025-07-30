@@ -1,1 +1,1 @@
-export { themeReducer } from './model/themeReducer';
+export { switchTheme, themeReducer } from './model/themeReducer';

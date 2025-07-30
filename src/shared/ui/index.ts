@@ -1,3 +1,5 @@
+export { EndOfPage } from './components/EndOfPage';
+export { ThemeToggle } from './components/ThemeToggle';
 export { GradientBackground } from './effects/GradientBackground';
 export { DotLoader } from './loaders/DotLoader';
 export { FullScreenLoader } from './loaders/FullScreenLoader';

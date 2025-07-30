@@ -1,4 +1,5 @@
 import type { User } from '@supabase/supabase-js';
+import { ROUTES } from 'app/routes/router';
 import { logoutUser } from 'entities/user';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from 'shared/lib';
@@ -16,25 +17,32 @@ export const AuthLinks = ({ isLoading, user }: Props) => {
 
   const handleLogout = () => {
     dispatch(logoutUser());
-    navigate('/auth/login');
+    navigate(ROUTES.LINKS.LOGIN);
   };
 
-  return isLoading ? (
-    <SkeletonLoader
-      width="200px"
-      height="30px"
-      background="var(--gradient-skeleton-dark)"
-      margin="0 20px"
-    />
-  ) : !user && !isLoading ? (
+  if (!user && isLoading) {
+    return (
+      <SkeletonLoader
+        width="200px"
+        height="30px"
+        margin="0 20px"
+      />
+    );
+  }
+
+  if (!user) {
+    return (
+      <>
+        <Navlink to={ROUTES.LINKS.LOGIN}>Войти</Navlink>
+        <Navlink to={ROUTES.LINKS.REGISTER}>Зарегистрироваться</Navlink>
+      </>
+    );
+  }
+
+  return (
     <>
-      <Navlink to="/auth/login">Войти</Navlink>
-      <Navlink to="/auth/register">Зарегистрироваться</Navlink>
-    </>
-  ) : (
-    <>
-      <Navlink to={`/profile/${user?.id}`}>Профиль</Navlink>
-      <Navlink to="/mybooks">Мои книги</Navlink>
+      <Navlink to={ROUTES.LINKS.MYBOOKS}>Мои книги</Navlink>
+      <Navlink to={ROUTES.LINKS.PROFILE}>Профиль</Navlink>
       <Logout onClick={handleLogout}>Выйти</Logout>
     </>
   );

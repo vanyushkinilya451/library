@@ -1,6 +1,6 @@
 import { useGetAllMyBooksQuery } from 'entities/book';
 import { useMemo, useState } from 'react';
-import { useAppSelector } from 'shared/lib';
+import { st, useAppSelector } from 'shared/lib';
 import styled from 'styled-components';
 import { BookCard } from './BookCard';
 
@@ -91,8 +91,8 @@ export const MyBooks = () => {
 const LoadingSpinner = styled.div`
   width: 50px;
   height: 50px;
-  border: 4px solid rgba(255, 255, 255, 0.3);
-  border-top: 4px solid white;
+  border: 4px solid ${st('colors', 'secondary')};
+  border-top: 4px solid ${st('colors', 'primary')};
   border-radius: 50%;
   animation: spin 1s linear infinite;
   margin-bottom: 1rem;
@@ -109,10 +109,10 @@ const LoadingSpinner = styled.div`
 
 const PageContainer = styled.div`
   min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: ${st('gradients', 'primary')};
   padding: 1.5rem;
 
-  @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
+  @media (max-width: ${st('breakpoints', 'xs')}) {
     padding-inline: 7px;
   }
 `;
@@ -124,11 +124,11 @@ const StatusTabs = styled.div`
   margin-bottom: 2rem;
   flex-wrap: wrap;
 
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+  @media (max-width: ${st('breakpoints', 'md')}) {
     gap: 0.5rem;
   }
 
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+  @media (max-width: ${st('breakpoints', 'md')}) {
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 1fr 1fr;
@@ -140,76 +140,40 @@ const StatusTab = styled.button<{ active: boolean }>`
   align-items: center;
   gap: 0.4rem;
   padding: 0.7rem 1.2rem;
-  border-radius: 12px;
+  border-radius: ${st('borderRadius', 'md')};
   border: none;
-  font-size: 0.9rem;
+  font-size: ${st('fontSizes', 'md')};
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: ${st('transitions', 'transform')};
   position: relative;
   overflow: hidden;
   text-align: center;
 
-  @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
-    font-size: ${({ theme }) => theme.fontSizes.sm};
+  @media (max-width: ${st('breakpoints', 'xs')}) {
+    font-size: ${st('fontSizes', 'sm')};
     padding: 0.5rem 0.9rem;
   }
 
   background: ${({ active }) =>
-    active
-      ? 'linear-gradient(135deg, rgba(255, 255, 255, 0.25) 0%, rgba(255, 255, 255, 0.15) 100%)'
-      : 'rgba(255, 255, 255, 0.1)'};
-  color: white;
+    active ? 'rgba(255, 255, 255, 0.25)' : 'rgba(255, 255, 255, 0.1)'};
+  color: ${st('colors', 'textWhite')};
   backdrop-filter: blur(10px);
   border: 1px solid
     ${({ active }) =>
       active ? 'rgba(255, 255, 255, 0.4)' : 'rgba(255, 255, 255, 0.1)'};
   box-shadow: ${({ active }) =>
     active
-      ? '0 8px 25px rgba(255, 255, 255, 0.2), 0 0 0 1px rgba(255, 255, 255, 0.1)'
+      ? '0 8px 25px rgba(255, 255, 255, 0.2)'
       : '0 2px 8px rgba(0, 0, 0, 0.1)'};
-
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(
-      90deg,
-      transparent,
-      rgba(255, 255, 255, 0.2),
-      transparent
-    );
-    transition: left 0.5s;
-    ${({ active }) => active && 'left: 100%;'}
-  }
-
-  &::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: ${({ active }) =>
-      active
-        ? 'linear-gradient(135deg, rgba(255, 138, 76, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%)'
-        : 'transparent'};
-    opacity: ${({ active }) => (active ? 1 : 0)};
-    transition: opacity 0.3s ease;
-  }
 
   &:hover {
     transform: translateY(-2px);
     background: ${({ active }) =>
-      active
-        ? 'linear-gradient(135deg, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.2) 100%)'
-        : 'rgba(255, 255, 255, 0.2)'};
+      active ? 'rgba(255, 255, 255, 0.3)' : 'rgba(255, 255, 255, 0.2)'};
     box-shadow: ${({ active }) =>
       active
-        ? '0 12px 35px rgba(255, 255, 255, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.2)'
+        ? '0 12px 35px rgba(255, 255, 255, 0.3)'
         : '0 6px 20px rgba(0, 0, 0, 0.2)'};
   }
 
@@ -222,17 +186,14 @@ const StatusTab = styled.button<{ active: boolean }>`
     &:hover {
       transform: none;
     }
-    &::before {
-      display: none;
-    }
   }
 `;
 
 const TabIcon = styled.span`
-  font-size: 1rem;
+  font-size: ${st('fontSizes', 'md')};
   position: relative;
   z-index: 1;
-  transition: transform 0.3s ease;
+  transition: ${st('transitions', 'transform')};
 
   ${StatusTab}:hover & {
     transform: scale(1.1);
@@ -263,7 +224,7 @@ const BooksGrid = styled.div`
   grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
   gap: 1rem;
 
-  @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
+  @media (max-width: ${st('breakpoints', 'xs')}) {
     gap: 6px;
   }
 `;
@@ -277,9 +238,10 @@ const LoadingState = styled.div`
 `;
 
 const LoadingText = styled.p`
-  color: rgba(255, 255, 255, 0.8);
-  font-size: 1.1rem;
+  color: ${st('colors', 'textWhite')};
+  font-size: ${st('fontSizes', 'md')};
   margin: 0;
+  opacity: 0.8;
 `;
 
 const EmptyState = styled.div`
@@ -292,21 +254,22 @@ const EmptyState = styled.div`
 `;
 
 const EmptyIcon = styled.div`
-  font-size: 4rem;
+  font-size: ${st('fontSizes', 'xxl')};
   margin-bottom: 1rem;
 `;
 
 const EmptyTitle = styled.h2`
-  font-size: 2rem;
-  color: white;
+  font-size: ${st('fontSizes', 'xl')};
+  color: ${st('colors', 'textWhite')};
   margin-bottom: 1rem;
   font-weight: 600;
 `;
 
 const EmptyText = styled.p`
-  color: rgba(255, 255, 255, 0.7);
-  font-size: 1.1rem;
+  color: ${st('colors', 'textWhite')};
+  font-size: ${st('fontSizes', 'md')};
   max-width: 400px;
   line-height: 1.6;
   margin: 0;
+  opacity: 0.7;
 `;

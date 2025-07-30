@@ -1,3 +1,4 @@
+import { ROUTES } from 'app/routes/router';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase, validatePassword } from 'shared/lib';
@@ -41,7 +42,7 @@ export const useChangePassword = () => {
       return;
     }
 
-    navigate('/auth/login');
+    navigate(ROUTES.LINKS.LOGIN);
     setIsLoading(false);
   };
 

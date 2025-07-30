@@ -1,6 +1,7 @@
+import { ROUTES } from 'app/routes/router';
+import { useRegister } from 'features/auth/api/useRegister';
 import { useEffect, useState } from 'react';
-import toast, { Toaster } from 'react-hot-toast';
-import { useRegister } from '../api/useRegister';
+import toast from 'react-hot-toast';
 import {
   AccentLink,
   AuthForm,
@@ -13,7 +14,7 @@ import {
   FormTitle,
   RegisterPrompt,
   SubmitButton,
-} from './AuthFormStyles';
+} from '../AuthFormStyles';
 
 export const RegisterForm = () => {
   const [credentials, setCredentials] = useState({ email: '', password: '' });
@@ -45,7 +46,6 @@ export const RegisterForm = () => {
 
   return (
     <AuthForm onSubmit={(e) => handleSubmit(e)}>
-      <Toaster />
       <FormTitle>Добро пожаловать</FormTitle>
       <FormSubtitle>Станьте частью большого сообщества</FormSubtitle>
       <FormDescription>
@@ -78,7 +78,7 @@ export const RegisterForm = () => {
             Показать пароль
           </FormLabel>
         </FormCheckboxWrapper>
-        <AccentLink to={'/auth/reset-password'}>Забыли пароль?</AccentLink>
+        <AccentLink to={ROUTES.LINKS.RESET_PASSWORD}>Забыли пароль?</AccentLink>
       </FormFooter>
       <SubmitButton
         type="submit"
@@ -87,7 +87,7 @@ export const RegisterForm = () => {
         {isLoading ? 'Загрузка...' : 'Зарегистрироваться'}
       </SubmitButton>
       <RegisterPrompt>
-        Уже есть аккаунт? <AccentLink to={'/auth/login'}>Войти</AccentLink>
+        Уже есть аккаунт? <AccentLink to={ROUTES.LINKS.LOGIN}>Войти</AccentLink>
       </RegisterPrompt>
     </AuthForm>
   );

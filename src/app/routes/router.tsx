@@ -1,12 +1,13 @@
 import { AuthLayout, MainLayout } from 'app/layouts';
+import { ProtectedRouteWrapper } from 'app/providers/ProtectedRouteWrapper';
 import {
   ChangePasswordForm,
   LoginForm,
   RegisterForm,
+  ResetPasswordForm,
   VerifyEmail,
   VerifyResetPassword,
 } from 'features/auth';
-import { ResetPasswordForm } from 'features/auth/ui/ResetPasswordForm';
 import { AuthorPage } from 'pages/author';
 import { BookPage } from 'pages/book';
 import { Categories } from 'pages/categories';
@@ -24,7 +25,7 @@ export const ROUTES = {
     BOOK: 'book/:bookId',
     AUTHOR: 'author/:authorId',
     MYBOOKS: 'mybooks',
-    PROFILE: 'profile/:userId',
+    PROFILE: 'profile',
     LOGIN: 'login',
     REGISTER: 'register',
     VERIFY_EMAIL: 'verify-email',
@@ -40,7 +41,7 @@ export const ROUTES = {
     BOOK: (id: string = ':bookId') => `/book/${id}`,
     AUTHOR: (id: string = ':authorId') => `/author/${id}`,
     MYBOOKS: '/mybooks',
-    PROFILE: (id: string = ':userId') => `/profile/${id}`,
+    PROFILE: '/profile',
     LOGIN: '/login',
     REGISTER: '/register',
     VERIFY_EMAIL: '/verify-email',
@@ -50,11 +51,14 @@ export const ROUTES = {
   },
 };
 
-const mainRoutes = [
+const publicRoutes = [
   { index: true, Component: HomePage },
   { path: ROUTES.PATHS.CATEGORIES, Component: Categories },
   { path: ROUTES.PATHS.BOOK, Component: BookPage },
   { path: ROUTES.PATHS.AUTHOR, Component: AuthorPage },
+];
+
+const protectedRoutes = [
   { path: ROUTES.PATHS.MYBOOKS, Component: MyBooks },
   { path: ROUTES.PATHS.PROFILE, Component: ProfilePage },
 ];
@@ -69,7 +73,18 @@ const authRoutes = [
 ];
 
 export const router = createBrowserRouter([
-  { path: '/', Component: MainLayout, children: mainRoutes },
+  {
+    path: '/',
+    Component: MainLayout,
+    children: [
+      ...publicRoutes,
+      {
+        path: '/',
+        Component: ProtectedRouteWrapper,
+        children: protectedRoutes,
+      },
+    ],
+  },
   { path: '/auth', Component: AuthLayout, children: authRoutes },
   { path: '*', Component: NotFoundPage },
 ]);

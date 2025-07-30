@@ -1,3 +1,4 @@
+import { st } from 'shared/lib';
 import styled, { keyframes } from 'styled-components';
 
 export const DotLoader = () => {
@@ -31,7 +32,7 @@ const Dot = styled.div<{ delay: number }>`
   width: 12px;
   height: 12px;
   border-radius: 50%;
-  background-color: var(--orange-accent);
+  background-color: ${st('colors', 'accent')};
   animation: ${bounce} 1.4s ease-in-out infinite;
   animation-delay: ${(props) => props.delay}s;
 `;

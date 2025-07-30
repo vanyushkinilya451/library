@@ -1,5 +1,5 @@
 import { useEnfOfPage } from 'shared/lib';
-import { DotLoader } from 'shared/ui';
+import { DotLoader, EndOfPage } from 'shared/ui';
 import { Shelf } from 'widgets/Shelf';
 import { shelvesConfig } from '../lib/shelvesConfig';
 
@@ -16,7 +16,7 @@ export const Categories = () => {
         />
       ))}
       {shelvesConfig.length >= categoriesLimit && <DotLoader />}
-      {shelvesConfig.length < categoriesLimit && <h6>Категории закончились</h6>}
+      {shelvesConfig.length < categoriesLimit && <EndOfPage />}
     </section>
   );
 };

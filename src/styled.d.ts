@@ -18,6 +18,14 @@ declare module 'styled-components' {
       overlay: number;
       hover: number;
     };
+    borderRadius: {
+      xs: string;
+      sm: string;
+      md: string;
+      lg: string;
+      xl: string;
+      full: string;
+    };
 
     transitions: {
       base: string;
@@ -52,8 +60,18 @@ declare module 'styled-components' {
       sm: string;
       xs: string;
     };
+    lineHeights: {
+      tight: string;
+      normal: string;
+      relaxed: string;
+    };
+    letterSpacing: {
+      tight: string;
+      normal: string;
+      wide: string;
+      wider: string;
+    };
     colors: {
-      white: string;
       primary: string;
       primaryLight: string;
       primaryDark: string;
@@ -72,6 +90,8 @@ declare module 'styled-components' {
       textPrimary: string;
       textSecondary: string;
       textMuted: string;
+      textBlack: string;
+      textWhite: string;
     };
     gradients: {
       primary: string;
@@ -79,6 +99,8 @@ declare module 'styled-components' {
       surface: string;
       blueToAccent: string;
       multicolor: string;
+      background: string;
+      skeleton: string;
     };
     spacing: {
       xs: string;
@@ -86,6 +108,7 @@ declare module 'styled-components' {
       md: string;
       lg: string;
       xl: string;
+      xxl: string;
     };
     zIndices: {
       base: number;

@@ -1,3 +1,4 @@
+import { ROUTES } from 'app/routes/router';
 import { registerUser } from 'entities/user';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -25,7 +26,7 @@ export const useRegister = () => {
 
     const result = await dispatch(registerUser(credentials));
     if (result.meta.requestStatus == 'fulfilled') {
-      navigate('/auth/verify-email');
+      navigate(ROUTES.LINKS.VERIFY_EMAIL);
     }
 
     if (result.meta.requestStatus == 'rejected') {

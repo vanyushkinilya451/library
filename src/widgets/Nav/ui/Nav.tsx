@@ -1,8 +1,10 @@
 import type { User } from '@supabase/supabase-js';
+import { ROUTES } from 'app/routes/router';
 import { SearchPanel } from 'features/search';
-import { NavLink } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { BookstackSvg } from 'shared/assets';
-import { useAppSelector } from 'shared/lib';
+import { st, useAppSelector } from 'shared/lib';
+import { ThemeToggle } from 'shared/ui';
 import styled, { css } from 'styled-components';
 import { AuthLinks } from './AuthLinks';
 import { Dropdown } from './Dropdown';
@@ -14,23 +16,26 @@ export const Nav = () => {
   return (
     <Navbar>
       {/* DESKTOP ONLY */}
-      <Brand>
+      <StyledLink to={ROUTES.LINKS.HOME}>
         <BookstackIcon />
-      </Brand>
+      </StyledLink>
 
       <LinksContainer>
-        <Navlink to="/">Главная</Navlink>
-        <Navlink to="/categories">Категории</Navlink>
+        <Navlink to={ROUTES.LINKS.HOME}>Главная</Navlink>
+        <Navlink to={ROUTES.LINKS.CATEGORIES}>Категории</Navlink>
       </LinksContainer>
 
       <SearchPanel />
 
-      <LinksContainer>
-        <AuthLinks
-          isLoading={isLoading}
-          user={user}
-        />
-      </LinksContainer>
+      <RightSection>
+        <ThemeToggle />
+        <LinksContainer>
+          <AuthLinks
+            isLoading={isLoading}
+            user={user}
+          />
+        </LinksContainer>
+      </RightSection>
 
       {/* MOBILES ONLY */}
       <Dropdown
@@ -42,73 +47,102 @@ export const Nav = () => {
 };
 
 const Navbar = styled.nav`
-  z-index: 1000;
-  background-color: #212529;
+  z-index: ${st('zIndices', 'overlay')};
+  background: ${st('gradients', 'primary')};
   position: sticky;
   top: 0;
-  border-bottom: 1px solid var(--black);
-  box-shadow: var(--shadow-nav);
+  box-shadow: ${st('shadows', 'nav')};
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 0;
+  padding: ${st('spacing', 'sm')} ${st('spacing', 'md')};
+  height: min-content;
+  gap: 5px;
+  transition: ${st('transitions', 'colors')};
 
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+  @media (max-width: ${st('breakpoints', 'sm')}) {
     justify-content: left;
   }
 `;
 
-const Brand = styled.div`
-  margin-left: 1.5rem;
+const StyledLink = styled(Link)`
+  display: block;
+  height: 30px;
+  width: 30px;
+
+  @media (max-width: ${st('breakpoints', 'sm')}) {
+    display: none;
+  }
 `;
 
 const BookstackIcon = styled(BookstackSvg)`
-  width: 30px;
-  height: 30px;
-  margin-right: 5px;
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
-    width: 25px;
-    height: 25px;
-  }
+  height: 100%;
+  width: 100%;
 `;
 
 const LinksContainer = styled.div`
   display: flex;
   align-items: center;
 
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+  @media (max-width: ${st('breakpoints', 'sm')}) {
     display: none;
   }
 `;
 
-const Link = css`
-  color: white;
+const RightSection = styled.div`
+  display: flex;
+  align-items: center;
+  gap: ${st('spacing', 'md')};
+`;
+
+const LinkTemplate = css`
+  color: ${st('colors', 'textWhite')};
   white-space: nowrap;
   margin: 0 10px;
-  font-weight: 500;
-  font-size: ${({ theme }) => theme.fontSizes.md};
+  font-weight: ${st('fontWeights', 'medium')};
+  font-size: ${st('fontSizes', 'md')};
   text-decoration: none;
+  position: relative;
+  transition: ${st('transitions', 'colors')};
 
-  @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
-    font-size: ${({ theme }) => theme.fontSizes.sm};
+  @media (max-width: ${st('breakpoints', 'lg')}) {
+    font-size: ${st('fontSizes', 'sm')};
     margin: 0 5px;
   }
 
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    width: 0%;
+    height: 2px;
+    opacity: 0;
+    background: ${st('colors', 'textWhite')};
+    transition: all 0.3s ease;
+  }
+
   &.active {
-    color: var(--orange-accent);
+    &::after {
+      width: 80%;
+      opacity: 1;
+    }
+    color: ${st('colors', 'textWhite')};
   }
 
   &:hover {
-    color: var(--orange-accent);
+    opacity: ${st('opacity', 'hover')};
   }
 `;
 
 export const Navlink = styled(NavLink)`
-  ${Link}
+  ${LinkTemplate}
 `;
 
 export const Logout = styled.button`
-  ${Link}
+  ${LinkTemplate}
   cursor: pointer;
+  border-style: none;
 `;

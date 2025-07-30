@@ -1,4 +1,4 @@
-import type { BookSearchFormat } from 'entities/book';
+import { ROUTES } from 'app/routes/router';
 import {
   BookCover,
   useChangeMyBooksMutation,
@@ -6,13 +6,10 @@ import {
 } from 'entities/book';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAppSelector } from 'shared/lib';
+import { st, useAppSelector } from 'shared/lib';
 import { SkeletonLoader } from 'shared/ui';
 import styled from 'styled-components';
-import {
-  handleBookAuthor,
-  handleBookTitle,
-} from 'widgets/Shelf/lib/sliceTextHelper';
+import { handleBookAuthor, handleBookTitle } from 'widgets/Shelf';
 
 export const BookCard = ({
   bookId,
@@ -29,16 +26,20 @@ export const BookCard = ({
     'will_read' | 'reading' | 'read' | 'favorite'
   >(bookStatus as 'will_read' | 'reading' | 'read' | 'favorite');
 
-  const handleBookClick = (book: BookSearchFormat) => {
-    navigate(`/book/${book.cover_edition_key}`);
+  const handleBookClick = (bookId: string) => {
+    navigate(ROUTES.LINKS.BOOK(bookId));
   };
 
-  const handleAuthorClick = (author: string) => {
-    navigate(`/author/${author}`, { state: { author } });
+  const handleAuthorClick = (authorId: string) => {
+    navigate(ROUTES.LINKS.AUTHOR(authorId));
   };
 
   const handleStatusChange = async (newStatus: string) => {
     if (!user?.id) return;
+
+    setCurrentStatus(
+      newStatus as 'will_read' | 'reading' | 'read' | 'favorite',
+    );
 
     try {
       await changeMyBooks({
@@ -49,6 +50,9 @@ export const BookCard = ({
         method: newStatus === 'remove' ? 'delete' : 'update',
       }).unwrap();
     } catch (error) {
+      setCurrentStatus(
+        bookStatus as 'will_read' | 'reading' | 'read' | 'favorite',
+      );
       console.error('Failed to update book status:', error);
     }
   };
@@ -59,89 +63,86 @@ export const BookCard = ({
     );
   }, [bookStatus]);
 
-  if (isLoading) {
-    return (
-      <Card>
-        <CoverContainer>
-          <SkeletonLoader height="200px" />
-        </CoverContainer>
-        <CardContent>
-          <SkeletonLoader
-            height="20px"
-            width="100%"
-            margin="0 0 5px 0"
-          />
-          <SkeletonLoader
-            height="20px"
-            width="100%"
-            margin="0 0 5px 0"
-          />
-          <SkeletonLoader
-            height="20px"
-            width="100%"
-            margin="0 0 5px 0"
-          />
-          <BookActions>
-            <SkeletonLoader height="32px" />
-            <SkeletonLoader
-              height="32px"
-              width="32px"
-            />
-          </BookActions>
-        </CardContent>
-      </Card>
-    );
-  }
-
   return (
     <>
       {book && (
         <Card>
           <CoverContainer>
             <StyledBookCover
+              skeletonHeight=""
               cover_id={book.cover_id}
               cover_i={book.cover_i}
-              onClick={() => handleBookClick(book)}
+              onClick={() => handleBookClick(book.cover_edition_key)}
             />
           </CoverContainer>
+          {isLoading ? (
+            <CardContent>
+              <SkeletonLoader
+                height="20px"
+                width="100%"
+                margin="0 0 5px 0"
+              />
+              <SkeletonLoader
+                height="20px"
+                width="100%"
+                margin="0 0 5px 0"
+              />
+              <SkeletonLoader
+                height="20px"
+                width="100%"
+                margin="0 0 5px 0"
+              />
+              <BookActions>
+                <SkeletonLoader height="32px" />
+                <SkeletonLoader
+                  height="32px"
+                  width="32px"
+                />
+              </BookActions>
+            </CardContent>
+          ) : (
+            <CardContent>
+              <BookTitle
+                onClick={() => handleBookClick(book.cover_edition_key)}
+              >
+                {handleBookTitle(book.title)}
+              </BookTitle>
 
-          <CardContent>
-            <BookTitle onClick={() => handleBookClick(book)}>
-              {handleBookTitle(book.title)}
-            </BookTitle>
+              {book.author_name && (
+                <AuthorName
+                  onClick={() => handleAuthorClick(book.author_key[0])}
+                >
+                  {handleBookAuthor(book.author_name[0])}
+                </AuthorName>
+              )}
 
-            {book.author_name && (
-              <AuthorName onClick={() => handleAuthorClick(book.author_key[0])}>
-                {handleBookAuthor(book.author_name[0])}
-              </AuthorName>
-            )}
-
-            <BookActions>
-              {currentStatus !== 'will_read' && (
-                <StatusButton onClick={() => handleStatusChange('will_read')}>
-                  📚
+              <BookActions>
+                {currentStatus !== 'will_read' && (
+                  <StatusButton onClick={() => handleStatusChange('will_read')}>
+                    📚
+                  </StatusButton>
+                )}
+                {currentStatus !== 'reading' && (
+                  <StatusButton onClick={() => handleStatusChange('reading')}>
+                    📖
+                  </StatusButton>
+                )}
+                {currentStatus !== 'read' && (
+                  <StatusButton onClick={() => handleStatusChange('read')}>
+                    ✅
+                  </StatusButton>
+                )}
+                {currentStatus !== 'favorite' && (
+                  <StatusButton onClick={() => handleStatusChange('favorite')}>
+                    💖
+                  </StatusButton>
+                )}
+                <StatusButton onClick={() => handleStatusChange('remove')}>
+                  🗑️
                 </StatusButton>
-              )}
-              {currentStatus !== 'reading' && (
-                <StatusButton onClick={() => handleStatusChange('reading')}>
-                  📖
-                </StatusButton>
-              )}
-              {currentStatus !== 'read' && (
-                <StatusButton onClick={() => handleStatusChange('read')}>
-                  ✅
-                </StatusButton>
-              )}
-              {currentStatus !== 'favorite' && (
-                <StatusButton onClick={() => handleStatusChange('favorite')}>
-                  💖
-                </StatusButton>
-              )}
-              <StatusButton onClick={() => handleStatusChange('remove')}>
-                🗑️
-              </StatusButton>
-            </BookActions>
-          </CardContent>
+              </BookActions>
+            </CardContent>
+          )}
         </Card>
       )}
     </>
@@ -151,23 +152,24 @@ export const BookCard = ({
 const StatusButton = styled.button<{ $active?: boolean }>`
   all: unset;
   cursor: pointer;
-  font-size: 1rem;
+  font-size: ${st('fontSizes', 'md')};
   width: 26px;
   height: 26px;
   border-radius: 50%;
   background-color: ${({ $active }) =>
-    $active ? 'var(--orange-accent)' : '#f0f0f0'};
-  color: ${({ $active }) => ($active ? '#fff' : '#333')};
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    $active ? st('colors', 'accent') : st('colors', 'backgroundSecondary')};
+  color: ${({ $active }) =>
+    $active ? st('colors', 'textWhite') : st('colors', 'textSecondary')};
+  box-shadow: ${st('shadows', 'card')};
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: all 0.25s ease;
+  transition: ${st('transitions', 'transform')};
 
   &:hover {
     transform: scale(1.1);
-    background-color: var(--orange-accent);
-    color: #fff;
+    background-color: ${st('colors', 'accent')};
+    color: ${st('colors', 'textWhite')};
   }
 
   &:active {
@@ -176,47 +178,48 @@ const StatusButton = styled.button<{ $active?: boolean }>`
 `;
 
 const Card = styled.div`
-  background: rgba(255, 255, 255, 0.95);
+  background: ${st('colors', 'background')};
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  border-radius: 16px;
+  border-radius: ${st('borderRadius', 'lg')};
   padding: 1rem;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: ${st('transitions', 'colors')};
   position: relative;
   overflow: hidden;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  box-shadow: ${st('shadows', 'card')};
   cursor: pointer;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+  @media (max-width: ${st('breakpoints', 'md')}) {
     padding-inline: 0.7rem;
   }
 
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+  @media (max-width: ${st('breakpoints', 'sm')}) {
     padding-inline: 0.7rem;
   }
 
-  @media (max-width: ${({ theme }) => theme.breakpoints.xs}) {
+  @media (max-width: ${st('breakpoints', 'xs')}) {
     padding-inline: 0.7rem;
   }
 `;
 
 const CoverContainer = styled.div`
   position: relative;
-  border-radius: 12px;
+  border-radius: ${st('borderRadius', 'md')};
+  width: 130px;
+  height: 200px;
   overflow: hidden;
   margin-bottom: 0.8rem;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+  box-shadow: ${st('shadows', 'card')};
 `;
 
 const StyledBookCover = styled(BookCover)`
   width: 130px;
   height: 200px;
-  transition: transform 0.3s ease;
+  transition: ${st('transitions', 'transform')};
   cursor: pointer;
 
   &:hover {
@@ -225,16 +228,16 @@ const StyledBookCover = styled(BookCover)`
 `;
 
 const BookTitle = styled.h3`
-  font-size: 1rem;
+  font-size: ${st('fontSizes', 'md')};
   font-weight: 600;
-  color: black;
+  color: ${st('colors', 'textPrimary')};
   margin-bottom: 0.4rem;
   line-height: 1.3;
   cursor: pointer;
-  transition: color 0.3s ease;
+  transition: ${st('transitions', 'colors')};
 
   &:hover {
-    color: var(--orange-accent);
+    color: ${st('colors', 'accent')};
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -243,14 +246,14 @@ const BookTitle = styled.h3`
 `;
 
 const AuthorName = styled.p`
-  font-size: 0.9rem;
-  color: rgba(0, 0, 0, 0.7);
+  font-size: ${st('fontSizes', 'md')};
+  color: ${st('colors', 'textSecondary')};
   margin-bottom: 0.8rem;
   cursor: pointer;
-  transition: color 0.3s ease;
+  transition: ${st('transitions', 'colors')};
 
   &:hover {
-    color: var(--link-color);
+    color: ${st('colors', 'primary')};
   }
 
   @media (prefers-reduced-motion: reduce) {

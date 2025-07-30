@@ -1,5 +1,5 @@
 import { SearchSvg } from 'shared/assets';
-import { useModal } from 'shared/lib';
+import { st, useModal } from 'shared/lib';
 import styled from 'styled-components';
 import { useSearch } from '../api/useSearch';
 import { SearchResults } from './SearchResults';
@@ -14,8 +14,6 @@ export const SearchPanel = () => {
     debouncedDelay: 500,
   });
   const { isModalOpen, openModal, closeModal } = useModal();
-
-  console.log(authors);
 
   return (
     <Container>
@@ -44,10 +42,10 @@ const SearchIcon = styled(SearchSvg)`
   top: 50%;
   transform: translateY(-50%);
   width: min-content;
-  fill: var(--black);
+  fill: ${st('colors', 'textPrimary')};
   opacity: 0.4;
   z-index: 2;
-  transition: fill 0.2s ease;
+  transition: ${st('transitions', 'colors')};
 `;
 
 const Container = styled.div`
@@ -56,12 +54,12 @@ const Container = styled.div`
   margin: 0 auto;
   height: 36px;
 
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
-    font-size: ${({ theme }) => theme.fontSizes.sm};
+  @media (max-width: ${st('breakpoints', 'md')}) {
+    font-size: ${st('fontSizes', 'sm')};
     margin: 0 10px;
   }
 
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+  @media (max-width: ${st('breakpoints', 'sm')}) {
     width: 100%;
   }
 `;
@@ -70,27 +68,27 @@ const SearchBar = styled.input`
   min-width: 200px;
   width: 100%;
   height: 100%;
-  border: 1px solid var(--black);
-  border-radius: 8px;
-  font-size: ${({ theme }) => theme.fontSizes.md};
+  border: none;
+  border-radius: ${st('borderRadius', 'md')};
+  font-size: ${st('fontSizes', 'md')};
   padding: 8px 12px 8px 40px;
   outline: none;
-  background: var(--white);
-  transition: all 0.2s ease;
-  box-shadow: var(--shadow-sm);
+  color: ${st('colors', 'textPrimary')};
+  background: ${st('colors', 'background')};
+  transition: ${st('transitions', 'colors')};
+  box-shadow: ${st('shadows', 'card')};
 
   &:focus {
-    border-color: var(--accent-blue);
-    box-shadow: var(--shadow-search);
-    background: white;
+    border-color: ${st('colors', 'primary')};
+    box-shadow: ${st('shadows', 'hoverLift')};
+    background: ${st('colors', 'background')};
   }
 
   &:focus + ${SearchIcon} {
-    fill: var(--accent-blue);
+    fill: ${st('colors', 'primary')};
   }
 
   &::placeholder {
-    color: var(--black);
-    opacity: 0.5;
+    color: ${st('colors', 'textPrimary')};
   }
 `;

@@ -1,9 +1,11 @@
+import { ROUTES } from 'app/routes/router';
 import type { Author } from 'entities/author';
 import { AuthorImage } from 'entities/author';
 import type { BookSearchFormat } from 'entities/book';
 import { BookCover as BookCoverComponent } from 'entities/book';
 import { useNavigate } from 'react-router-dom';
 import { Fragment } from 'react/jsx-runtime';
+import { st } from 'shared/lib';
 import styled from 'styled-components';
 
 type SearchResutlsProps = {
@@ -14,15 +16,14 @@ type SearchResutlsProps = {
 export const SearchResults = ({ books, authors }: SearchResutlsProps) => {
   const navigate = useNavigate();
 
-  const handleBookClick = (id: string) => {
-    navigate(`/book/${id}`);
+  const handleBookClick = (bookId: string) => {
+    navigate(ROUTES.LINKS.BOOK(bookId));
   };
 
-  const handleAuthorClick = (id: string) => {
-    navigate(`/author/${id}`);
+  const handleAuthorClick = (authorId: string) => {
+    navigate(ROUTES.LINKS.AUTHOR(authorId));
   };
 
-  console.log(authors);
   return (
     <ResultsContainer>
       {books.length ? (
@@ -121,9 +122,9 @@ const BookDescription = styled.div`
 const Cover = styled.div`
   width: 45px;
   height: 65px;
-  border-radius: 4px;
+  border-radius: ${st('borderRadius', 'sm')};
   overflow: hidden;
-  box-shadow: var(--shadow-xs);
+  box-shadow: ${st('shadows', 'card')};
 `;
 
 const Underline = styled.hr`
@@ -132,7 +133,7 @@ const Underline = styled.hr`
   width: 100%;
   border: none;
   height: 1px;
-  background: var(--black);
+  background: ${st('colors', 'textPrimary')};
   opacity: 0.08;
 `;
 
@@ -141,7 +142,7 @@ const NoBooksFound = styled.p`
   text-align: center;
   padding: 20px;
   width: 100%;
-  color: var(--black);
+  color: ${st('colors', 'textPrimary')};
   opacity: 0.6;
   font-style: italic;
   margin: 0;
@@ -152,12 +153,11 @@ const ResultsContainer = styled.div`
   display: flex;
   flex-direction: column;
   position: absolute;
-  background-color: white;
-  border: 1px solid var(--black);
-  border-radius: 8px;
+  background-color: ${st('colors', 'background')};
+  border-radius: ${st('borderRadius', 'md')};
   width: 100%;
   z-index: 1000;
-  box-shadow: var(--shadow-xl);
+  box-shadow: ${st('shadows', 'modal')};
 `;
 
 const BookUnorderedList = styled.ul`
@@ -183,8 +183,8 @@ const BookProperty = styled(BookUnorderedItem)`
 
 const BookTitle = styled(BookProperty)`
   font-weight: 600;
-  font-size: 0.9rem;
-  color: var(--text-dark);
+  font-size: ${st('fontSizes', 'md')};
+  color: ${st('colors', 'textPrimary')};
   margin-bottom: 4px;
   line-height: 1.3;
 `;
@@ -192,8 +192,8 @@ const BookTitle = styled(BookProperty)`
 const BookAuthor = styled(BookProperty)`
   font-weight: 500;
   font-style: italic;
-  font-size: 0.8rem;
-  color: var(--text-gray);
+  font-size: ${st('fontSizes', 'md')};
+  color: ${st('colors', 'textSecondary')};
 `;
 
 const ChooseBookButton = styled.button`
@@ -206,13 +206,13 @@ const ChooseBookButton = styled.button`
   padding: 12px 16px;
   background: transparent;
   cursor: pointer;
-  transition: background-color 0.2s ease;
+  transition: ${st('transitions', 'colors')};
 
   &:hover {
-    background-color: var(--accent-blue-light);
+    background-color: ${st('colors', 'backgroundSecondary')};
   }
 
   &:active {
-    background-color: var(--accent-blue-light);
+    background-color: ${st('colors', 'backgroundSecondary')};
   }
 `;

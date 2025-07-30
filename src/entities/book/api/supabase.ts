@@ -112,7 +112,7 @@ export const supabaseApi = createApi({
         { userId, bookStatus, method, ...patch },
         { dispatch, queryFulfilled },
       ) => {
-        const patchResult = dispatch(
+        const patchResult1 = dispatch(
           supabaseApi.util.updateQueryData(
             'getMyBooks',
             { from: 'mybooks', bookStatus, userId, select: 'book_id' },
@@ -130,10 +130,38 @@ export const supabaseApi = createApi({
             },
           ),
         );
+
+        const patchResult2 = dispatch(
+          supabaseApi.util.updateQueryData(
+            'getAllMyBooks',
+            { from: 'mybooks', userId, select: 'book_id, book_status' },
+            (draft) => {
+              if (method === 'insert') {
+                draft.push({ book_id: patch.bookId, book_status: bookStatus });
+              } else if (method === 'update') {
+                const bookIndex = draft.findIndex(
+                  (item) => item.book_id === patch.bookId,
+                );
+                if (bookIndex > -1) {
+                  draft[bookIndex].book_status = bookStatus;
+                }
+              } else if (method === 'delete') {
+                const index = draft.findIndex(
+                  (item) => item.book_id === patch.bookId,
+                );
+                if (index > -1) {
+                  draft.splice(index, 1);
+                }
+              }
+            },
+          ),
+        );
+
         try {
           await queryFulfilled;
         } catch {
-          patchResult.undo();
+          patchResult1.undo();
+          patchResult2.undo();
         }
       },
     }),

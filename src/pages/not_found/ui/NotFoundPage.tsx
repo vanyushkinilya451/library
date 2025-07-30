@@ -1,11 +1,13 @@
+import { ROUTES } from 'app/routes/router';
 import { useNavigate } from 'react-router-dom';
+import { st } from 'shared/lib';
 import styled, { keyframes } from 'styled-components';
 
 export const NotFoundPage = () => {
   const navigate = useNavigate();
 
   const handleGoHome = () => {
-    navigate('/');
+    navigate(ROUTES.LINKS.HOME);
   };
 
   const handleGoBack = () => {
@@ -94,13 +96,12 @@ const fadeIn = keyframes`
 
 const Container = styled.div`
   position: relative;
-  width: 100vw;
   height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  background: var(--gradient-primary);
+  background: ${st('gradients', 'primary')};
 `;
 
 const BackgroundGradient = styled.div`
@@ -112,10 +113,14 @@ const BackgroundGradient = styled.div`
   background:
     radial-gradient(
       circle at 30% 20%,
-      var(--orange-accent) 0%,
+      ${st('colors', 'accent')} 0%,
       transparent 50%
     ),
-    radial-gradient(circle at 70% 80%, var(--link-color) 0%, transparent 50%);
+    radial-gradient(
+      circle at 70% 80%,
+      ${st('colors', 'primaryDark')} 0%,
+      transparent 50%
+    );
   opacity: 0.3;
   animation: ${pulse} 4s ease-in-out infinite;
 `;
@@ -160,6 +165,22 @@ const Book = styled.div<{ delay: number }>`
     top: 80%;
     right: 25%;
   }
+
+  @media (max-width: ${st('breakpoints', 'sm')}) {
+    &:nth-child(3),
+    &:nth-child(5) {
+      display: none;
+    }
+
+    &:nth-child(4) {
+      top: 65%;
+    }
+
+    &:nth-child(6) {
+      top: 80%;
+      left: 25%;
+    }
+  }
 `;
 
 const BookSpine = styled.div`
@@ -168,7 +189,7 @@ const BookSpine = styled.div`
   top: 0;
   width: 8px;
   height: 100%;
-  background: var(--gradient-brown);
+  background: ${st('gradients', 'accent')};
   border-radius: 2px;
 `;
 
@@ -178,7 +199,7 @@ const BookCover = styled.div`
   top: 0;
   width: 32px;
   height: 100%;
-  background: var(--gradient-coral-teal);
+  background: ${st('gradients', 'multicolor')};
   border-radius: 0 4px 4px 0;
   box-shadow: 2px 2px 8px;
   opacity: 0.2;
@@ -201,8 +222,7 @@ const ErrorCode = styled.div`
 const Digit = styled.span`
   font-size: 120px;
   font-weight: 900;
-  color: white;
-  text-shadow: 0 0 30px #fff;
+  color: ${st('colors', 'textPrimary')};
   animation: ${bounce} 2s ease-in-out infinite;
 
   &:first-child {
@@ -222,8 +242,7 @@ const ZeroContainer = styled.div`
 const Zero = styled.span`
   font-size: 120px;
   font-weight: 900;
-  color: white;
-  text-shadow: 0 0 30px #fff;
+  color: ${st('colors', 'textPrimary')};
   animation: ${bounce} 2s ease-in-out infinite;
   animation-delay: 0.25s;
 `;
@@ -231,16 +250,15 @@ const Zero = styled.span`
 const Title = styled.h1`
   font-size: 32px;
   font-weight: 700;
-  color: white;
+  color: ${st('colors', 'textPrimary')};
   margin-bottom: 15px;
-  text-shadow: 0 2px 10px;
   opacity: 0.3;
   animation: ${fadeIn} 1s ease-out 0.5s both;
 `;
 
 const Description = styled.p`
   font-size: 18px;
-  color: #fff;
+  color: ${st('colors', 'textPrimary')};
   opacity: 0.9;
   margin-bottom: 40px;
   max-width: 500px;
@@ -267,13 +285,10 @@ const Button = styled.button`
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 4px 15px;
-  opacity: 0.2;
+  transition: ${st('transitions', 'base')};
 
   &:hover {
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px;
-    opacity: 0.3;
   }
 
   &:active {
@@ -282,24 +297,23 @@ const Button = styled.button`
 `;
 
 const PrimaryButton = styled(Button)`
-  background: var(--gradient-coral-orange);
-  color: white;
+  background: ${st('gradients', 'primary')};
+  color: ${st('colors', 'textPrimary')};
+  transition: ${st('transitions', 'base')};
 
   &:hover {
-    background: var(--gradient-red-orange);
+    background: ${st('gradients', 'accent')};
   }
 `;
 
 const SecondaryButton = styled(Button)`
-  background: #fff;
-  opacity: 0.2;
-  color: white;
+  background: ${st('gradients', 'primary')};
+  color: ${st('colors', 'textPrimary')};
   backdrop-filter: blur(10px);
-  border: 1px solid #fff;
+  transition: ${st('transitions', 'base')};
 
   &:hover {
-    background: #fff;
-    opacity: 0.3;
+    background: ${st('gradients', 'accent')};
   }
 `;
 
@@ -309,7 +323,7 @@ const ButtonIcon = styled.span`
 
 const SearchHint = styled.p`
   font-size: 14px;
-  color: #fff;
+  color: ${st('colors', 'textPrimary')};
   opacity: 0.7;
   animation: ${fadeIn} 1s ease-out 1.1s both;
 `;

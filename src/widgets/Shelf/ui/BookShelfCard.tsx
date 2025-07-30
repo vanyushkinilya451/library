@@ -1,14 +1,12 @@
+import { ROUTES } from 'app/routes/router';
 import type { BookSearchFormat } from 'entities/book';
-import {
-  BookCover,
-  useChangeMyBooksMutation,
-  useGetAllMyBooksQuery,
-} from 'entities/book';
+import { BookCover, useGetAllMyBooksQuery } from 'entities/book';
 import { useNavigate } from 'react-router-dom';
 import { Star } from 'shared/assets';
-import { useAppSelector } from 'shared/lib';
+import { st, useAppSelector } from 'shared/lib';
 import styled from 'styled-components';
 import { handleBookAuthor, handleBookTitle } from '../lib/sliceTextHelper';
+import { useMyBooks } from '../lib/useMyBooks';
 
 type BookCardProps = {
   book: BookSearchFormat;
@@ -22,43 +20,18 @@ export const BookShelfCard = ({ book }: BookCardProps) => {
     from: 'mybooks',
     select: 'book_id, book_status',
   });
+  const { addToMyBooks, removeFromMyBooks } = useMyBooks();
 
   const isInMyBooks = allMyBooks?.some(
     (myBook) => myBook.book_id === book.cover_edition_key,
   );
 
-  const [changeMyBooks] = useChangeMyBooksMutation();
-
-  const handleBookClick = (book: BookSearchFormat) => {
-    navigate(`/book/${book.cover_edition_key}`);
+  const handleBookClick = (bookId: string) => {
+    navigate(ROUTES.LINKS.BOOK(bookId));
   };
 
-  const handleAuthorClick = (author: string) => {
-    navigate(`/author/${author}`, { state: { author } });
-  };
-
-  const handleAddToMyBooks = (book: BookSearchFormat) => {
-    if (book.cover_edition_key && user?.id) {
-      changeMyBooks({
-        from: 'mybooks',
-        bookId: book.cover_edition_key,
-        userId: user.id,
-        bookStatus: 'will_read',
-        method: 'insert',
-      });
-    }
-  };
-
-  const handleRemoveFromMyBooks = (book: BookSearchFormat) => {
-    if (book.cover_edition_key && user?.id) {
-      changeMyBooks({
-        from: 'mybooks',
-        bookId: book.cover_edition_key,
-        userId: user.id,
-        bookStatus: 'will_read',
-        method: 'delete',
-      });
-    }
+  const handleAuthorClick = (authorId: string) => {
+    navigate(ROUTES.LINKS.AUTHOR(authorId));
   };
 
   return (
@@ -67,10 +40,10 @@ export const BookShelfCard = ({ book }: BookCardProps) => {
         <StyledCover
           cover_id={book.cover_id}
           cover_i={book.cover_i}
-          onClick={() => handleBookClick(book)}
+          onClick={() => handleBookClick(book.cover_edition_key)}
         />
         <Description>
-          <Title onClick={() => handleBookClick(book)}>
+          <Title onClick={() => handleBookClick(book.cover_edition_key)}>
             {handleBookTitle(book.title)}
           </Title>
           {book.author_name && (
@@ -82,10 +55,10 @@ export const BookShelfCard = ({ book }: BookCardProps) => {
           {isInMyBooks ? (
             <StarIcon
               filled
-              onClick={() => handleRemoveFromMyBooks(book)}
+              onClick={() => removeFromMyBooks(book.cover_edition_key)}
             />
           ) : user && !isLoading ? (
-            <StarIcon onClick={() => handleAddToMyBooks(book)} />
+            <StarIcon onClick={() => addToMyBooks(book.cover_edition_key)} />
           ) : null}
         </Description>
       </StyledCard>
@@ -94,11 +67,11 @@ export const BookShelfCard = ({ book }: BookCardProps) => {
 };
 
 const ShelfItem = styled.div`
-  width: 150px;
+  width: 140px;
   flex: 0 0 auto;
   padding: 10px 10px 0 10px;
   scroll-snap-align: center;
-  height: 300px;
+  height: min-content;
 `;
 
 const StyledCard = styled.div`
@@ -111,7 +84,7 @@ const StyledCover = styled(BookCover)`
   height: 180px;
   cursor: pointer;
   transition: transform 0.15s linear;
-  box-shadow: var(--shadow-card);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
   border-radius: 5px;
 `;
 
@@ -120,21 +93,27 @@ const Description = styled.div`
 `;
 
 const Title = styled.h5`
-  font-weight: ${({ theme }) => theme.fontWeights.bold};
-  font-size: 0.8rem;
+  font-weight: ${st('fontWeights', 'bold')};
+  font-size: ${st('fontSizes', 'sm')};
+  color: ${st('colors', 'textPrimary')};
   cursor: pointer;
   margin: 0;
+  transition: ${st('transitions', 'colors')};
+
   &:hover {
-    opacity: 0.7;
+    opacity: ${st('opacity', 'hover')};
   }
 `;
 
 const Author = styled.p`
-  font-size: 0.8rem;
+  font-size: ${st('fontSizes', 'sm')};
+  color: ${st('colors', 'textSecondary')};
   margin: 0;
   cursor: pointer;
+  transition: ${st('transitions', 'colors')};
+
   &:hover {
-    opacity: 0.7;
+    opacity: ${st('opacity', 'hover')};
   }
 `;
 
@@ -145,7 +124,14 @@ const StarIcon = styled(Star)<{ filled?: boolean }>`
   width: 20px;
   height: 20px;
   cursor: pointer;
+  transition: ${st('transitions', 'colors')};
+
   path {
-    fill: ${({ filled }) => (filled ? 'var(--orange-accent)' : 'white')};
+    fill: ${({ filled }) =>
+      filled ? st('colors', 'accent') : st('colors', 'textWhite')};
+  }
+
+  &:hover {
+    opacity: ${st('opacity', 'hover')};
   }
 `;

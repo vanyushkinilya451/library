@@ -1,5 +1,5 @@
 import { useEnfOfPage } from 'shared/lib';
-import { DotLoader } from 'shared/ui';
+import { DotLoader, EndOfPage } from 'shared/ui';
 import { Shelf } from 'widgets/Shelf';
 import { homepageConfig } from '../lib/homepageConfig';
 
@@ -17,9 +17,7 @@ export const HomePage = () => {
       ))}
 
       {homepageConfig.length >= categoriesLimit && <DotLoader />}
-      {homepageConfig.length < categoriesLimit && (
-        <h6>Категории закончились</h6>
-      )}
+      {homepageConfig.length < categoriesLimit && <EndOfPage />}
     </section>
   );
 };

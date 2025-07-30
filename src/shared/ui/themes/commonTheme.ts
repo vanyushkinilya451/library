@@ -1,6 +1,9 @@
 import type { DefaultTheme } from 'styled-components';
 
-export const commonTheme: Omit<DefaultTheme, 'colors'> = {
+export const commonTheme: Omit<
+  DefaultTheme,
+  'colors' | 'shadows' | 'gradients'
+> = {
   breakpoints: {
     xs: '480px',
     sm: '640px',
@@ -17,12 +20,13 @@ export const commonTheme: Omit<DefaultTheme, 'colors'> = {
     overlay: 0.5,
     hover: 0.9,
   },
-  shadows: {
-    nav: '0 2px 8px rgba(0, 0, 0, 0.15)',
-    modal: '0 10px 30px rgba(0, 0, 0, 0.3)',
-    card: '0 4px 12px rgba(0, 0, 0, 0.1)',
-    tooltip: '0 2px 6px rgba(0, 0, 0, 0.2)',
-    hoverLift: '0 8px 20px rgba(0, 0, 0, 0.12)',
+  borderRadius: {
+    xs: '2px',
+    sm: '4px',
+    md: '6px',
+    lg: '8px',
+    xl: '12px',
+    full: '9999px',
   },
   transitions: {
     base: 'all 0.3s ease',
@@ -32,7 +36,6 @@ export const commonTheme: Omit<DefaultTheme, 'colors'> = {
       'color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease',
     transform: 'transform 0.3s ease',
   },
-
   fontSizes: {
     xxl: '3rem',
     xl: '2.25rem',
@@ -41,12 +44,24 @@ export const commonTheme: Omit<DefaultTheme, 'colors'> = {
     sm: '0.875rem',
     xs: '0.75rem',
   },
+  lineHeights: {
+    tight: '1.25',
+    normal: '1.5',
+    relaxed: '1.75',
+  },
+  letterSpacing: {
+    tight: '-0.025em',
+    normal: '0',
+    wide: '0.025em',
+    wider: '0.05em',
+  },
   spacing: {
     xs: '0.25rem',
     sm: '0.5rem',
     md: '1rem',
     lg: '1.5rem',
     xl: '2rem',
+    xxl: '3rem',
   },
   fontWeights: {
     thin: 100,
@@ -58,14 +73,6 @@ export const commonTheme: Omit<DefaultTheme, 'colors'> = {
     bold: 700,
     extraBold: 800,
     black: 900,
-  },
-  gradients: {
-    primary: 'linear-gradient(90deg, #8b5cf6, #7c3aed)',
-    accent: 'linear-gradient(90deg, #f59e0b, #d97706)',
-    surface: 'linear-gradient(180deg, #ffffff 0%, #f8fafc 100%)',
-    blueToAccent: 'linear-gradient(135deg, #3b82f6, #f59e0b)',
-    multicolor:
-      'linear-gradient(135deg,#8b5cf6 0%,#6366f1 15%,#ec4899 30%,#f43f5e 45%,#60a5fa 60%,#06b6d4 75%,#8b5cf6 100%);',
   },
   zIndices: {
     base: 0,

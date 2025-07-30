@@ -1,5 +1,6 @@
 import { useGetBooksByCategoryQuery } from 'entities/book';
 import { Arrow } from 'shared/assets';
+import { st } from 'shared/lib';
 import styled from 'styled-components';
 import { useShelfScroll } from '../lib/useShelfScroll';
 import { BookShelfCard } from './BookShelfCard';
@@ -9,49 +10,6 @@ type ShelfProps = {
   shelfTitle: string;
   api: string;
 };
-
-const ShelfWrapper = styled.article.attrs(() => ({
-  className: 'shelf',
-}))``;
-
-const ShelfTitle = styled.h1.attrs(() => ({
-  className: 'shelf__title',
-}))``;
-
-const ShelfContainer = styled.div.attrs(() => ({
-  className: 'shelf__container',
-}))`
-  display: flex;
-  flex-wrap: nowrap;
-  overflow-x: auto;
-  scroll-snap-type: x proximity;
-  scroll-behavior: smooth;
-  -ms-overflow-style: none; /* IE и Edge */
-  scrollbar-width: none; /* Firefox */
-  &::-webkit-scrollbar {
-    display: none; /* Chrome, Safari, Opera */
-  }
-  position: relative;
-`;
-
-const ShelfNavButton = styled.button.attrs(() => ({
-  className: 'shelf__nav',
-}))<{ position: 'left' | 'right' }>`
-  position: absolute;
-  background-color: transparent;
-  width: 35px;
-  height: 35px;
-  top: 40%;
-  border-style: none;
-  transform: translateY(-50%);
-  cursor: pointer;
-  z-index: 1000;
-
-  ${({ position }) =>
-    position === 'right'
-      ? `right: -10px;`
-      : `left: -25px; transform: translateY(-50%) rotate(180deg);`}
-`;
 
 export const Shelf = ({ shelfTitle, api }: ShelfProps) => {
   const { data: books, isLoading } = useGetBooksByCategoryQuery(api);
@@ -85,7 +43,7 @@ export const Shelf = ({ shelfTitle, api }: ShelfProps) => {
               onClick={handleScrollLeft}
               aria-label="Scroll Left"
             >
-              <Arrow className="scroll__icon" />
+              <StyledArrow />
             </ShelfNavButton>
           )}
           {!isScrollEnd && (
@@ -94,7 +52,7 @@ export const Shelf = ({ shelfTitle, api }: ShelfProps) => {
               onClick={handleScrollRight}
               aria-label="Scroll Right"
             >
-              <Arrow className="scroll__icon" />
+              <StyledArrow />
             </ShelfNavButton>
           )}
         </ShelfContainer>
@@ -102,3 +60,56 @@ export const Shelf = ({ shelfTitle, api }: ShelfProps) => {
     </ShelfWrapper>
   );
 };
+
+const ShelfWrapper = styled.article`
+  margin: ${st('spacing', 'md')} 0;
+  position: relative;
+  height: min-content;
+`;
+
+const ShelfTitle = styled.h1`
+  font-size: ${st('fontSizes', 'lg')};
+  font-weight: ${st('fontWeights', 'bold')};
+  color: ${st('colors', 'textPrimary')};
+  margin: ${st('spacing', 'sm')} 0;
+`;
+
+const ShelfContainer = styled.div`
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x proximity;
+  scroll-behavior: smooth;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+`;
+
+const ShelfNavButton = styled.button<{ position: 'left' | 'right' }>`
+  position: absolute;
+  background-color: transparent;
+  width: 35px;
+  height: 35px;
+  top: 35%;
+  border-style: none;
+  cursor: pointer;
+  z-index: ${st('zIndices', 'base')};
+  transition: ${st('transitions', 'colors')};
+
+  ${({ position }) =>
+    position === 'right'
+      ? `right: -15px;`
+      : `left: -15px; transform: rotate(180deg);`}
+
+  &:hover {
+    opacity: ${st('opacity', 'hover')};
+  }
+`;
+
+const StyledArrow = styled(Arrow)`
+  width: 100%;
+  height: 100%;
+`;

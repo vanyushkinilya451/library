@@ -10,6 +10,7 @@ export const SessionInitializer: FC<Props> = ({ children }) => {
   const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(getUserAndSession());
-  }, [dispatch]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   return <>{children}</>;
 };

@@ -1,11 +1,11 @@
-import type { User } from '@supabase/supabase-js';
 import { useGetAllMyBooksQuery } from 'entities/book';
-import { getUserProfile } from 'entities/user/model/UserSlice';
+import { getUserProfile } from 'entities/user';
 import { useEffect, useMemo, useState } from 'react';
-import toast, { Toaster } from 'react-hot-toast';
+import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import {
   formatDate,
+  st,
   supabase,
   useAppDispatch,
   useAppSelector,
@@ -13,16 +13,13 @@ import {
 } from 'shared/lib';
 import { FullScreenLoader, SkeletonLoader } from 'shared/ui';
 import styled from 'styled-components';
-import type { UserProfile } from '../../../entities/user/model/UserSlice';
+
+import { ROUTES } from 'app/routes/router';
 import { ProfileModal } from './ProfileModal';
 
 export const ProfilePage = () => {
-  const { user }: { user: User | null } = useAppSelector((state) => state.user);
-  const { profile }: { profile: UserProfile | null } = useAppSelector(
-    (state) => state.user,
-  );
+  const { user, profile, isLoading } = useAppSelector((state) => state.user);
   const { isModalOpen, openModal, closeModal } = useModal();
-  const { isLoading } = useAppSelector((state) => state.user);
   const [isLoadingResetPassword, setIsLoadingResetPassword] = useState(false);
 
   const { data: allMyBooks, isLoading: isLoadingMyBooks } =
@@ -32,7 +29,6 @@ export const ProfilePage = () => {
       select: 'book_id, book_status',
     });
 
-  // Группируем книги по статусам
   const bookStats = useMemo(() => {
     if (!allMyBooks) return { read: 0, reading: 0, will_read: 0, favorite: 0 };
 
@@ -61,13 +57,13 @@ export const ProfilePage = () => {
     setIsLoadingResetPassword(true);
     if (user && user.email) {
       const { error } = await supabase.auth.resetPasswordForEmail(user.email, {
-        redirectTo: 'http://localhost:8080/auth/reset-password',
+        redirectTo: `${process.env.REACT_APP_BASE_URL}/auth/reset-password`,
       });
 
       if (error) {
         toast.error('Произошла ошибка при сбросе пароля');
       } else {
-        navigate('/auth/verify-reset-password');
+        navigate(ROUTES.LINKS.VERIFY_RESET_PASSWORD);
       }
     }
     setIsLoadingResetPassword(false);
@@ -81,7 +77,7 @@ export const ProfilePage = () => {
           subText="Пожалуйста, подождите..."
         />
       )}
-      <Toaster />
+
       <Content>
         <ProfileCard>
           <AvatarSection>
@@ -112,10 +108,6 @@ export const ProfilePage = () => {
                   'Пользователь'
                 )}
               </UserEmail>
-              <UserStatus>
-                <StatusDot />
-                Активен
-              </UserStatus>
             </UserInfo>
           </AvatarSection>
 
@@ -242,22 +234,21 @@ const Container = styled.div`
   position: relative;
   height: 100%;
   padding: 20px;
-  overflow: hidden;
 `;
 const Content = styled.div`
   position: relative;
-  z-index: 10;
+  z-index: ${st('zIndices', 'base')};
   max-width: 800px;
   margin: 0 auto;
 `;
 
 const ProfileCard = styled.div`
-  background: rgba(255, 255, 255, 0.95);
+  background: ${st('colors', 'background')};
   backdrop-filter: blur(10px);
-  border-radius: 20px;
+  border-radius: ${st('borderRadius', 'xl')};
   padding: 40px;
-  box-shadow: var(--shadow-lg);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: ${st('shadows', 'card')};
+  transition: ${st('transitions', 'colors')};
 `;
 
 const AvatarSection = styled.div`
@@ -266,7 +257,6 @@ const AvatarSection = styled.div`
   gap: 30px;
   margin-bottom: 20px;
   padding-bottom: 30px;
-  border-bottom: 2px solid var(--border-color);
 `;
 
 const UserInfo = styled.div`
@@ -274,48 +264,24 @@ const UserInfo = styled.div`
 `;
 
 const UserName = styled.h1`
-  font-size: ${({ theme }) => theme.fontSizes.xl};
+  font-size: ${st('fontSizes', 'xl')};
   font-weight: 700;
-  color: var(--text-primary);
   margin: 0 0 10px 0;
-  background: var(--gradient-primary);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: ${st('colors', 'primaryLight')};
 
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
-    font-size: ${({ theme }) => theme.fontSizes.lg};
+  @media (max-width: ${st('breakpoints', 'md')}) {
+    font-size: ${st('fontSizes', 'lg')};
   }
 `;
 
 const UserEmail = styled.div`
-  font-size: ${({ theme }) => theme.fontSizes.md};
-  color: var(--text-secondary);
+  font-size: ${st('fontSizes', 'md')};
+  color: ${st('colors', 'textSecondary')};
   margin: 0 0 15px 0;
 
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
-    font-size: ${({ theme }) => theme.fontSizes.sm};
+  @media (max-width: ${st('breakpoints', 'md')}) {
+    font-size: ${st('fontSizes', 'sm')};
   }
-`;
-
-const UserStatus = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: ${({ theme }) => theme.fontSizes.md};
-  color: var(--success-color);
-  font-weight: 500;
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
-    font-size: ${({ theme }) => theme.fontSizes.sm};
-  }
-`;
-
-const StatusDot = styled.div`
-  width: 8px;
-  height: 8px;
-  background: var(--success-color);
-  border-radius: 50%;
 `;
 
 const StatsSection = styled.div`
@@ -325,7 +291,7 @@ const StatsSection = styled.div`
   gap: 20px;
   margin-bottom: 30px;
 
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+  @media (max-width: ${st('breakpoints', 'sm')}) {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -336,39 +302,40 @@ const StatsSection = styled.div`
 `;
 
 const StatCard = styled.div`
-  background: var(--gradient-gray);
+  background: ${st('colors', 'backgroundSecondary')};
+  color: ${st('colors', 'textPrimary')};
   padding: 25px;
-  border-radius: 15px;
+  border-radius: ${st('borderRadius', 'lg')};
   width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  transition: transform 0.3s ease;
+  transition: ${st('transitions', 'transform')};
+  box-shadow: ${st('shadows', 'card')};
 
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
+  @media (max-width: ${st('breakpoints', 'md')}) {
     padding: 15px;
   }
 `;
 
 const StatNumber = styled.div`
-  font-size: ${({ theme }) => theme.fontSizes.xl};
+  font-size: ${st('fontSizes', 'xl')};
   font-weight: 700;
-  color: var(--primary-color);
   margin-bottom: 8px;
+  color: ${st('colors', 'accent')};
 
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
-    font-size: ${({ theme }) => theme.fontSizes.lg};
+  @media (max-width: ${st('breakpoints', 'md')}) {
+    font-size: ${st('fontSizes', 'lg')};
   }
 `;
 
 const StatLabel = styled.div`
-  font-size: ${({ theme }) => theme.fontSizes.md};
-  color: var(--text-secondary);
+  font-size: ${st('fontSizes', 'md')};
   font-weight: 500;
 
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
-    font-size: ${({ theme }) => theme.fontSizes.sm};
+  @media (max-width: ${st('breakpoints', 'md')}) {
+    font-size: ${st('fontSizes', 'sm')};
   }
 `;
 
@@ -377,15 +344,13 @@ const DetailsSection = styled.div`
 `;
 
 const SectionTitle = styled.h2`
-  font-size: ${({ theme }) => theme.fontSizes.lg};
+  font-size: ${st('fontSizes', 'lg')};
   font-weight: 600;
-  color: var(--text-primary);
+  color: ${st('colors', 'textPrimary')};
   margin: 0 0 25px 0;
   padding-bottom: 10px;
-  border-bottom: 2px solid var(--border-color);
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
-    font-size: ${({ theme }) => theme.fontSizes.md};
+  @media (max-width: ${st('breakpoints', 'md')}) {
+    font-size: ${st('fontSizes', 'md')};
   }
 `;
 
@@ -394,12 +359,12 @@ const DetailsGrid = styled.div`
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 20px;
 
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+  @media (max-width: ${st('breakpoints', 'sm')}) {
     grid-template-columns: 1fr 1fr;
     width: 100%;
   }
 
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+  @media (max-width: ${st('breakpoints', 'sm')}) {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -411,44 +376,45 @@ const DetailsGrid = styled.div`
 
 const DetailItem = styled.div`
   padding: 15px;
-  background: var(--background-secondary);
-  border-radius: 10px;
-  border-left: 4px solid var(--primary-color);
+  background: ${st('colors', 'backgroundSecondary')};
+  border-radius: ${st('borderRadius', 'md')};
+  border-left: 4px solid ${st('colors', 'primary')};
+  transition: ${st('transitions', 'colors')};
 
-  @media (max-width: ${({ theme }) => theme.breakpoints.sm}) {
+  @media (max-width: ${st('breakpoints', 'sm')}) {
     width: 100%;
   }
 `;
 
 const DetailLabel = styled.div`
-  font-size: ${({ theme }) => theme.fontSizes.md};
-  color: var(--text-muted);
+  font-size: ${st('fontSizes', 'md')};
+  color: ${st('colors', 'textMuted')};
   font-weight: 500;
   margin-bottom: 5px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
-    font-size: ${({ theme }) => theme.fontSizes.sm};
+  @media (max-width: ${st('breakpoints', 'md')}) {
+    font-size: ${st('fontSizes', 'sm')};
   }
 `;
 
 const DetailValue = styled.div`
-  font-size: ${({ theme }) => theme.fontSizes.md};
-  color: var(--text-primary);
+  font-size: ${st('fontSizes', 'md')};
+  color: ${st('colors', 'textPrimary')};
   font-weight: 500;
 
-  @media (max-width: ${({ theme }) => theme.breakpoints.md}) {
-    font-size: ${({ theme }) => theme.fontSizes.sm};
+  @media (max-width: ${st('breakpoints', 'md')}) {
+    font-size: ${st('fontSizes', 'sm')};
   }
 `;
 
 const StatusBadge = styled.span`
-  background: var(--success-color);
-  color: white;
+  background: ${st('colors', 'success')};
+  color: ${st('colors', 'textWhite')};
   padding: 4px 12px;
-  border-radius: 20px;
-  font-size: 0.8rem;
+  border-radius: ${st('borderRadius', 'full')};
+  font-size: ${st('fontSizes', 'sm')};
   font-weight: 500;
 `;
 
@@ -475,19 +441,20 @@ const ActionButton = styled.button<{ primary?: boolean }>`
   gap: 10px;
   padding: 12px 24px;
   border: none;
-  border-radius: 25px;
-  font-size: 0.9rem;
+  border-radius: ${st('borderRadius', 'full')};
+  font-size: ${st('fontSizes', 'md')};
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: ${st('transitions', 'colors')};
   background: ${({ primary }) =>
-    primary ? 'var(--gradient-primary)' : 'var(--background-secondary)'};
-  color: ${({ primary }) => (primary ? 'white' : 'var(--text-primary)')};
-  box-shadow: var(--shadow-sm);
+    primary ? st('gradients', 'primary') : st('colors', 'backgroundSecondary')};
+  color: ${({ primary }) =>
+    primary ? st('colors', 'textWhite') : st('colors', 'textPrimary')};
+  box-shadow: ${st('shadows', 'card')};
 
   &:hover {
     transform: translateY(-2px);
-    box-shadow: var(--shadow-md);
+    box-shadow: ${st('shadows', 'hoverLift')};
   }
 
   &:active {
@@ -495,7 +462,7 @@ const ActionButton = styled.button<{ primary?: boolean }>`
   }
 
   :disabled {
-    opacity: 0.5;
+    opacity: ${st('opacity', 'disabled')};
     cursor: not-allowed;
 
     &:hover {
@@ -506,5 +473,5 @@ const ActionButton = styled.button<{ primary?: boolean }>`
 `;
 
 const ButtonIcon = styled.span`
-  font-size: 1rem;
+  font-size: ${st('fontSizes', 'md')};
 `;

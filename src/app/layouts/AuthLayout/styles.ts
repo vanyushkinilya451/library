@@ -1,10 +1,11 @@
+import { st } from 'shared/lib';
 import styled from 'styled-components';
 
 export const BackgroundContainer = styled.div`
   height: 100%;
   flex: 0 0 50%;
 
-  @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
+  @media (max-width: ${st('breakpoints', 'lg')}) {
     z-index: 0;
     position: absolute;
     left: 0;
@@ -28,9 +29,9 @@ export const ContentContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: white;
+  background-color: ${st('colors', 'background')};
 
-  @media (max-width: ${({ theme }) => theme.breakpoints.lg}) {
+  @media (max-width: ${st('breakpoints', 'lg')}) {
     width: 100%;
     height: 97%;
   }

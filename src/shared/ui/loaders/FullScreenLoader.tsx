@@ -1,3 +1,4 @@
+import { st } from 'shared/lib';
 import styled, { keyframes } from 'styled-components';
 
 const fadeIn = keyframes`
@@ -49,7 +50,7 @@ const Overlay = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 9999;
+  z-index: ${st('zIndices', 'modal')};
   animation: ${fadeIn} 0.3s ease-out;
 `;
 
@@ -59,13 +60,11 @@ const LoaderContainer = styled.div`
   align-items: center;
   gap: 30px;
   padding: 40px;
-  background: rgba(255, 255, 255, 0.95);
+  background: ${st('colors', 'background')};
   backdrop-filter: blur(20px);
-  border-radius: 25px;
-  box-shadow:
-    0 20px 60px rgba(0, 0, 0, 0.3),
-    0 0 0 1px rgba(255, 255, 255, 0.2);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: ${st('borderRadius', 'xl')};
+  box-shadow: ${st('shadows', 'modal')};
+  border: 1px solid ${st('colors', 'secondary')};
   animation: ${pulse} 2s ease-in-out infinite;
 `;
 
@@ -82,7 +81,7 @@ const SpinnerRing = styled.div<{ delay: number; size: number }>`
   width: ${(props) => props.size}px;
   height: ${(props) => props.size}px;
   border: 3px solid transparent;
-  border-top: 3px solid var(--primary-color);
+  border-top: 3px solid ${st('colors', 'primary')};
   border-radius: 50%;
   animation: ${rotate} 1.5s linear infinite;
   animation-delay: ${(props) => props.delay}s;
@@ -99,18 +98,18 @@ const Dot = styled.div<{ delay: number }>`
   width: 16px;
   height: 16px;
   border-radius: 50%;
-  background: var(--gradient-primary);
+  background: ${st('gradients', 'primary')};
   animation: ${bounce} 1.4s ease-in-out infinite;
   animation-delay: ${(props) => props.delay}s;
-  box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4);
+  box-shadow: ${st('shadows', 'card')};
 `;
 
 const LoadingText = styled.div`
-  font-size: 1.1rem;
+  font-size: ${st('fontSizes', 'md')};
   font-weight: 600;
-  color: var(--text-primary);
+  color: ${st('colors', 'textPrimary')};
   text-align: center;
-  background: var(--gradient-primary);
+  background: ${st('gradients', 'primary')};
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -118,8 +117,8 @@ const LoadingText = styled.div`
 `;
 
 const SubText = styled.div`
-  font-size: 0.9rem;
-  color: var(--text-secondary);
+  font-size: ${st('fontSizes', 'md')};
+  color: ${st('colors', 'textSecondary')};
   text-align: center;
   margin-top: 5px;
 `;
