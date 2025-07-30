@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
+  <defs>
+    <linearGradient id="coverGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#8B5CF6;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#A855F7;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#7C3AED;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="pageGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FEF3C7;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#FDE68A;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Тень -->
+  <ellipse cx="16" cy="30" rx="14" ry="2" fill="#000000" opacity="0.15"/>
+  
+  <!-- Единая обложка (фиолетовая) -->
+  <rect x="2" y="4" width="28" height="20" rx="1" fill="url(#coverGradient)" stroke="#7C3AED" stroke-width="1"/>
+  
+  <!-- Переплет посередине -->
+  <rect x="15" y="4" width="2" height="20" fill="#7C3AED"/>
+  
+  <!-- Левая страница -->
+  <rect x="4" y="6" width="11" height="16" rx="0.5" fill="url(#pageGradient)"/>
+  
+  <!-- Правая страница -->
+  <rect x="17" y="6" width="11" height="16" rx="0.5" fill="url(#pageGradient)"/>
+  
+  <!-- Линии текста на левой странице -->
+  <rect x="6" y="9" width="6" height="0.5" fill="#8B5CF6" opacity="0.6"/>
+  <rect x="6" y="11" width="4" height="0.5" fill="#8B5CF6" opacity="0.4"/>
+  <rect x="6" y="13" width="5" height="0.5" fill="#8B5CF6" opacity="0.5"/>
+  <rect x="6" y="15" width="3" height="0.5" fill="#8B5CF6" opacity="0.3"/>
+  
+  <!-- Линии текста на правой странице -->
+  <rect x="20" y="9" width="6" height="0.5" fill="#8B5CF6" opacity="0.6"/>
+  <rect x="20" y="11" width="4" height="0.5" fill="#8B5CF6" opacity="0.4"/>
+  <rect x="20" y="13" width="5" height="0.5" fill="#8B5CF6" opacity="0.5"/>
+  <rect x="20" y="15" width="3" height="0.5" fill="#8B5CF6" opacity="0.3"/>
+  
+  <!-- Оранжевые звездочки -->
+  <!-- Звезда 1 (левая страница) -->
+  <g transform="translate(8, 8)">
+    <polygon points="0,-1 0.3,-0.3 1,0 0.3,0.3 0,1 -0.3,0.3 -1,0 -0.3,-0.3" fill="#F59E0B"/>
+  </g>
+  
+  <!-- Звезда 2 (правая страница) -->
+  <g transform="translate(24, 10)">
+    <polygon points="0,-1 0.3,-0.3 1,0 0.3,0.3 0,1 -0.3,0.3 -1,0 -0.3,-0.3" fill="#F59E0B"/>
+  </g>
+  
+  <!-- Звезда 3 (центр переплета) -->
+  <g transform="translate(16, 18)">
+    <polygon points="0,-1 0.3,-0.3 1,0 0.3,0.3 0,1 -0.3,0.3 -1,0 -0.3,-0.3" fill="#F59E0B"/>
+  </g>
+  
+  <!-- Звезда 4 (маленькая на левой обложке) -->
+  <g transform="translate(6, 20)">
+    <polygon points="0,-0.6 0.2,-0.2 0.6,0 0.2,0.2 0,0.6 -0.2,0.2 -0.6,0 -0.2,-0.2" fill="#F59E0B" opacity="0.8"/>
+  </g>
+  
+  <!-- Звезда 5 (маленькая на правой обложке) -->
+  <g transform="translate(26, 22)">
+    <polygon points="0,-0.6 0.2,-0.2 0.6,0 0.2,0.2 0,0.6 -0.2,0.2 -0.6,0 -0.2,-0.2" fill="#F59E0B" opacity="0.8"/>
+  </g>
+  
+  <!-- Декоративные элементы на обложках -->
+  <circle cx="8" cy="12" r="0.5" fill="#A855F7" opacity="0.3"/>
+  <circle cx="24" cy="14" r="0.5" fill="#A855F7" opacity="0.3"/>
+</svg> 

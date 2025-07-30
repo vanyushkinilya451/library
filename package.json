@@ -1,7 +1,7 @@
 {
   "scripts": {
     "dev": "webpack serve",
-    "build": "webpack build mode --production",
+    "build": "webpack build --mode=production",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "fsd": "steiger ./src",
