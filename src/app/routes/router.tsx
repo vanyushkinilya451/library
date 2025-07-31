@@ -1,5 +1,5 @@
-import { AuthLayout, MainLayout } from 'app/layouts';
-import { ProtectedRouteWrapper } from 'app/providers/ProtectedRouteWrapper';
+import { AuthLayout, MainLayout } from "app/layouts";
+import { ProtectedRouteWrapper } from "app/providers/ProtectedRouteWrapper";
 import {
   ChangePasswordForm,
   LoginForm,
@@ -7,47 +7,47 @@ import {
   ResetPasswordForm,
   VerifyEmail,
   VerifyResetPassword,
-} from 'features/auth';
-import { AuthorPage } from 'pages/author';
-import { BookPage } from 'pages/book';
-import { Categories } from 'pages/categories';
-import { HomePage } from 'pages/home';
-import { MyBooks } from 'pages/mybooks';
-import { NotFoundPage } from 'pages/not_found';
-import { ProfilePage } from 'pages/profile';
-import { createBrowserRouter } from 'react-router-dom';
+} from "features/auth";
+import { AuthorPage } from "pages/author";
+import { BookPage } from "pages/book";
+import { Categories } from "pages/categories";
+import { HomePage } from "pages/home";
+import { MyBooks } from "pages/mybooks";
+import { NotFoundPage } from "pages/not_found";
+import { ProfilePage } from "pages/profile";
+import { createHashRouter } from "react-router-dom";
 
 export const ROUTES = {
   //paths for router
   PATHS: {
-    HOME: '',
-    CATEGORIES: 'categories',
-    BOOK: 'book/:bookId',
-    AUTHOR: 'author/:authorId',
-    MYBOOKS: 'mybooks',
-    PROFILE: 'profile',
-    LOGIN: 'login',
-    REGISTER: 'register',
-    VERIFY_EMAIL: 'verify-email',
-    VERIFY_RESET_PASSWORD: 'verify-reset-password',
-    RESET_PASSWORD: 'reset-password',
-    CHANGE_PASSWORD: 'change-password',
+    HOME: "",
+    CATEGORIES: "categories",
+    BOOK: "book/:bookId",
+    AUTHOR: "author/:authorId",
+    MYBOOKS: "mybooks",
+    PROFILE: "profile",
+    LOGIN: "login",
+    REGISTER: "register",
+    VERIFY_EMAIL: "verify-email",
+    VERIFY_RESET_PASSWORD: "verify-reset-password",
+    RESET_PASSWORD: "reset-password",
+    CHANGE_PASSWORD: "change-password",
   },
 
   //paths for links and useNavigate
   LINKS: {
-    HOME: '/',
-    CATEGORIES: '/categories',
-    BOOK: (id: string = ':bookId') => `/book/${id}`,
-    AUTHOR: (id: string = ':authorId') => `/author/${id}`,
-    MYBOOKS: '/mybooks',
-    PROFILE: '/profile',
-    LOGIN: '/login',
-    REGISTER: '/register',
-    VERIFY_EMAIL: '/verify-email',
-    VERIFY_RESET_PASSWORD: '/verify-reset-password',
-    RESET_PASSWORD: '/reset-password',
-    CHANGE_PASSWORD: '/change-password',
+    HOME: "/",
+    CATEGORIES: "/categories",
+    BOOK: (id: string = ":bookId") => `/book/${id}`,
+    AUTHOR: (id: string = ":authorId") => `/author/${id}`,
+    MYBOOKS: "/mybooks",
+    PROFILE: "/profile",
+    LOGIN: "/auth/login",
+    REGISTER: "/auth/register",
+    VERIFY_EMAIL: "/auth/verify-email",
+    VERIFY_RESET_PASSWORD: "/auth/verify-reset-password",
+    RESET_PASSWORD: "/auth/reset-password",
+    CHANGE_PASSWORD: "/auth/change-password",
   },
 };
 
@@ -72,19 +72,18 @@ const authRoutes = [
   { path: ROUTES.PATHS.CHANGE_PASSWORD, Component: ChangePasswordForm },
 ];
 
-export const router = createBrowserRouter([
+export const router = createHashRouter([
   {
-    path: '/',
+    path: "/",
     Component: MainLayout,
     children: [
       ...publicRoutes,
       {
-        path: '/',
         Component: ProtectedRouteWrapper,
         children: protectedRoutes,
       },
     ],
   },
-  { path: '/auth', Component: AuthLayout, children: authRoutes },
-  { path: '*', Component: NotFoundPage },
+  { path: "/auth", Component: AuthLayout, children: authRoutes },
+  { path: "*", Component: NotFoundPage },
 ]);
