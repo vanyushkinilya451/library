@@ -1,72 +1,72 @@
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const ESLintPlugin = require('eslint-webpack-plugin');
-const Dotenv = require('dotenv-webpack');
+const path = require("path");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
+const ESLintPlugin = require("eslint-webpack-plugin");
+const Dotenv = require("dotenv-webpack");
 
 module.exports = {
-  mode: 'development',
-  entry: './src/main.tsx',
+  mode: "development",
+  entry: "./src/main.tsx",
   devServer: {
     static: {
-      directory: path.join(__dirname, 'dist'),
+      directory: path.join(__dirname, "dist"),
     },
     open: true,
-    watchFiles: ['src/app/**/*.html'],
+    watchFiles: ["src/app/**/*.html"],
     historyApiFallback: true,
   },
   output: {
-    path: path.resolve(__dirname, 'dist'),
-    filename: 'bundle.js',
-    publicPath: '/',
+    path: path.resolve(__dirname, "dist"),
+    filename: "bundle.js",
+    publicPath: "/",
   },
   module: {
     rules: [
       {
         test: /\.tsx?$/,
-        use: 'ts-loader',
+        use: "ts-loader",
         exclude: /node_modules/,
       },
       {
         test: /\.(png|jpg|jpeg|gif|woff2)$/i,
-        type: 'asset/resource',
+        type: "asset/resource",
       },
       {
         test: /\.svg$/i,
-        type: 'asset',
+        type: "asset",
         resourceQuery: /url/,
       },
       {
         test: /\.svg$/i,
         issuer: /\.[jt]sx?$/,
         resourceQuery: { not: [/url/] },
-        use: ['@svgr/webpack'],
+        use: ["@svgr/webpack"],
       },
       {
         test: /\.css$/,
-        use: ['style-loader', 'css-loader'],
+        use: ["style-loader", "css-loader"],
       },
     ],
   },
   resolve: {
-    extensions: ['.tsx', '.ts', '.js'],
+    extensions: [".tsx", ".ts", ".js"],
     alias: {
-      shared: path.resolve(__dirname, 'src/shared'),
-      entities: path.resolve(__dirname, 'src/entities'),
-      features: path.resolve(__dirname, 'src/features'),
-      widgets: path.resolve(__dirname, 'src/widgets'),
-      pages: path.resolve(__dirname, 'src/pages'),
-      app: path.resolve(__dirname, 'src/app'),
+      shared: path.resolve(__dirname, "src/shared"),
+      entities: path.resolve(__dirname, "src/entities"),
+      features: path.resolve(__dirname, "src/features"),
+      widgets: path.resolve(__dirname, "src/widgets"),
+      pages: path.resolve(__dirname, "src/pages"),
+      app: path.resolve(__dirname, "src/app"),
     },
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: './index.html',
-      filename: 'index.html',
-      favicon: './src/shared/assets/icons/favicon.svg',
+      template: "./index.html",
+      filename: "index.html",
+      favicon: "./src/shared/assets/icons/favicon.svg",
     }),
     new ESLintPlugin({
-      extensions: ['js', 'jsx', 'ts', 'tsx'],
-      context: path.resolve(__dirname, 'src'),
+      extensions: ["js", "jsx", "ts", "tsx"],
+      context: path.resolve(__dirname, "src"),
       fix: true,
       cache: true,
       emitWarning: true,
