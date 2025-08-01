@@ -8,7 +8,9 @@
     "fsd": "steiger ./src",
     "format": "prettier --write .",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist"
+    "deploy": "gh-pages -d dist",
+    "build:analyze": "webpack build --mode=production --config webpack.config.js",
+    "analyze": "webpack-bundle-analyzer dist/bundle-stats.json"
   },
   "devDependencies": {
     "@eslint/css": "^0.9.0",
@@ -18,7 +20,6 @@
     "@svgr/webpack": "^8.1.0",
     "@types/react": "^19.1.8",
     "@types/react-dom": "^19.1.6",
-    "@types/react-transition-group": "^4.4.12",
     "@typescript-eslint/eslint-plugin": "^8.34.0",
     "@typescript-eslint/parser": "^8.34.0",
     "autoprefixer": "^10.4.21",
@@ -42,6 +43,7 @@
     "typescript": "^5.8.3",
     "typescript-eslint": "^8.34.0",
     "webpack": "^5.99.8",
+    "webpack-bundle-analyzer": "^4.10.2",
     "webpack-cli": "^6.0.1",
     "webpack-dev-server": "^5.2.1"
   },
@@ -53,7 +55,6 @@
     "react-hot-toast": "^2.5.2",
     "react-redux": "^9.2.0",
     "react-router-dom": "^7.6.2",
-    "react-transition-group": "^4.4.5",
     "styled-components": "^6.1.18"
   }
 }

@@ -1,7 +1,7 @@
 import { useGetAllMyBooksQuery } from "entities/book";
 import { useMemo, useState } from "react";
 import { st, useAppSelector } from "shared/lib";
-import styled from "styled-components";
+import { styled } from "styled-components";
 import { BookCard } from "./BookCard";
 
 export const MyBooks = () => {

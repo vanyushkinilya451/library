@@ -1,8 +1,8 @@
-import { useGetAllMyBooksQuery } from 'entities/book';
-import { getUserProfile } from 'entities/user';
-import { useEffect, useMemo, useState } from 'react';
-import toast from 'react-hot-toast';
-import { useNavigate } from 'react-router-dom';
+import { useGetAllMyBooksQuery } from "entities/book";
+import { getUserProfile } from "entities/user";
+import { useEffect, useMemo, useState } from "react";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 import {
   formatDate,
   st,
@@ -10,12 +10,12 @@ import {
   useAppDispatch,
   useAppSelector,
   useModal,
-} from 'shared/lib';
-import { FullScreenLoader, SkeletonLoader } from 'shared/ui';
-import styled from 'styled-components';
+} from "shared/lib";
+import { FullScreenLoader, SkeletonLoader } from "shared/ui";
+import { styled } from "styled-components";
 
-import { ROUTES } from 'app/routes/router';
-import { ProfileModal } from './ProfileModal';
+import { ROUTES } from "app/routes/router";
+import { ProfileModal } from "./ProfileModal";
 
 export const ProfilePage = () => {
   const { user, profile, isLoading } = useAppSelector((state) => state.user);
@@ -25,8 +25,8 @@ export const ProfilePage = () => {
   const { data: allMyBooks, isLoading: isLoadingMyBooks } =
     useGetAllMyBooksQuery({
       userId: user?.id as string,
-      from: 'mybooks',
-      select: 'book_id, book_status',
+      from: "mybooks",
+      select: "book_id, book_status",
     });
 
   const bookStats = useMemo(() => {
@@ -37,7 +37,7 @@ export const ProfilePage = () => {
         acc[book.book_status as keyof typeof acc]++;
         return acc;
       },
-      { read: 0, reading: 0, will_read: 0, favorite: 0 },
+      { read: 0, reading: 0, will_read: 0, favorite: 0 }
     );
   }, [allMyBooks]);
 
@@ -61,7 +61,7 @@ export const ProfilePage = () => {
       });
 
       if (error) {
-        toast.error('Произошла ошибка при сбросе пароля');
+        toast.error("Произошла ошибка при сбросе пароля");
       } else {
         navigate(ROUTES.LINKS.VERIFY_RESET_PASSWORD);
       }
@@ -84,28 +84,22 @@ export const ProfilePage = () => {
             <UserInfo>
               <UserName>
                 {isLoading ? (
-                  <SkeletonLoader
-                    width="300px"
-                    height="40px"
-                  />
+                  <SkeletonLoader width="300px" height="40px" />
                 ) : profile ? (
                   `${profile.lastname} ${profile.firstname} ${profile.patronymic}`
                 ) : user ? (
                   user.email
                 ) : (
-                  'Пользователь'
+                  "Пользователь"
                 )}
               </UserName>
               <UserEmail>
                 {isLoading ? (
-                  <SkeletonLoader
-                    width="300px"
-                    height="40px"
-                  />
+                  <SkeletonLoader width="300px" height="40px" />
                 ) : user ? (
                   user.email
                 ) : (
-                  'Пользователь'
+                  "Пользователь"
                 )}
               </UserEmail>
             </UserInfo>
@@ -115,10 +109,7 @@ export const ProfilePage = () => {
             <StatCard>
               <StatNumber>
                 {isLoadingMyBooks ? (
-                  <SkeletonLoader
-                    width="30px"
-                    height="30px"
-                  />
+                  <SkeletonLoader width="30px" height="30px" />
                 ) : (
                   bookStats.read
                 )}
@@ -128,10 +119,7 @@ export const ProfilePage = () => {
             <StatCard>
               <StatNumber>
                 {isLoadingMyBooks ? (
-                  <SkeletonLoader
-                    width="30px"
-                    height="30px"
-                  />
+                  <SkeletonLoader width="30px" height="30px" />
                 ) : (
                   bookStats.reading
                 )}
@@ -141,10 +129,7 @@ export const ProfilePage = () => {
             <StatCard>
               <StatNumber>
                 {isLoadingMyBooks ? (
-                  <SkeletonLoader
-                    width="30px"
-                    height="30px"
-                  />
+                  <SkeletonLoader width="30px" height="30px" />
                 ) : (
                   bookStats.favorite
                 )}
@@ -154,11 +139,7 @@ export const ProfilePage = () => {
           </StatsSection>
 
           {isLoading ? (
-            <SkeletonLoader
-              width="100%"
-              height="300px"
-              margin="20px 0"
-            />
+            <SkeletonLoader width="100%" height="300px" margin="20px 0" />
           ) : (
             <DetailsSection>
               <SectionTitle>Информация о профиле</SectionTitle>
@@ -172,7 +153,7 @@ export const ProfilePage = () => {
                     <DetailItem>
                       <DetailLabel>Пол</DetailLabel>
                       <DetailValue>
-                        {profile.gender === 'male' ? 'Мужской' : 'Женский'}
+                        {profile.gender === "male" ? "Мужской" : "Женский"}
                       </DetailValue>
                     </DetailItem>
                   </>
@@ -192,7 +173,7 @@ export const ProfilePage = () => {
                   <DetailValue>
                     {user?.created_at
                       ? formatDate(user.created_at)
-                      : 'Не указана'}
+                      : "Не указана"}
                   </DetailValue>
                 </DetailItem>
                 <DetailItem>
@@ -200,25 +181,18 @@ export const ProfilePage = () => {
                   <DetailValue>
                     {user?.last_sign_in_at
                       ? formatDate(user.last_sign_in_at)
-                      : 'Не указан'}
+                      : "Не указан"}
                   </DetailValue>
                 </DetailItem>
               </DetailsGrid>
             </DetailsSection>
           )}
           <ActionsSection>
-            <ActionButton
-              onClick={openModal}
-              primary
-              disabled={isLoading}
-            >
+            <ActionButton onClick={openModal} primary disabled={isLoading}>
               <ButtonIcon>✏️</ButtonIcon>
-              {profile ? 'Редактировать профиль' : 'Заполнить профиль'}
+              {profile ? "Редактировать профиль" : "Заполнить профиль"}
             </ActionButton>
-            <ActionButton
-              onClick={handleChangePassword}
-              disabled={isLoading}
-            >
+            <ActionButton onClick={handleChangePassword} disabled={isLoading}>
               <ButtonIcon>🔒</ButtonIcon>
               Изменить пароль
             </ActionButton>
@@ -237,18 +211,18 @@ const Container = styled.div`
 `;
 const Content = styled.div`
   position: relative;
-  z-index: ${st('zIndices', 'base')};
+  z-index: ${st("zIndices", "base")};
   max-width: 800px;
   margin: 0 auto;
 `;
 
 const ProfileCard = styled.div`
-  background: ${st('colors', 'background')};
+  background: ${st("colors", "background")};
   backdrop-filter: blur(10px);
-  border-radius: ${st('borderRadius', 'xl')};
+  border-radius: ${st("borderRadius", "xl")};
   padding: 40px;
-  box-shadow: ${st('shadows', 'card')};
-  transition: ${st('transitions', 'colors')};
+  box-shadow: ${st("shadows", "card")};
+  transition: ${st("transitions", "colors")};
 `;
 
 const AvatarSection = styled.div`
@@ -264,23 +238,23 @@ const UserInfo = styled.div`
 `;
 
 const UserName = styled.h1`
-  font-size: ${st('fontSizes', 'xl')};
+  font-size: ${st("fontSizes", "xl")};
   font-weight: 700;
   margin: 0 0 10px 0;
-  color: ${st('colors', 'primaryLight')};
+  color: ${st("colors", "primaryLight")};
 
-  @media (max-width: ${st('breakpoints', 'md')}) {
-    font-size: ${st('fontSizes', 'lg')};
+  @media (max-width: ${st("breakpoints", "md")}) {
+    font-size: ${st("fontSizes", "lg")};
   }
 `;
 
 const UserEmail = styled.div`
-  font-size: ${st('fontSizes', 'md')};
-  color: ${st('colors', 'textSecondary')};
+  font-size: ${st("fontSizes", "md")};
+  color: ${st("colors", "textSecondary")};
   margin: 0 0 15px 0;
 
-  @media (max-width: ${st('breakpoints', 'md')}) {
-    font-size: ${st('fontSizes', 'sm')};
+  @media (max-width: ${st("breakpoints", "md")}) {
+    font-size: ${st("fontSizes", "sm")};
   }
 `;
 
@@ -291,7 +265,7 @@ const StatsSection = styled.div`
   gap: 20px;
   margin-bottom: 30px;
 
-  @media (max-width: ${st('breakpoints', 'sm')}) {
+  @media (max-width: ${st("breakpoints", "sm")}) {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -302,40 +276,40 @@ const StatsSection = styled.div`
 `;
 
 const StatCard = styled.div`
-  background: ${st('colors', 'backgroundSecondary')};
-  color: ${st('colors', 'textPrimary')};
+  background: ${st("colors", "backgroundSecondary")};
+  color: ${st("colors", "textPrimary")};
   padding: 25px;
-  border-radius: ${st('borderRadius', 'lg')};
+  border-radius: ${st("borderRadius", "lg")};
   width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  transition: ${st('transitions', 'transform')};
-  box-shadow: ${st('shadows', 'card')};
+  transition: ${st("transitions", "transform")};
+  box-shadow: ${st("shadows", "card")};
 
-  @media (max-width: ${st('breakpoints', 'md')}) {
+  @media (max-width: ${st("breakpoints", "md")}) {
     padding: 15px;
   }
 `;
 
 const StatNumber = styled.div`
-  font-size: ${st('fontSizes', 'xl')};
+  font-size: ${st("fontSizes", "xl")};
   font-weight: 700;
   margin-bottom: 8px;
-  color: ${st('colors', 'accent')};
+  color: ${st("colors", "accent")};
 
-  @media (max-width: ${st('breakpoints', 'md')}) {
-    font-size: ${st('fontSizes', 'lg')};
+  @media (max-width: ${st("breakpoints", "md")}) {
+    font-size: ${st("fontSizes", "lg")};
   }
 `;
 
 const StatLabel = styled.div`
-  font-size: ${st('fontSizes', 'md')};
+  font-size: ${st("fontSizes", "md")};
   font-weight: 500;
 
-  @media (max-width: ${st('breakpoints', 'md')}) {
-    font-size: ${st('fontSizes', 'sm')};
+  @media (max-width: ${st("breakpoints", "md")}) {
+    font-size: ${st("fontSizes", "sm")};
   }
 `;
 
@@ -344,13 +318,13 @@ const DetailsSection = styled.div`
 `;
 
 const SectionTitle = styled.h2`
-  font-size: ${st('fontSizes', 'lg')};
+  font-size: ${st("fontSizes", "lg")};
   font-weight: 600;
-  color: ${st('colors', 'textPrimary')};
+  color: ${st("colors", "textPrimary")};
   margin: 0 0 25px 0;
   padding-bottom: 10px;
-  @media (max-width: ${st('breakpoints', 'md')}) {
-    font-size: ${st('fontSizes', 'md')};
+  @media (max-width: ${st("breakpoints", "md")}) {
+    font-size: ${st("fontSizes", "md")};
   }
 `;
 
@@ -359,12 +333,12 @@ const DetailsGrid = styled.div`
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 20px;
 
-  @media (max-width: ${st('breakpoints', 'sm')}) {
+  @media (max-width: ${st("breakpoints", "sm")}) {
     grid-template-columns: 1fr 1fr;
     width: 100%;
   }
 
-  @media (max-width: ${st('breakpoints', 'sm')}) {
+  @media (max-width: ${st("breakpoints", "sm")}) {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -376,45 +350,45 @@ const DetailsGrid = styled.div`
 
 const DetailItem = styled.div`
   padding: 15px;
-  background: ${st('colors', 'backgroundSecondary')};
-  border-radius: ${st('borderRadius', 'md')};
-  border-left: 4px solid ${st('colors', 'primary')};
-  transition: ${st('transitions', 'colors')};
+  background: ${st("colors", "backgroundSecondary")};
+  border-radius: ${st("borderRadius", "md")};
+  border-left: 4px solid ${st("colors", "primary")};
+  transition: ${st("transitions", "colors")};
 
-  @media (max-width: ${st('breakpoints', 'sm')}) {
+  @media (max-width: ${st("breakpoints", "sm")}) {
     width: 100%;
   }
 `;
 
 const DetailLabel = styled.div`
-  font-size: ${st('fontSizes', 'md')};
-  color: ${st('colors', 'textMuted')};
+  font-size: ${st("fontSizes", "md")};
+  color: ${st("colors", "textMuted")};
   font-weight: 500;
   margin-bottom: 5px;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 
-  @media (max-width: ${st('breakpoints', 'md')}) {
-    font-size: ${st('fontSizes', 'sm')};
+  @media (max-width: ${st("breakpoints", "md")}) {
+    font-size: ${st("fontSizes", "sm")};
   }
 `;
 
 const DetailValue = styled.div`
-  font-size: ${st('fontSizes', 'md')};
-  color: ${st('colors', 'textPrimary')};
+  font-size: ${st("fontSizes", "md")};
+  color: ${st("colors", "textPrimary")};
   font-weight: 500;
 
-  @media (max-width: ${st('breakpoints', 'md')}) {
-    font-size: ${st('fontSizes', 'sm')};
+  @media (max-width: ${st("breakpoints", "md")}) {
+    font-size: ${st("fontSizes", "sm")};
   }
 `;
 
 const StatusBadge = styled.span`
-  background: ${st('colors', 'success')};
-  color: ${st('colors', 'textWhite')};
+  background: ${st("colors", "success")};
+  color: ${st("colors", "textWhite")};
   padding: 4px 12px;
-  border-radius: ${st('borderRadius', 'full')};
-  font-size: ${st('fontSizes', 'sm')};
+  border-radius: ${st("borderRadius", "full")};
+  font-size: ${st("fontSizes", "sm")};
   font-weight: 500;
 `;
 
@@ -441,28 +415,28 @@ const ActionButton = styled.button<{ primary?: boolean }>`
   gap: 10px;
   padding: 12px 20px;
   border: none;
-  border-radius: ${st('borderRadius', 'full')};
-  font-size: ${st('fontSizes', 'sm')};
+  border-radius: ${st("borderRadius", "full")};
+  font-size: ${st("fontSizes", "sm")};
   font-weight: 500;
   cursor: pointer;
   transition: all 0.2s ease;
   background: ${({ primary }) =>
-    primary ? st('gradients', 'primary') : st('colors', 'backgroundSecondary')};
+    primary ? st("gradients", "primary") : st("colors", "backgroundSecondary")};
   color: ${({ primary }) =>
-    primary ? st('colors', 'textWhite') : st('colors', 'textPrimary')};
-  box-shadow: ${st('shadows', 'card')};
+    primary ? st("colors", "textWhite") : st("colors", "textPrimary")};
+  box-shadow: ${st("shadows", "card")};
   white-space: nowrap;
   min-width: fit-content;
 
-  @media (max-width: ${st('breakpoints', 'sm')}) {
-    font-size: ${st('fontSizes', 'xs')};
+  @media (max-width: ${st("breakpoints", "sm")}) {
+    font-size: ${st("fontSizes", "xs")};
     padding: 10px 16px;
     gap: 8px;
   }
 
   &:hover {
     transform: translateY(-2px);
-    box-shadow: ${st('shadows', 'hoverLift')};
+    box-shadow: ${st("shadows", "hoverLift")};
   }
 
   &:active {
@@ -470,7 +444,7 @@ const ActionButton = styled.button<{ primary?: boolean }>`
   }
 
   :disabled {
-    opacity: ${st('opacity', 'disabled')};
+    opacity: ${st("opacity", "disabled")};
     cursor: not-allowed;
 
     &:hover {
@@ -481,10 +455,10 @@ const ActionButton = styled.button<{ primary?: boolean }>`
 `;
 
 const ButtonIcon = styled.span`
-  font-size: ${st('fontSizes', 'sm')};
+  font-size: ${st("fontSizes", "sm")};
   flex-shrink: 0;
 
-  @media (max-width: ${st('breakpoints', 'sm')}) {
-    font-size: ${st('fontSizes', 'xs')};
+  @media (max-width: ${st("breakpoints", "sm")}) {
+    font-size: ${st("fontSizes", "xs")};
   }
 `;

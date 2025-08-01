@@ -1,6 +1,6 @@
 import { SearchSvg } from "shared/assets";
 import { st, useModal } from "shared/lib";
-import styled from "styled-components";
+import { styled } from "styled-components";
 import { useSearch } from "../api/useSearch";
 import { SearchResults } from "./SearchResults";
 

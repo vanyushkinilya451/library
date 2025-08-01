@@ -1,5 +1,5 @@
 import { st } from "shared/lib";
-import styled from "styled-components";
+import { styled } from "styled-components";
 
 export const BackgroundContainer = styled.div`
   height: 100%;

@@ -1,8 +1,8 @@
-import { Provider } from 'react-redux';
-import { RouterProvider } from 'react-router-dom';
-import { ThemeWrapper } from './providers/ThemeWrapper';
-import { router } from './routes';
-import { store } from './store/store';
+import { Provider } from "react-redux";
+import { RouterProvider } from "react-router-dom";
+import { ThemeWrapper } from "./providers/ThemeWrapper";
+import { router } from "./routes";
+import { store } from "./store/store";
 
 export const App = () => {
   return (

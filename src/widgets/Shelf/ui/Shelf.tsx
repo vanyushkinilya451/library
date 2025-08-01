@@ -1,10 +1,10 @@
-import { useGetBooksByCategoryQuery } from 'entities/book';
-import { Arrow } from 'shared/assets';
-import { st } from 'shared/lib';
-import styled from 'styled-components';
-import { useShelfScroll } from '../lib/useShelfScroll';
-import { BookShelfCard } from './BookShelfCard';
-import { FakeShelfLoader } from './FakeShelfLoader';
+import { useGetBooksByCategoryQuery } from "entities/book";
+import { Arrow } from "shared/assets";
+import { st } from "shared/lib";
+import { styled } from "styled-components";
+import { useShelfScroll } from "../lib/useShelfScroll";
+import { BookShelfCard } from "./BookShelfCard";
+import { FakeShelfLoader } from "./FakeShelfLoader";
 
 type ShelfProps = {
   shelfTitle: string;
@@ -31,11 +31,8 @@ export const Shelf = ({ shelfTitle, api }: ShelfProps) => {
           {books?.map(
             (book) =>
               book.cover_edition_key && (
-                <BookShelfCard
-                  book={book}
-                  key={book.key}
-                />
-              ),
+                <BookShelfCard book={book} key={book.key} />
+              )
           )}
           {isScrolled && (
             <ShelfNavButton
@@ -62,16 +59,16 @@ export const Shelf = ({ shelfTitle, api }: ShelfProps) => {
 };
 
 const ShelfWrapper = styled.article`
-  margin: ${st('spacing', 'md')} 0;
+  margin: ${st("spacing", "md")} 0;
   position: relative;
   height: min-content;
 `;
 
 const ShelfTitle = styled.h1`
-  font-size: ${st('fontSizes', 'lg')};
-  font-weight: ${st('fontWeights', 'bold')};
-  color: ${st('colors', 'textPrimary')};
-  margin: ${st('spacing', 'sm')} 0;
+  font-size: ${st("fontSizes", "lg")};
+  font-weight: ${st("fontWeights", "bold")};
+  color: ${st("colors", "textPrimary")};
+  margin: ${st("spacing", "sm")} 0;
 `;
 
 const ShelfContainer = styled.div`
@@ -88,7 +85,7 @@ const ShelfContainer = styled.div`
   }
 `;
 
-const ShelfNavButton = styled.button<{ position: 'left' | 'right' }>`
+const ShelfNavButton = styled.button<{ position: "left" | "right" }>`
   position: absolute;
   background-color: transparent;
   width: 35px;
@@ -96,16 +93,16 @@ const ShelfNavButton = styled.button<{ position: 'left' | 'right' }>`
   top: 35%;
   border-style: none;
   cursor: pointer;
-  z-index: ${st('zIndices', 'base')};
-  transition: ${st('transitions', 'colors')};
+  z-index: ${st("zIndices", "base")};
+  transition: ${st("transitions", "colors")};
 
   ${({ position }) =>
-    position === 'right'
+    position === "right"
       ? `right: -15px;`
       : `left: -15px; transform: rotate(180deg);`}
 
   &:hover {
-    opacity: ${st('opacity', 'hover')};
+    opacity: ${st("opacity", "hover")};
   }
 `;
 

@@ -2,6 +2,7 @@ const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const ESLintPlugin = require("eslint-webpack-plugin");
 const Dotenv = require("dotenv-webpack");
+// const { BundleAnalyzerPlugin } = require("webpack-bundle-analyzer");
 
 module.exports = (env, argv) => {
   const isProduction = argv.mode === "production";
@@ -19,7 +20,7 @@ module.exports = (env, argv) => {
     },
     output: {
       path: path.resolve(__dirname, "dist"),
-      filename: "bundle.js",
+      filename: "[name].js",
       publicPath: isProduction ? "./" : "/",
       clean: true,
     },
@@ -79,6 +80,24 @@ module.exports = (env, argv) => {
         app: path.resolve(__dirname, "src/app"),
       },
     },
+    optimization: {
+      splitChunks: {
+        chunks: "all",
+        cacheGroups: {
+          vendor: {
+            test: /[\\/]node_modules[\\/]/,
+            name: "vendors",
+            chunks: "all",
+          },
+          shared: {
+            test: /[\\/]src[\\/]shared[\\/]/,
+            name: "shared",
+            chunks: "all",
+            priority: 10,
+          },
+        },
+      },
+    },
     plugins: [
       new HtmlWebpackPlugin({
         template: "./index.html",
@@ -111,6 +130,13 @@ module.exports = (env, argv) => {
         failOnWarning: false,
       }),
       new Dotenv(),
+      // new BundleAnalyzerPlugin({
+      //   analyzerMode: "static",
+      //   openAnalyzer: false,
+      //   reportFilename: "bundle-report.html",
+      //   generateStatsFile: true,
+      //   statsFilename: "bundle-stats.json",
+      // }),
     ],
   };
 };

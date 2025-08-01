@@ -6,7 +6,7 @@ import { BookCover as BookCoverComponent } from "entities/book";
 import { useNavigate } from "react-router-dom";
 import { Fragment } from "react/jsx-runtime";
 import { st } from "shared/lib";
-import styled from "styled-components";
+import { styled } from "styled-components";
 
 type SearchResutlsProps = {
   books: BookSearchFormat[];

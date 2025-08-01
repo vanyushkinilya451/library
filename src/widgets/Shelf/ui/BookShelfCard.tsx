@@ -1,12 +1,12 @@
-import { ROUTES } from 'app/routes/router';
-import type { BookSearchFormat } from 'entities/book';
-import { BookCover, useGetAllMyBooksQuery } from 'entities/book';
-import { useNavigate } from 'react-router-dom';
-import { Star } from 'shared/assets';
-import { st, useAppSelector } from 'shared/lib';
-import styled from 'styled-components';
-import { handleBookAuthor, handleBookTitle } from '../lib/sliceTextHelper';
-import { useMyBooks } from '../lib/useMyBooks';
+import { ROUTES } from "app/routes/router";
+import type { BookSearchFormat } from "entities/book";
+import { BookCover, useGetAllMyBooksQuery } from "entities/book";
+import { useNavigate } from "react-router-dom";
+import { Star } from "shared/assets";
+import { st, useAppSelector } from "shared/lib";
+import { styled } from "styled-components";
+import { handleBookAuthor, handleBookTitle } from "../lib/sliceTextHelper";
+import { useMyBooks } from "../lib/useMyBooks";
 
 type BookCardProps = {
   book: BookSearchFormat;
@@ -17,13 +17,13 @@ export const BookShelfCard = ({ book }: BookCardProps) => {
   const { user, isLoading } = useAppSelector((state) => state.user);
   const { data: allMyBooks } = useGetAllMyBooksQuery({
     userId: user?.id as string,
-    from: 'mybooks',
-    select: 'book_id, book_status',
+    from: "mybooks",
+    select: "book_id, book_status",
   });
   const { addToMyBooks, removeFromMyBooks } = useMyBooks();
 
   const isInMyBooks = allMyBooks?.some(
-    (myBook) => myBook.book_id === book.cover_edition_key,
+    (myBook) => myBook.book_id === book.cover_edition_key
   );
 
   const handleBookClick = (bookId: string) => {
@@ -93,27 +93,27 @@ const Description = styled.div`
 `;
 
 const Title = styled.h5`
-  font-weight: ${st('fontWeights', 'bold')};
-  font-size: ${st('fontSizes', 'sm')};
-  color: ${st('colors', 'textPrimary')};
+  font-weight: ${st("fontWeights", "bold")};
+  font-size: ${st("fontSizes", "sm")};
+  color: ${st("colors", "textPrimary")};
   cursor: pointer;
   margin: 0;
-  transition: ${st('transitions', 'colors')};
+  transition: ${st("transitions", "colors")};
 
   &:hover {
-    opacity: ${st('opacity', 'hover')};
+    opacity: ${st("opacity", "hover")};
   }
 `;
 
 const Author = styled.p`
-  font-size: ${st('fontSizes', 'sm')};
-  color: ${st('colors', 'textSecondary')};
+  font-size: ${st("fontSizes", "sm")};
+  color: ${st("colors", "textSecondary")};
   margin: 0;
   cursor: pointer;
-  transition: ${st('transitions', 'colors')};
+  transition: ${st("transitions", "colors")};
 
   &:hover {
-    opacity: ${st('opacity', 'hover')};
+    opacity: ${st("opacity", "hover")};
   }
 `;
 
@@ -124,14 +124,14 @@ const StarIcon = styled(Star)<{ filled?: boolean }>`
   width: 20px;
   height: 20px;
   cursor: pointer;
-  transition: ${st('transitions', 'colors')};
+  transition: ${st("transitions", "colors")};
 
   path {
     fill: ${({ filled }) =>
-      filled ? st('colors', 'accent') : st('colors', 'textWhite')};
+      filled ? st("colors", "accent") : st("colors", "textWhite")};
   }
 
   &:hover {
-    opacity: ${st('opacity', 'hover')};
+    opacity: ${st("opacity", "hover")};
   }
 `;

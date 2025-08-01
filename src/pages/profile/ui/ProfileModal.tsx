@@ -8,7 +8,7 @@ import {
   useAppSelector,
   useClickOutside,
 } from "shared/lib";
-import styled from "styled-components";
+import { styled } from "styled-components";
 
 export const ProfileModal = ({ closeModal }: { closeModal: () => void }) => {
   const user = useAppSelector((state) => state.user.user);

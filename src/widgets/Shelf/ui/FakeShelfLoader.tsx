@@ -1,5 +1,5 @@
-import { SkeletonLoader } from 'shared/ui';
-import styled from 'styled-components';
+import { SkeletonLoader } from "shared/ui";
+import { styled } from "styled-components";
 
 export const FakeShelfLoader = () => {
   return (
@@ -10,14 +10,8 @@ export const FakeShelfLoader = () => {
             <SkeletonLoader height="180px" />
           </CardWrapper>
           <CardBody>
-            <SkeletonLoader
-              height="1.5rem"
-              margin="10px 0"
-            />
-            <SkeletonLoader
-              height="1.5rem"
-              margin="10px 0"
-            />
+            <SkeletonLoader height="1.5rem" margin="10px 0" />
+            <SkeletonLoader height="1.5rem" margin="10px 0" />
           </CardBody>
         </ShelfItem>
       ))}
@@ -26,7 +20,7 @@ export const FakeShelfLoader = () => {
 };
 
 const ShelfContainer = styled.div.attrs(() => ({
-  className: 'shelf__container',
+  className: "shelf__container",
 }))`
   display: flex;
   flex-wrap: nowrap; /* из твоего CSS */
@@ -41,7 +35,7 @@ const ShelfContainer = styled.div.attrs(() => ({
 `;
 
 const ShelfItem = styled.div.attrs(() => ({
-  className: 'shelf__item',
+  className: "shelf__item",
 }))`
   width: 150px; /* из твоего CSS */
   flex: 0 0 auto;
@@ -52,13 +46,13 @@ const ShelfItem = styled.div.attrs(() => ({
 `;
 
 const CardWrapper = styled.div.attrs(() => ({
-  className: 'card',
+  className: "card",
 }))`
   border-style: none;
 `;
 
 const CardBody = styled.div.attrs(() => ({
-  className: 'card__description',
+  className: "card__description",
 }))`
   padding: 10px 10px 0 10px;
 `;
