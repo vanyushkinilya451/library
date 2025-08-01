@@ -94,6 +94,7 @@ const fadeIn = keyframes`
 const Container = styled.div`
   position: relative;
   height: 100vh;
+  height: 100dvh;
   display: flex;
   align-items: center;
   justify-content: center;

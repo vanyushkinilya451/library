@@ -1,11 +1,11 @@
-import { st } from 'shared/lib';
-import styled from 'styled-components';
+import { st } from "shared/lib";
+import styled from "styled-components";
 
 export const BackgroundContainer = styled.div`
   height: 100%;
   flex: 0 0 50%;
 
-  @media (max-width: ${st('breakpoints', 'lg')}) {
+  @media (max-width: ${st("breakpoints", "lg")}) {
     z-index: 0;
     position: absolute;
     left: 0;
@@ -19,6 +19,7 @@ export const AuthWrapper = styled.section`
   position: relative;
   width: 100%;
   height: 100vh;
+  height: 100dvh;
   justify-content: center;
   align-items: center;
 `;
@@ -29,9 +30,9 @@ export const ContentContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: ${st('colors', 'background')};
+  background-color: ${st("colors", "background")};
 
-  @media (max-width: ${st('breakpoints', 'lg')}) {
+  @media (max-width: ${st("breakpoints", "lg")}) {
     width: 100%;
     height: 97%;
   }

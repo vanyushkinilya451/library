@@ -439,18 +439,26 @@ const ActionButton = styled.button<{ primary?: boolean }>`
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 12px 24px;
+  padding: 12px 20px;
   border: none;
   border-radius: ${st('borderRadius', 'full')};
-  font-size: ${st('fontSizes', 'md')};
+  font-size: ${st('fontSizes', 'sm')};
   font-weight: 500;
   cursor: pointer;
-  transition: ${st('transitions', 'colors')};
+  transition: all 0.2s ease;
   background: ${({ primary }) =>
     primary ? st('gradients', 'primary') : st('colors', 'backgroundSecondary')};
   color: ${({ primary }) =>
     primary ? st('colors', 'textWhite') : st('colors', 'textPrimary')};
   box-shadow: ${st('shadows', 'card')};
+  white-space: nowrap;
+  min-width: fit-content;
+
+  @media (max-width: ${st('breakpoints', 'sm')}) {
+    font-size: ${st('fontSizes', 'xs')};
+    padding: 10px 16px;
+    gap: 8px;
+  }
 
   &:hover {
     transform: translateY(-2px);
@@ -473,5 +481,10 @@ const ActionButton = styled.button<{ primary?: boolean }>`
 `;
 
 const ButtonIcon = styled.span`
-  font-size: ${st('fontSizes', 'md')};
+  font-size: ${st('fontSizes', 'sm')};
+  flex-shrink: 0;
+
+  @media (max-width: ${st('breakpoints', 'sm')}) {
+    font-size: ${st('fontSizes', 'xs')};
+  }
 `;

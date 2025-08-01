@@ -1,5 +1,5 @@
-import { st } from 'shared/lib';
-import styled, { keyframes } from 'styled-components';
+import { st } from "shared/lib";
+import styled, { keyframes } from "styled-components";
 
 export const float = keyframes`
   0%, 100% { transform: translateY(0px) rotate(0deg); }
@@ -37,12 +37,13 @@ export const fadeIn = keyframes`
 export const Container = styled.div`
   position: relative;
   height: 100vh;
+  height: 100dvh;
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  background: ${st('gradients', 'primary')};
+  background: ${st("gradients", "primary")};
 `;
 
 export const BackgroundGradient = styled.div`
@@ -54,12 +55,12 @@ export const BackgroundGradient = styled.div`
   background:
     radial-gradient(
       circle at 30% 20%,
-      ${st('colors', 'accent')} 0%,
+      ${st("colors", "accent")} 0%,
       transparent 50%
     ),
     radial-gradient(
       circle at 70% 80%,
-      ${st('colors', 'primaryDark')} 0%,
+      ${st("colors", "primaryDark")} 0%,
       transparent 50%
     );
   opacity: 0.3;
@@ -103,7 +104,7 @@ export const Envelope = styled.div<{ delay: number }>`
     left: 20%;
   }
 
-  @media (max-width: ${st('breakpoints', 'sm')}) {
+  @media (max-width: ${st("breakpoints", "sm")}) {
     &:nth-child(5) {
       display: none;
     }
@@ -114,7 +115,7 @@ export const EnvelopeBody = styled.div`
   position: absolute;
   width: 100%;
   height: 100%;
-  background: ${st('gradients', 'multicolor')};
+  background: ${st("gradients", "multicolor")};
   border-radius: 2px;
   box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.2);
   opacity: 0.3;
@@ -126,7 +127,7 @@ export const EnvelopeFlap = styled.div`
   left: 0;
   width: 100%;
   height: 10px;
-  background: ${st('gradients', 'blueToAccent')};
+  background: ${st("gradients", "blueToAccent")};
   clip-path: polygon(0 100%, 50% 0, 100% 100%);
   opacity: 0.4;
 `;
@@ -138,7 +139,7 @@ export const EnvelopeSeal = styled.div`
   transform: translate(-50%, -50%);
   width: 12px;
   height: 12px;
-  background: ${st('colors', 'accent')};
+  background: ${st("colors", "accent")};
   border-radius: 50%;
   opacity: 0.6;
 `;
@@ -155,8 +156,8 @@ export const EmailIcon = styled.div`
   margin-bottom: 30px;
   animation: ${bounce} 2s ease-in-out infinite;
 
-  @media (max-width: ${st('breakpoints', 'md')}),
-    (max-height: ${st('breakpoints', 'md')}) {
+  @media (max-width: ${st("breakpoints", "md")}),
+    (max-height: ${st("breakpoints", "md")}) {
     display: none;
   }
 `;
@@ -171,25 +172,25 @@ export const IconContainer = styled.div`
 `;
 
 export const MailIcon = styled.div`
-  font-size: ${st('fontSizes', 'xxl')};
+  font-size: ${st("fontSizes", "xxl")};
   filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
 `;
 
 export const Title = styled.h1`
-  font-size: ${st('fontSizes', 'xl')};
+  font-size: ${st("fontSizes", "xl")};
   font-weight: 700;
   color: white;
   margin: 0 0 20px 0;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 
-  @media (max-width: ${st('breakpoints', 'md')}),
-    (max-height: ${st('breakpoints', 'md')}) {
+  @media (max-width: ${st("breakpoints", "md")}),
+    (max-height: ${st("breakpoints", "md")}) {
     margin-bottom: 5px;
   }
 `;
 
 export const Description = styled.p`
-  font-size: ${st('fontSizes', 'md')};
+  font-size: ${st("fontSizes", "md")};
   color: white;
   line-height: 1.6;
   margin: 0 0 30px 0;
@@ -197,8 +198,8 @@ export const Description = styled.p`
   margin-left: auto;
   margin-right: auto;
 
-  @media (max-width: ${st('breakpoints', 'md')}),
-    (max-height: ${st('breakpoints', 'md')}) {
+  @media (max-width: ${st("breakpoints", "md")}),
+    (max-height: ${st("breakpoints", "md")}) {
     margin-bottom: 10px;
   }
 `;
@@ -216,20 +217,20 @@ export const InfoBox = styled.div`
   border: 1px solid rgba(255, 255, 255, 0.2);
   animation: ${fadeIn} 1.5s ease-out;
 
-  @media (max-width: ${st('breakpoints', 'md')}),
-    (max-height: ${st('breakpoints', 'md')}) {
+  @media (max-width: ${st("breakpoints", "md")}),
+    (max-height: ${st("breakpoints", "md")}) {
     margin-bottom: 25px;
     padding: 10px;
   }
 `;
 
 export const InfoIcon = styled.span`
-  font-size: ${st('fontSizes', 'md')};
+  font-size: ${st("fontSizes", "md")};
   flex-shrink: 0;
 `;
 
 export const InfoText = styled.span`
-  font-size: ${st('fontSizes', 'md')};
+  font-size: ${st("fontSizes", "md")};
   color: white;
   text-align: left;
 `;
@@ -249,7 +250,7 @@ export const Button = styled.button`
   padding: 12px 24px;
   border: none;
   border-radius: 8px;
-  font-size: ${st('fontSizes', 'md')};
+  font-size: ${st("fontSizes", "md")};
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -259,20 +260,20 @@ export const Button = styled.button`
 
   &:hover {
     transform: translateY(-2px);
-    background: ${st('gradients', 'accent')};
+    background: ${st("gradients", "accent")};
   }
 `;
 
 export const PrimaryButton = styled(Button)`
-  background: ${st('colors', 'primary')};
-  color: ${st('colors', 'textPrimary')};
+  background: ${st("colors", "primary")};
+  color: ${st("colors", "textPrimary")};
 
   &:hover {
-    background: ${st('gradients', 'accent')};
-    opacity: ${st('opacity', 'hover')};
+    background: ${st("gradients", "accent")};
+    opacity: ${st("opacity", "hover")};
   }
 `;
 
 export const ButtonIcon = styled.span`
-  font-size: ${st('fontSizes', 'md')};
+  font-size: ${st("fontSizes", "md")};
 `;

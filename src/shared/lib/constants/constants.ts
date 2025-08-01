@@ -18,13 +18,13 @@ export const CONSTANTS = {
   } as const,
 
   URLS: {
-    BASE_URL: 'https://openlibrary.org',
+    BASE_URL: "https://openlibrary.org",
     SEARCH_BOOKS: `https://openlibrary.org/search.json`,
-    SEARCH_AUTHORS: 'https://openlibrary.org/search/authors.json',
-    BOOK: 'https://openlibrary.org/books',
-    AUTHOR: 'https://openlibrary.org/authors',
-    COVER: 'http://covers.openlibrary.org/b/id/',
-    AUTHOR_IMAGE: 'https://covers.openlibrary.org/a/olid/',
-    SUBJECTS: 'https://openlibrary.org/subjects.json?limit=1000&offset=0',
+    SEARCH_AUTHORS: "https://openlibrary.org/search/authors.json",
+    BOOK: "https://openlibrary.org/books",
+    AUTHOR: "https://openlibrary.org/authors",
+    COVER: "http://covers.openlibrary.org/b/id/",
+    AUTHOR_IMAGE: "https://covers.openlibrary.org/a/olid/",
+    SUBJECTS: "https://openlibrary.org/subjects.json?limit=1000&offset=0",
   } as const,
 };

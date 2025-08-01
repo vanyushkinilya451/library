@@ -1,11 +1,11 @@
-import type { User } from '@supabase/supabase-js';
-import { ROUTES } from 'app/routes/router';
-import { logoutUser } from 'entities/user';
-import { useRef } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
-import { st, useAppDispatch, useClickOutside, useModal } from 'shared/lib';
-import { SkeletonLoader } from 'shared/ui';
-import styled, { css } from 'styled-components';
+import type { User } from "@supabase/supabase-js";
+import { ROUTES } from "app/routes/router";
+import { logoutUser } from "entities/user";
+import { useRef } from "react";
+import { NavLink, useNavigate } from "react-router-dom";
+import { st, useAppDispatch, useClickOutside, useModal } from "shared/lib";
+import { SkeletonLoader } from "shared/ui";
+import styled, { css } from "styled-components";
 
 type Props = {
   isLoading: boolean;
@@ -27,103 +27,88 @@ export const Dropdown = ({ isLoading, user }: Props) => {
 
   return (
     <>
-      <Button
-        onClick={toggleModal}
-        ref={buttonRef}
-      >
-        <BurgerLine
-          line="first"
-          isDropdown={isModalOpen}
-        />
-        <BurgerLine
-          line="second"
-          isDropdown={isModalOpen}
-        />
-        <BurgerLine
-          line="third"
-          isDropdown={isModalOpen}
-        />
+      <Button onClick={toggleModal} ref={buttonRef}>
+        <BurgerLine line="first" isDropdown={isModalOpen} />
+        <BurgerLine line="second" isDropdown={isModalOpen} />
+        <BurgerLine line="third" isDropdown={isModalOpen} />
       </Button>
-      {isModalOpen && (
-        <DropdownContainer
-          ref={dropdownRef}
-          onClick={closeModal}
-        >
-          {isLoading ? (
-            <SkeletonLoader
-              width="200px"
-              height="30px"
-              margin="0 20px"
-            />
-          ) : !user && !isLoading ? (
-            <>
-              <DropdownLink to={ROUTES.LINKS.HOME}>Главная</DropdownLink>
-              <DropdownLink to={ROUTES.LINKS.CATEGORIES}>
-                Категории
-              </DropdownLink>
-              <DropdownLink to={ROUTES.LINKS.LOGIN}>Войти</DropdownLink>
-              <DropdownLink to={ROUTES.LINKS.REGISTER}>
-                Зарегистрироваться
-              </DropdownLink>
-            </>
-          ) : (
-            <>
-              <DropdownLink to={ROUTES.LINKS.HOME}>Главная</DropdownLink>
-              <DropdownLink to={ROUTES.LINKS.CATEGORIES}>
-                Категории
-              </DropdownLink>
-              <DropdownLink to={ROUTES.LINKS.PROFILE}>Профиль</DropdownLink>
-              <DropdownLink to={ROUTES.LINKS.MYBOOKS}>Мои книги</DropdownLink>
-              <DropdownLogout onClick={handleLogout}>Выйти</DropdownLogout>
-            </>
-          )}
-        </DropdownContainer>
-      )}
+      <DropdownContainer
+        ref={dropdownRef}
+        onClick={closeModal}
+        isOpen={isModalOpen}
+      >
+        {isLoading ? (
+          <SkeletonLoader width="200px" height="30px" margin="0 20px" />
+        ) : !user && !isLoading ? (
+          <>
+            <DropdownLink to={ROUTES.LINKS.HOME}>Главная</DropdownLink>
+            <DropdownLink to={ROUTES.LINKS.CATEGORIES}>Категории</DropdownLink>
+            <DropdownLink to={ROUTES.LINKS.LOGIN}>Войти</DropdownLink>
+            <DropdownLink to={ROUTES.LINKS.REGISTER}>
+              Зарегистрироваться
+            </DropdownLink>
+          </>
+        ) : (
+          <>
+            <DropdownLink to={ROUTES.LINKS.HOME}>Главная</DropdownLink>
+            <DropdownLink to={ROUTES.LINKS.CATEGORIES}>Категории</DropdownLink>
+            <DropdownLink to={ROUTES.LINKS.PROFILE}>Профиль</DropdownLink>
+            <DropdownLink to={ROUTES.LINKS.MYBOOKS}>Мои книги</DropdownLink>
+            <DropdownLogout onClick={handleLogout}>Выйти</DropdownLogout>
+          </>
+        )}
+      </DropdownContainer>
     </>
   );
 };
 
-const DropdownContainer = styled.div`
+const DropdownContainer = styled.div<{ isOpen: boolean }>`
   position: absolute;
   top: 60px;
   right: 20px;
   width: min-content;
-  display: none;
-  background-color: ${st('colors', 'background')};
-  border-radius: ${st('borderRadius', 'lg')};
-  box-shadow: ${st('shadows', 'modal')};
-  z-index: ${st('zIndices', 'modal')};
-  transition: ${st('transitions', 'colors')};
+  display: flex;
+  flex-direction: column;
+  background-color: ${st("colors", "background")};
+  border-radius: ${st("borderRadius", "lg")};
+  box-shadow: ${st("shadows", "modal")};
+  z-index: ${st("zIndices", "modal")};
+  transition: all 0.2s ease-in-out;
+  transform-origin: top right;
+  opacity: ${({ isOpen }) => (isOpen ? 1 : 0)};
+  transform: ${({ isOpen }) =>
+    isOpen ? "scale(1) translateY(0)" : "scale(0.95) translateY(-10px)"};
+  pointer-events: ${({ isOpen }) => (isOpen ? "auto" : "none")};
 
-  @media (max-width: ${st('breakpoints', 'sm')}) {
+  @media (max-width: ${st("breakpoints", "sm")}) {
     display: flex;
     flex-direction: column;
   }
 
   :first-child {
-    border-top-right-radius: ${st('borderRadius', 'lg')};
-    border-top-left-radius: ${st('borderRadius', 'lg')};
+    border-top-right-radius: ${st("borderRadius", "lg")};
+    border-top-left-radius: ${st("borderRadius", "lg")};
   }
 `;
 
 const Link = css`
-  color: ${st('colors', 'textPrimary')};
+  color: ${st("colors", "textPrimary")};
   padding: 0.75rem 2.5rem;
   white-space: nowrap;
   text-decoration: none;
-  font-weight: ${st('fontWeights', 'medium')};
-  font-size: ${st('fontSizes', 'md')};
-  transition: ${st('transitions', 'colors')};
+  font-weight: ${st("fontWeights", "medium")};
+  font-size: ${st("fontSizes", "md")};
+  transition: ${st("transitions", "colors")};
   cursor: pointer;
   text-align: left;
 
   &.active {
-    background-color: ${st('colors', 'primaryLight')};
-    color: ${st('colors', 'textWhite')};
+    background-color: ${st("colors", "primaryLight")};
+    color: ${st("colors", "textWhite")};
   }
 
   &:hover {
-    background-color: ${st('colors', 'backgroundSecondary')};
+    background-color: ${st("colors", "backgroundSecondary")};
   }
 `;
 
@@ -134,7 +119,7 @@ const DropdownLink = styled(NavLink)`
 const DropdownLogout = styled.button`
   ${Link}
   border-style: none;
-  color: ${st('colors', 'danger')};
+  color: ${st("colors", "danger")};
 `;
 
 const Button = styled.button`
@@ -147,7 +132,7 @@ const Button = styled.button`
   border: none;
   cursor: pointer;
 
-  @media (max-width: ${st('breakpoints', 'sm')}) {
+  @media (max-width: ${st("breakpoints", "sm")}) {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -157,29 +142,29 @@ const Button = styled.button`
 
 const BurgerLine = styled.span<{
   isDropdown: boolean;
-  line: 'first' | 'second' | 'third';
+  line: "first" | "second" | "third";
 }>`
   width: 24px;
   height: 2px;
-  background-color: ${st('colors', 'textWhite')};
-  border-radius: ${st('borderRadius', 'xs')};
-  transition: ${st('transitions', 'transform')};
+  background-color: ${st("colors", "textWhite")};
+  border-radius: ${st("borderRadius", "xs")};
+  transition: all 0.3s ease;
   ${({ isDropdown, line }) =>
     isDropdown &&
-    line === 'first' &&
+    line === "first" &&
     `
       transform: translateY(8px) rotate(45deg);
     `}
   ${({ isDropdown, line }) =>
     isDropdown &&
-    line === 'second' &&
+    line === "second" &&
     `
       opacity: 0;
       transform: scaleX(0);
     `}
     ${({ isDropdown, line }) =>
     isDropdown &&
-    line === 'third' &&
+    line === "third" &&
     `
       transform: translateY(-8px) rotate(-45deg);
     `};

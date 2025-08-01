@@ -1,21 +1,71 @@
 import { AuthLayout, MainLayout } from "app/layouts";
 import { ProtectedRouteWrapper } from "app/providers/ProtectedRouteWrapper";
-import {
-  ChangePasswordForm,
-  LoginForm,
-  RegisterForm,
-  ResetPasswordForm,
-  VerifyEmail,
-  VerifyResetPassword,
-} from "features/auth";
-import { AuthorPage } from "pages/author";
-import { BookPage } from "pages/book";
-import { Categories } from "pages/categories";
-import { HomePage } from "pages/home";
-import { MyBooks } from "pages/mybooks";
-import { NotFoundPage } from "pages/not_found";
-import { ProfilePage } from "pages/profile";
+import { lazy } from "react";
 import { createHashRouter } from "react-router-dom";
+
+// Lazy imports for pages
+const HomePage = lazy(() =>
+  import("pages/home").then(({ HomePage }) => ({ default: HomePage }))
+);
+
+const Categories = lazy(() =>
+  import("pages/categories").then(({ Categories }) => ({ default: Categories }))
+);
+
+const BookPage = lazy(() =>
+  import("pages/book").then(({ BookPage }) => ({ default: BookPage }))
+);
+
+const AuthorPage = lazy(() =>
+  import("pages/author").then(({ AuthorPage }) => ({ default: AuthorPage }))
+);
+
+const MyBooks = lazy(() =>
+  import("pages/mybooks").then(({ MyBooks }) => ({ default: MyBooks }))
+);
+
+const ProfilePage = lazy(() =>
+  import("pages/profile").then(({ ProfilePage }) => ({ default: ProfilePage }))
+);
+
+const NotFoundPage = lazy(() =>
+  import("pages/not_found").then(({ NotFoundPage }) => ({
+    default: NotFoundPage,
+  }))
+);
+
+// Lazy imports for auth forms
+const LoginForm = lazy(() =>
+  import("features/auth").then(({ LoginForm }) => ({ default: LoginForm }))
+);
+
+const RegisterForm = lazy(() =>
+  import("features/auth").then(({ RegisterForm }) => ({
+    default: RegisterForm,
+  }))
+);
+
+const ChangePasswordForm = lazy(() =>
+  import("features/auth").then(({ ChangePasswordForm }) => ({
+    default: ChangePasswordForm,
+  }))
+);
+
+const ResetPasswordForm = lazy(() =>
+  import("features/auth").then(({ ResetPasswordForm }) => ({
+    default: ResetPasswordForm,
+  }))
+);
+
+const VerifyEmail = lazy(() =>
+  import("features/auth").then(({ VerifyEmail }) => ({ default: VerifyEmail }))
+);
+
+const VerifyResetPassword = lazy(() =>
+  import("features/auth").then(({ VerifyResetPassword }) => ({
+    default: VerifyResetPassword,
+  }))
+);
 
 export const ROUTES = {
   //paths for router
