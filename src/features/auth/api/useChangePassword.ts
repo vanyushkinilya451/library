@@ -1,7 +1,7 @@
-import { ROUTES } from 'app/routes/router';
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { supabase, validatePassword } from 'shared/lib';
+import { ROUTES } from "app/routes/router";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { supabase, validatePassword } from "shared/lib";
 
 export const useChangePassword = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -17,16 +17,16 @@ export const useChangePassword = () => {
     setIsLoading(true);
     setError(null);
     if (
-      credentials.email === '' ||
-      credentials.password === '' ||
-      credentials.passwordConfirm === ''
+      credentials.email === "" ||
+      credentials.password === "" ||
+      credentials.passwordConfirm === ""
     ) {
-      setError('Пожалуйста, заполните все поля');
+      setError("Пожалуйста, заполните все поля");
       return;
     }
 
     if (credentials.password !== credentials.passwordConfirm) {
-      setError('Пароли должны совпадать');
+      setError("Пароли должны совпадать");
       return;
     }
 

@@ -1,19 +1,15 @@
-import { useEnfOfPage } from 'shared/lib';
-import { DotLoader, EndOfPage } from 'shared/ui';
-import { Shelf } from 'widgets/Shelf';
-import { homepageConfig } from '../lib/homepageConfig';
+import { useEndOfPage } from "shared/lib";
+import { DotLoader, EndOfPage } from "shared/ui";
+import { Shelf } from "widgets/Shelf";
+import { homepageConfig } from "../lib/homepageConfig";
 
 export const HomePage = () => {
-  const { categoriesLimit } = useEnfOfPage();
+  const { categoriesLimit } = useEndOfPage();
 
   return (
     <section>
       {homepageConfig.slice(0, categoriesLimit).map((shelf) => (
-        <Shelf
-          key={shelf.title}
-          shelfTitle={shelf.title}
-          api={shelf.api}
-        />
+        <Shelf key={shelf.title} shelfTitle={shelf.title} api={shelf.api} />
       ))}
 
       {homepageConfig.length >= categoriesLimit && <DotLoader />}

@@ -1,8 +1,8 @@
-import { ROUTES } from 'app/routes/router';
-import { loginUser } from 'entities/user';
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useAppDispatch, useAppSelector, validatePassword } from 'shared/lib';
+import { ROUTES } from "app/routes/router";
+import { loginUser } from "entities/user";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAppDispatch, useAppSelector, validatePassword } from "shared/lib";
 
 export const useLogin = () => {
   const [error, setError] = useState<string | null>(null);
@@ -13,8 +13,8 @@ export const useLogin = () => {
 
   const login = async (credentials: { email: string; password: string }) => {
     setError(null);
-    if (credentials.email === '' || credentials.password === '') {
-      setError('Пожалуйста, заполните все поля');
+    if (credentials.email === "" || credentials.password === "") {
+      setError("Пожалуйста, заполните все поля");
       return;
     }
 
@@ -25,12 +25,12 @@ export const useLogin = () => {
     }
 
     const result = await dispatch(loginUser(credentials));
-    if (result.meta.requestStatus == 'fulfilled') {
+    if (result.meta.requestStatus == "fulfilled") {
       navigate(ROUTES.LINKS.HOME);
     }
 
-    if (result.meta.requestStatus == 'rejected') {
-      setError('Неверный логин или пароль');
+    if (result.meta.requestStatus == "rejected") {
+      setError("Неверный логин или пароль");
     }
   };
 

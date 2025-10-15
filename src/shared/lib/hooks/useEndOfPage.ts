@@ -1,9 +1,9 @@
-import { useEffect, useState } from 'react';
-import { CONSTANTS } from 'shared/lib';
+import { useEffect, useState } from "react";
+import { CONSTANTS } from "shared/lib";
 
-export const useEnfOfPage = () => {
+export const useEndOfPage = () => {
   const [categoriesLimit, setCategoriesLimit] = useState<number>(
-    CONSTANTS.LIMITS.CATEGORIES_LIMIT,
+    CONSTANTS.LIMITS.CATEGORIES_LIMIT
   );
 
   useEffect(() => {
@@ -12,14 +12,14 @@ export const useEnfOfPage = () => {
       const currentScroll = window.scrollY + window.innerHeight;
 
       if (currentScroll >= documentHeight) {
-        setCategoriesLimit((prev) => prev + 3);
+        setCategoriesLimit((prev) => prev + CONSTANTS.LIMITS.CATEGORIES_LIMIT);
       }
     };
 
-    window.addEventListener('scroll', handleScrollEnd);
+    window.addEventListener("scroll", handleScrollEnd);
 
     return () => {
-      window.removeEventListener('scroll', handleScrollEnd);
+      window.removeEventListener("scroll", handleScrollEnd);
     };
   }, []);
 

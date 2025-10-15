@@ -1,10 +1,10 @@
-import { useEnfOfPage } from "shared/lib";
+import { useEndOfPage } from "shared/lib";
 import { DotLoader, EndOfPage } from "shared/ui";
 import { Shelf } from "widgets/Shelf";
 import { shelvesConfig } from "../lib/shelvesConfig";
 
 export const Categories = () => {
-  const { categoriesLimit } = useEnfOfPage();
+  const { categoriesLimit } = useEndOfPage();
 
   return (
     <section>
