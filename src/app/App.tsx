@@ -1,15 +1,15 @@
 import { Provider } from "react-redux";
 import { RouterProvider } from "react-router-dom";
-import { ThemeWrapper } from "./providers/ThemeWrapper";
-import { router } from "./routes";
-import { store } from "./store/store";
+import { store } from "./providers/store";
+import { ThemeProvider } from "./providers/ThemeProvider";
+import { router } from "./routes/router";
 
 export const App = () => {
   return (
     <Provider store={store}>
-      <ThemeWrapper>
+      <ThemeProvider>
         <RouterProvider router={router} />
-      </ThemeWrapper>
+      </ThemeProvider>
     </Provider>
   );
 };

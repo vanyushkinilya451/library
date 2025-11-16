@@ -3,7 +3,7 @@ import { Navigate, Outlet } from "react-router-dom";
 import { useAppSelector } from "shared/lib";
 import { FullScreenLoader } from "shared/ui";
 
-export const ProtectedRouteWrapper = () => {
+export const ProtectedRoute = () => {
   const { user, isLoading } = useAppSelector((state) => state.user);
 
   if (isLoading && !user) {

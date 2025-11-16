@@ -1,6 +1,6 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import type { Session, User } from '@supabase/supabase-js';
-import { supabase } from 'shared/lib';
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import type { Session, User } from "@supabase/supabase-js";
+import { supabase } from "shared/lib";
 
 export type UserProfile = {
   firstname: string;
@@ -21,13 +21,13 @@ type UserState = {
 const initialState: UserState = {
   user: null,
   session: null,
-  error: '',
+  error: "",
   isLoading: false,
   profile: null,
 };
 
 export const registerUser = createAsyncThunk(
-  'auth/registerUser',
+  "auth/registerUser",
   async (userCredentials: { email: string; password: string }, thunkAPI) => {
     try {
       const { error, data } = await supabase.auth.signUp({
@@ -43,11 +43,11 @@ export const registerUser = createAsyncThunk(
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
-  },
+  }
 );
 
 export const loginUser = createAsyncThunk(
-  'auth/loginUser',
+  "auth/loginUser",
   async (userCredentials: { email: string; password: string }, thunkAPI) => {
     try {
       const { error, data } = await supabase.auth.signInWithPassword({
@@ -63,16 +63,16 @@ export const loginUser = createAsyncThunk(
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
-  },
+  }
 );
 
-export const logoutUser = createAsyncThunk('auth/logoutUser', async () => {
+export const logoutUser = createAsyncThunk("auth/logoutUser", async () => {
   const { error } = await supabase.auth.signOut();
   return { error };
 });
 
 export const getUserAndSession = createAsyncThunk(
-  'auth/getUserAndSession',
+  "auth/getUserAndSession",
   async (_, thunkAPI) => {
     try {
       const { data: userData, error: userError } =
@@ -92,17 +92,17 @@ export const getUserAndSession = createAsyncThunk(
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
-  },
+  }
 );
 
 export const getUserProfile = createAsyncThunk(
-  'auth/getUserProfile',
+  "auth/getUserProfile",
   async (userId: string, thunkApi) => {
     try {
       const { data, error } = await supabase
-        .from('profiles')
-        .select('*')
-        .eq('user_id', userId);
+        .from("profiles")
+        .select("*")
+        .eq("user_id", userId);
 
       if (error) {
         return thunkApi.rejectWithValue(error);
@@ -111,11 +111,11 @@ export const getUserProfile = createAsyncThunk(
     } catch (error) {
       return thunkApi.rejectWithValue(error);
     }
-  },
+  }
 );
 
 export const userSlice = createSlice({
-  name: 'user',
+  name: "user",
   initialState,
   reducers: {},
   extraReducers(builder) {
@@ -126,11 +126,11 @@ export const userSlice = createSlice({
       state.user = action.payload.data.user;
       state.session = action.payload.data.session;
       state.isLoading = false;
-      state.error = '';
+      state.error = "";
     });
     builder.addCase(registerUser.rejected, (state, action) => {
       state.isLoading = false;
-      state.error = action.error?.message || 'Произошла ошибка при регистрации';
+      state.error = action.error?.message || "Произошла ошибка при регистрации";
     });
     builder.addCase(loginUser.pending, (state) => {
       state.isLoading = true;
@@ -139,11 +139,11 @@ export const userSlice = createSlice({
       state.user = action.payload.data.user;
       state.session = action.payload.data.session;
       state.isLoading = false;
-      state.error = '';
+      state.error = "";
     });
     builder.addCase(loginUser.rejected, (state, action) => {
       state.isLoading = false;
-      state.error = action.error?.message || 'Произошла ошибка при входе';
+      state.error = action.error?.message || "Произошла ошибка при входе";
     });
     builder.addCase(logoutUser.pending, (state) => {
       state.isLoading = true;
@@ -153,13 +153,13 @@ export const userSlice = createSlice({
       state.session = null;
       state.isLoading = false;
       state.profile = null;
-      state.error = '';
+      state.error = "";
     });
     builder.addCase(logoutUser.rejected, (state, action) => {
       state.isLoading = false;
-      state.error = action.error?.message || 'Произошла ошибка при выходе';
+      state.error = action.error?.message || "Произошла ошибка при выходе";
       state.profile = null;
-      state.error = '';
+      state.error = "";
       state.profile = null;
     });
     builder.addCase(getUserAndSession.pending, (state) => {
@@ -169,27 +169,27 @@ export const userSlice = createSlice({
       state.user = action.payload.userData.user;
       state.session = action.payload.sessionData.session;
       state.isLoading = false;
-      state.error = '';
+      state.error = "";
     });
     builder.addCase(getUserAndSession.rejected, (state, action) => {
       state.isLoading = false;
       state.error =
         action.error?.message ||
-        'Произошла ошибка при получении пользователя и сессии';
+        "Произошла ошибка при получении пользователя и сессии";
     });
     builder.addCase(getUserProfile.pending, (state) => {
       state.isLoading = true;
     });
     builder.addCase(getUserProfile.fulfilled, (state, action) => {
       state.profile = action.payload.data[0];
-      state.error = '';
+      state.error = "";
       state.isLoading = false;
     });
     builder.addCase(getUserProfile.rejected, (state, action) => {
       state.isLoading = false;
       state.profile = null;
       state.error =
-        action.error?.message || 'Произошла ошибка при получении профиля';
+        action.error?.message || "Произошла ошибка при получении профиля";
     });
   },
 });

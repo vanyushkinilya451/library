@@ -57,7 +57,33 @@ export type BookWorkFormat = {
   work: { key: string };
 };
 
+export type MyBooksQuery = {
+  from: string;
+  select: string;
+  userId: string;
+  bookStatus: "will_read" | "reading" | "read" | "favorite";
+};
+
+export type GetAllMyBooksQuery = {
+  from: string;
+  select: string;
+  userId: string;
+};
+
+export type MyBooksMutation = {
+  from: string;
+  userId: string;
+  bookId: string;
+  bookStatus: "will_read" | "reading" | "read" | "favorite";
+  method: "insert" | "update" | "delete";
+};
+
 export type BookCoverProps = {
-  id: number;
-  size: 'S' | 'M' | 'L';
+  onClick?: () => void;
+  cover_id?: number;
+  cover_i?: number;
+  className?: string;
+  size?: "S" | "M" | "L";
+  skeletonHeight?: string;
+  borderRadius?: string;
 };

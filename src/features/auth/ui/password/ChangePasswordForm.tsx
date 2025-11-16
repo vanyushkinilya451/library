@@ -1,6 +1,7 @@
-import { useChangePassword } from 'features/auth/api/useChangePassword';
-import { useEffect, useState } from 'react';
-import toast from 'react-hot-toast';
+import { ROUTES } from "app/routes/router";
+import { useChangePassword } from "features/auth/api/useChangePassword";
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import {
   AccentLink,
   AuthForm,
@@ -12,14 +13,13 @@ import {
   FormTitle,
   RegisterPrompt,
   SubmitButton,
-} from '../AuthFormStyles';
-import { ROUTES } from 'app/routes/router';
+} from "../AuthFormStyles";
 
 export const ChangePasswordForm = () => {
   const [credentials, setCredentials] = useState({
-    email: '',
-    password: '',
-    passwordConfirm: '',
+    email: "",
+    password: "",
+    passwordConfirm: "",
   });
   const [showPassword, setShowPassword] = useState(false);
   const { changePassword, isLoading, error, passwordErrors, isSuccess } =
@@ -48,7 +48,7 @@ export const ChangePasswordForm = () => {
     }
 
     if (isSuccess) {
-      toast.success('Пароль успешно сброшен');
+      toast.success("Пароль успешно сброшен");
     }
   }, [error, passwordErrors, isSuccess]);
 
@@ -66,7 +66,7 @@ export const ChangePasswordForm = () => {
       />
 
       <FormInput
-        type={showPassword ? 'text' : 'password'}
+        type={showPassword ? "text" : "password"}
         onChange={handleChange}
         name="password"
         placeholder="Новый пароль"
@@ -74,7 +74,7 @@ export const ChangePasswordForm = () => {
       />
 
       <FormInput
-        type={showPassword ? 'text' : 'password'}
+        type={showPassword ? "text" : "password"}
         onChange={handleChange}
         name="passwordConfirm"
         placeholder="Повторите пароль"
@@ -84,19 +84,13 @@ export const ChangePasswordForm = () => {
       <FormFooter>
         <FormCheckboxWrapper>
           <FormLabel>
-            <input
-              type="checkbox"
-              onChange={handleShowPassword}
-            />
+            <input type="checkbox" onChange={handleShowPassword} />
             Показать пароль
           </FormLabel>
         </FormCheckboxWrapper>
       </FormFooter>
-      <SubmitButton
-        type="submit"
-        disabled={isLoading}
-      >
-        {isLoading ? 'Загрузка...' : 'Изменить пароль'}
+      <SubmitButton type="submit" disabled={isLoading}>
+        {isLoading ? "Загрузка..." : "Изменить пароль"}
       </SubmitButton>
       <RegisterPrompt>
         Вспомнили пароль? <AccentLink to={ROUTES.LINKS.LOGIN}>Войти</AccentLink>

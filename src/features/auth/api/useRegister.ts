@@ -1,8 +1,8 @@
-import { ROUTES } from 'app/routes/router';
-import { registerUser } from 'entities/user';
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useAppDispatch, useAppSelector, validatePassword } from 'shared/lib';
+import { ROUTES } from "app/routes/router";
+import { registerUser } from "entities/user";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAppDispatch, useAppSelector, validatePassword } from "shared/lib";
 
 export const useRegister = () => {
   const [error, setError] = useState<string | null>(null);
@@ -13,8 +13,8 @@ export const useRegister = () => {
 
   const register = async (credentials: { email: string; password: string }) => {
     setError(null);
-    if (credentials.email === '' || credentials.password === '') {
-      setError('Пожалуйста, заполните все поля');
+    if (credentials.email === "" || credentials.password === "") {
+      setError("Пожалуйста, заполните все поля");
       return;
     }
 
@@ -25,12 +25,12 @@ export const useRegister = () => {
     }
 
     const result = await dispatch(registerUser(credentials));
-    if (result.meta.requestStatus == 'fulfilled') {
-      navigate(ROUTES.LINKS.VERIFY_EMAIL);
+    if (result.meta.requestStatus == "fulfilled") {
+      navigate(ROUTES.LINKS.HOME);
     }
 
-    if (result.meta.requestStatus == 'rejected') {
-      setError('Произошла ошибка при регистрации');
+    if (result.meta.requestStatus == "rejected") {
+      setError("Произошла ошибка при регистрации");
     }
   };
 

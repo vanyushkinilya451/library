@@ -25,6 +25,8 @@
     "node_modules",
     "steiger.config.ts",
     "dist",
-    "eslint.config.mjs"
+    "eslint.config.mjs",
+    "coverage",
+    "jest.config.js"
   ]
 }

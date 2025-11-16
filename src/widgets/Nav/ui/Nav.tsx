@@ -1,13 +1,13 @@
-import type { User } from '@supabase/supabase-js';
-import { ROUTES } from 'app/routes/router';
-import { SearchPanel } from 'features/search';
-import { Link, NavLink } from 'react-router-dom';
-import { BookstackSvg } from 'shared/assets';
-import { st, useAppSelector } from 'shared/lib';
-import { ThemeToggle } from 'shared/ui';
-import styled, { css } from 'styled-components';
-import { AuthLinks } from './AuthLinks';
-import { Dropdown } from './Dropdown';
+import type { User } from "@supabase/supabase-js";
+import { ROUTES } from "app/routes/router";
+import { SearchPanel } from "features/search";
+import { Link, NavLink } from "react-router-dom";
+import { BookstackSvg } from "shared/assets";
+import { st, useAppSelector } from "shared/lib";
+import { ThemeToggle } from "shared/ui";
+import styled, { css } from "styled-components";
+import { AuthLinks } from "./AuthLinks";
+import { Dropdown } from "./Dropdown";
 
 export const Nav = () => {
   const { user, isLoading }: { user: User | null; isLoading: boolean } =
@@ -30,37 +30,31 @@ export const Nav = () => {
       <RightSection>
         <ThemeToggle />
         <LinksContainer>
-          <AuthLinks
-            isLoading={isLoading}
-            user={user}
-          />
+          <AuthLinks isLoading={isLoading} user={user} />
         </LinksContainer>
       </RightSection>
 
       {/* MOBILES ONLY */}
-      <Dropdown
-        isLoading={isLoading}
-        user={user}
-      />
+      <Dropdown isLoading={isLoading} user={user} />
     </Navbar>
   );
 };
 
 const Navbar = styled.nav`
-  z-index: ${st('zIndices', 'overlay')};
-  background: ${st('gradients', 'primary')};
+  z-index: ${st("zIndices", "overlay")};
+  background: ${st("gradients", "primary")};
   position: sticky;
   top: 0;
-  box-shadow: ${st('shadows', 'nav')};
+  box-shadow: ${st("shadows", "nav")};
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: ${st('spacing', 'sm')} ${st('spacing', 'md')};
+  padding: ${st("spacing", "sm")} ${st("spacing", "md")};
   height: min-content;
   gap: 5px;
-  transition: ${st('transitions', 'colors')};
+  transition: ${st("transitions", "colors")};
 
-  @media (max-width: ${st('breakpoints', 'sm')}) {
+  @media (max-width: ${st("breakpoints", "sm")}) {
     justify-content: left;
   }
 `;
@@ -70,7 +64,7 @@ const StyledLink = styled(Link)`
   height: 30px;
   width: 30px;
 
-  @media (max-width: ${st('breakpoints', 'sm')}) {
+  @media (max-width: ${st("breakpoints", "sm")}) {
     display: none;
   }
 `;
@@ -84,7 +78,7 @@ const LinksContainer = styled.div`
   display: flex;
   align-items: center;
 
-  @media (max-width: ${st('breakpoints', 'sm')}) {
+  @media (max-width: ${st("breakpoints", "sm")}) {
     display: none;
   }
 `;
@@ -92,26 +86,26 @@ const LinksContainer = styled.div`
 const RightSection = styled.div`
   display: flex;
   align-items: center;
-  gap: ${st('spacing', 'md')};
+  gap: ${st("spacing", "md")};
 `;
 
 const LinkTemplate = css`
-  color: ${st('colors', 'textWhite')};
+  color: ${st("colors", "textWhite")};
   white-space: nowrap;
   margin: 0 10px;
-  font-weight: ${st('fontWeights', 'medium')};
-  font-size: ${st('fontSizes', 'md')};
+  font-weight: ${st("fontWeights", "medium")};
+  font-size: ${st("fontSizes", "md")};
   text-decoration: none;
   position: relative;
-  transition: ${st('transitions', 'colors')};
+  transition: ${st("transitions", "colors")};
 
-  @media (max-width: ${st('breakpoints', 'lg')}) {
-    font-size: ${st('fontSizes', 'sm')};
+  @media (max-width: ${st("breakpoints", "lg")}) {
+    font-size: ${st("fontSizes", "sm")};
     margin: 0 5px;
   }
 
   &::after {
-    content: '';
+    content: "";
     position: absolute;
     bottom: -5px;
     left: 0;
@@ -120,7 +114,7 @@ const LinkTemplate = css`
     width: 0%;
     height: 2px;
     opacity: 0;
-    background: ${st('colors', 'textWhite')};
+    background: ${st("colors", "textWhite")};
     transition: all 0.3s ease;
   }
 
@@ -129,11 +123,11 @@ const LinkTemplate = css`
       width: 80%;
       opacity: 1;
     }
-    color: ${st('colors', 'textWhite')};
+    color: ${st("colors", "textWhite")};
   }
 
   &:hover {
-    opacity: ${st('opacity', 'hover')};
+    opacity: ${st("opacity", "hover")};
   }
 `;
 

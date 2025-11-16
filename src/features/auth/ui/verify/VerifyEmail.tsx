@@ -1,5 +1,5 @@
-import { ROUTES } from 'app/routes/router';
-import { useNavigate } from 'react-router-dom';
+import { ROUTES } from "app/routes/router";
+import { useNavigate } from "react-router-dom";
 import {
   BackgroundGradient,
   ButtonGroup,
@@ -20,7 +20,7 @@ import {
   MailIcon,
   PrimaryButton,
   Title,
-} from './styles';
+} from "./styles";
 
 export const VerifyEmail = () => {
   const navigate = useNavigate();
@@ -34,10 +34,7 @@ export const VerifyEmail = () => {
       <BackgroundGradient />
       <FloatingEnvelopes>
         {[...Array(5)].map((_, index) => (
-          <Envelope
-            key={index}
-            delay={index * 0.3}
-          >
+          <Envelope key={index} delay={index * 0.3}>
             <EnvelopeBody />
             <EnvelopeFlap />
             <EnvelopeSeal />

@@ -1,25 +1,16 @@
-import { useEffect, useRef, useState } from 'react';
-import { SkeletonLoader } from 'shared/ui';
-import { handleCoverUrl } from '../lib/handleCoverUrl';
-
-type BookCoverProps = {
-  onClick?: () => void;
-  cover_id?: number;
-  cover_i?: number;
-  className?: string;
-  size?: 'S' | 'M' | 'L';
-  skeletonHeight?: string;
-  borderRadius?: string;
-};
+import { useEffect, useRef, useState } from "react";
+import { SkeletonLoader } from "shared/ui";
+import { handleCoverUrl } from "../lib/handleCoverUrl";
+import type { BookCoverProps } from "../lib/types";
 
 export const BookCover = ({
   cover_id,
   cover_i,
-  className = 'cover-image',
+  className = "cover-image",
   onClick,
-  size = 'M',
-  skeletonHeight = '180px',
-  borderRadius = '0px',
+  size = "M",
+  skeletonHeight = "180px",
+  borderRadius = "0px",
 }: BookCoverProps) => {
   const [isLoading, setIsLoading] = useState(true);
   const imgRef = useRef<HTMLImageElement>(null);
@@ -38,7 +29,7 @@ export const BookCover = ({
 
   useEffect(() => {
     const checkImage = async () => {
-      const response = await fetch(coverUrl, { method: 'HEAD' });
+      const response = await fetch(coverUrl, { method: "HEAD" });
       if (!response.ok) {
         setIsLoading(false);
       }
@@ -57,10 +48,10 @@ export const BookCover = ({
         src={coverUrl}
         alt="cover"
         style={{
-          display: isLoading ? 'none' : 'block',
+          display: isLoading ? "none" : "block",
           borderRadius: borderRadius,
-          width: '100%',
-          height: '100%',
+          width: "100%",
+          height: "100%",
         }}
         onLoad={handleImageLoad}
         onError={handleImageError}

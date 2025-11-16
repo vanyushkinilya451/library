@@ -1,7 +1,7 @@
-import { ROUTES } from 'app/routes/router';
-import { useResetPassword } from 'features/auth/api/useResetPassword';
-import { useEffect, useState } from 'react';
-import toast from 'react-hot-toast';
+import { ROUTES } from "app/routes/router";
+import { useResetPassword } from "features/auth/api/useResetPassword";
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import {
   AccentLink,
   AuthForm,
@@ -12,10 +12,10 @@ import {
   FormTitle,
   RegisterPrompt,
   SubmitButton,
-} from '../AuthFormStyles';
+} from "../AuthFormStyles";
 
 export const ResetPasswordForm = () => {
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState("");
   const { resetPassword, isLoading, error } = useResetPassword();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -49,11 +49,8 @@ export const ResetPasswordForm = () => {
       />
 
       <FormFooter></FormFooter>
-      <SubmitButton
-        type="submit"
-        disabled={isLoading}
-      >
-        {isLoading ? 'Загрузка...' : 'Сбросить пароль'}
+      <SubmitButton type="submit" disabled={isLoading}>
+        {isLoading ? "Загрузка..." : "Сбросить пароль"}
       </SubmitButton>
       <RegisterPrompt>
         Вспомнили пароль? <AccentLink to={ROUTES.LINKS.LOGIN}>Войти</AccentLink>

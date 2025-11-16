@@ -1,7 +1,7 @@
-import { ROUTES } from 'app/routes/router';
-import { useLogin } from 'features/auth/api/useLogin';
-import { useEffect, useState } from 'react';
-import toast from 'react-hot-toast';
+import { ROUTES } from "app/routes/router";
+import { useLogin } from "features/auth/api/useLogin";
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import {
   AccentLink,
   AuthForm,
@@ -14,10 +14,10 @@ import {
   FormTitle,
   RegisterPrompt,
   SubmitButton,
-} from '../AuthFormStyles';
+} from "../AuthFormStyles";
 
 export const LoginForm = () => {
-  const [credentials, setCredentials] = useState({ email: '', password: '' });
+  const [credentials, setCredentials] = useState({ email: "", password: "" });
   const [showPassword, setShowPassword] = useState(false);
   const { login, error, passwordErrors, isLoading } = useLogin();
 
@@ -61,7 +61,7 @@ export const LoginForm = () => {
       />
 
       <FormInput
-        type={showPassword ? 'text' : 'password'}
+        type={showPassword ? "text" : "password"}
         onChange={handleChange}
         placeholder="Пароль"
         name="password"
@@ -71,24 +71,18 @@ export const LoginForm = () => {
       <FormFooter>
         <FormCheckboxWrapper>
           <FormLabel>
-            <input
-              type="checkbox"
-              onChange={handleShowPassword}
-            />
+            <input type="checkbox" onChange={handleShowPassword} />
             Показать пароль
           </FormLabel>
         </FormCheckboxWrapper>
         <AccentLink to={ROUTES.LINKS.RESET_PASSWORD}>Забыли пароль?</AccentLink>
       </FormFooter>
 
-      <SubmitButton
-        type="submit"
-        disabled={isLoading}
-      >
-        {isLoading ? 'Загрузка...' : 'Войти'}
+      <SubmitButton type="submit" disabled={isLoading}>
+        {isLoading ? "Загрузка..." : "Войти"}
       </SubmitButton>
       <RegisterPrompt>
-        Впервые здесь?{' '}
+        Впервые здесь?{" "}
         <AccentLink to={ROUTES.LINKS.REGISTER}>
           Зарегистрируйте Ваш аккаунт
         </AccentLink>

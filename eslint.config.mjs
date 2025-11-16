@@ -7,11 +7,6 @@ import tseslint from "typescript-eslint";
 
 export default defineConfig([
   {
-    env: {
-      browser: true,
-      es2021: true,
-      jest: true,
-    },
     ignores: [
       "dist/**/*",
       "node_modules",
@@ -53,6 +48,12 @@ export default defineConfig([
       "@typescript-eslint/consistent-type-imports": "error",
       "no-debugger": "error",
       "react/no-unescaped-entities": "off",
+      "react-hooks/exhaustive-deps": [
+        "off",
+        {
+          additionalHooks: "useDispatch|useAppDispatch",
+        },
+      ],
     },
   },
 ]);

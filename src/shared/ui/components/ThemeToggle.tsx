@@ -12,11 +12,7 @@ export const ThemeToggle = () => {
 
   return (
     <ToggleContainer>
-      <ToggleButton
-        onClick={handleToggle}
-        aria-label="Переключить тему"
-        $isDark={currentTheme === "dark"}
-      >
+      <ToggleButton onClick={handleToggle} $isDark={currentTheme === "dark"}>
         <ToggleTrack $isDark={currentTheme === "dark"}>
           <ToggleThumb $isDark={currentTheme === "dark"}>
             {currentTheme === "light" ? "☀️" : "🌑"}

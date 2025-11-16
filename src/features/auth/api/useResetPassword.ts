@@ -1,7 +1,7 @@
-import { ROUTES } from 'app/routes/router';
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { supabase } from 'shared/lib';
+import { ROUTES } from "app/routes/router";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { supabase } from "shared/lib";
 export const useResetPassword = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -10,8 +10,8 @@ export const useResetPassword = () => {
   const resetPassword = async (email: string) => {
     setIsLoading(true);
     setError(null);
-    if (email === '') {
-      setError('Пожалуйста, заполните все поля');
+    if (email === "") {
+      setError("Пожалуйста, заполните все поля");
       setIsLoading(false);
       return;
     }

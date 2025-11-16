@@ -1,9 +1,10 @@
-import { AuthLayout, MainLayout } from "app/layouts";
-import { ProtectedRouteWrapper } from "app/providers/ProtectedRouteWrapper";
+import { AuthLayout } from "app/layouts/AuthLayout/AuthLayout";
+import { MainLayout } from "app/layouts/MainLayout/MainLayout";
 import { lazy } from "react";
 import { createHashRouter } from "react-router-dom";
+import { ProtectedRoute } from "./ProtectedRoute";
 
-// Lazy imports for pages
+//#region ленивые импорты
 const HomePage = lazy(() =>
   import("pages/home").then(({ HomePage }) => ({ default: HomePage }))
 );
@@ -34,7 +35,6 @@ const NotFoundPage = lazy(() =>
   }))
 );
 
-// Lazy imports for auth forms
 const LoginForm = lazy(() =>
   import("features/auth").then(({ LoginForm }) => ({ default: LoginForm }))
 );
@@ -67,8 +67,10 @@ const VerifyResetPassword = lazy(() =>
   }))
 );
 
+//#endregion
+
 export const ROUTES = {
-  //paths for router
+  // пути для роутера
   PATHS: {
     HOME: "",
     CATEGORIES: "categories",
@@ -84,7 +86,7 @@ export const ROUTES = {
     CHANGE_PASSWORD: "change-password",
   },
 
-  //paths for links and useNavigate
+  // ссылки и навигация
   LINKS: {
     HOME: "/",
     CATEGORIES: "/categories",
@@ -101,6 +103,7 @@ export const ROUTES = {
   },
 };
 
+// публичные роуты - компоненты
 const publicRoutes = [
   { index: true, Component: HomePage },
   { path: ROUTES.PATHS.CATEGORIES, Component: Categories },
@@ -108,11 +111,13 @@ const publicRoutes = [
   { path: ROUTES.PATHS.AUTHOR, Component: AuthorPage },
 ];
 
+// защищенные роуты
 const protectedRoutes = [
   { path: ROUTES.PATHS.MYBOOKS, Component: MyBooks },
   { path: ROUTES.PATHS.PROFILE, Component: ProfilePage },
 ];
 
+// роуты для авторизации
 const authRoutes = [
   { path: ROUTES.PATHS.LOGIN, Component: LoginForm },
   { path: ROUTES.PATHS.REGISTER, Component: RegisterForm },
@@ -122,6 +127,7 @@ const authRoutes = [
   { path: ROUTES.PATHS.CHANGE_PASSWORD, Component: ChangePasswordForm },
 ];
 
+// роутер
 export const router = createHashRouter([
   {
     path: "/",
@@ -129,7 +135,7 @@ export const router = createHashRouter([
     children: [
       ...publicRoutes,
       {
-        Component: ProtectedRouteWrapper,
+        Component: ProtectedRoute,
         children: protectedRoutes,
       },
     ],

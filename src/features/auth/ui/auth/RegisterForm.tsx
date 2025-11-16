@@ -1,7 +1,7 @@
-import { ROUTES } from 'app/routes/router';
-import { useRegister } from 'features/auth/api/useRegister';
-import { useEffect, useState } from 'react';
-import toast from 'react-hot-toast';
+import { ROUTES } from "app/routes/router";
+import { useRegister } from "features/auth/api/useRegister";
+import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import {
   AccentLink,
   AuthForm,
@@ -14,10 +14,10 @@ import {
   FormTitle,
   RegisterPrompt,
   SubmitButton,
-} from '../AuthFormStyles';
+} from "../AuthFormStyles";
 
 export const RegisterForm = () => {
-  const [credentials, setCredentials] = useState({ email: '', password: '' });
+  const [credentials, setCredentials] = useState({ email: "", password: "" });
   const [showPassword, setShowPassword] = useState(false);
   const { register, error, passwordErrors, isLoading } = useRegister();
 
@@ -61,7 +61,7 @@ export const RegisterForm = () => {
       />
 
       <FormInput
-        type={showPassword ? 'text' : 'password'}
+        type={showPassword ? "text" : "password"}
         onChange={handleChange}
         name="password"
         placeholder="Пароль"
@@ -71,20 +71,14 @@ export const RegisterForm = () => {
       <FormFooter>
         <FormCheckboxWrapper>
           <FormLabel>
-            <input
-              type="checkbox"
-              onChange={handleShowPassword}
-            />
+            <input type="checkbox" onChange={handleShowPassword} />
             Показать пароль
           </FormLabel>
         </FormCheckboxWrapper>
         <AccentLink to={ROUTES.LINKS.RESET_PASSWORD}>Забыли пароль?</AccentLink>
       </FormFooter>
-      <SubmitButton
-        type="submit"
-        disabled={isLoading}
-      >
-        {isLoading ? 'Загрузка...' : 'Зарегистрироваться'}
+      <SubmitButton type="submit" disabled={isLoading}>
+        {isLoading ? "Загрузка..." : "Зарегистрироваться"}
       </SubmitButton>
       <RegisterPrompt>
         Уже есть аккаунт? <AccentLink to={ROUTES.LINKS.LOGIN}>Войти</AccentLink>

@@ -266,7 +266,7 @@ export const Button = styled.button`
 
 export const PrimaryButton = styled(Button)`
   background: ${st("colors", "primary")};
-  color: ${st("colors", "textPrimary")};
+  color: white;
 
   &:hover {
     background: ${st("gradients", "accent")};

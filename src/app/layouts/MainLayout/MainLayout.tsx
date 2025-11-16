@@ -1,15 +1,15 @@
-import { SessionInitializer } from 'app/providers/SessionInitializer';
-import { Outlet } from 'react-router-dom';
-import { Nav } from 'widgets/Nav';
-import { ContentContainer } from './styles';
+import { SessionProvider } from "app/providers/SessionProvider";
+import { Outlet } from "react-router-dom";
+import { Nav } from "widgets/Nav";
+import { ContentContainer } from "./styles";
 
 export const MainLayout = () => {
   return (
-    <SessionInitializer>
+    <SessionProvider>
       <Nav />
       <ContentContainer>
         <Outlet />
       </ContentContainer>
-    </SessionInitializer>
+    </SessionProvider>
   );
 };
